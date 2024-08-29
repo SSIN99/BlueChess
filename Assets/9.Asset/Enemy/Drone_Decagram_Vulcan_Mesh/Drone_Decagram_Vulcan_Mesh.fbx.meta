@@ -1,47 +1,56 @@
 fileFormatVersion: 2
-guid: 78021959a9e29944a813a134e6a4c8e5
+guid: 8b82862e5a4ff6d4cb280e31205aff3a
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: -8251544599866287263
-    second: Sweeper_Decagram_Taser_Normal_Attack_Start
+      74: 2842379243264822996
+    second: Drone_Decagram_Vulcan_Vital_Panic
   - first:
-      74: 3549195456187671495
-    second: Sweeper_Decagram_Taser_Vital_Panic
+      74: 5891645988752191376
+    second: Drone_Decagram_Vulcan_Vital_Death
   - first:
-      74: 7898626362665363121
-    second: Sweeper_Decagram_Taser_Vital_Death
+      74: 7209198389231389882
+    second: Drone_Decagram_Vulcan_Public
   - first:
-      74: 372267367859467781
-    second: Sweeper_Decagram_Taser_Move_End_Normal
+      74: -3280417941071000147
+    second: Drone_Decagram_Vulcan_Normal02_Attack_Start
   - first:
-      74: -7693222874991844127
-    second: Sweeper_Decagram_Taser_Move_Ing
+      74: 5007873417363606884
+    second: Drone_Decagram_Vulcan_Normal02_Attack_Ing
   - first:
-      74: -9106471570695185920
-    second: Sweeper_Decagram_Taser_Normal_Attack_all
+      74: 5552144782844802519
+    second: Drone_Decagram_Vulcan_Normal_Reload
   - first:
-      74: -6395678396948078990
-    second: Sweeper_Decagram_Taser_Normal_Attack_Delay
+      74: 3272715091708301808
+    second: Drone_Decagram_Vulcan_Normal_Idle
   - first:
-      74: -8702727803408151907
-    second: Sweeper_Decagram_Taser_Normal_Attack_End
+      74: 5835547467836480165
+    second: Drone_Decagram_Vulcan_Normal_Attack_Start
   - first:
-      74: 2963881443282027540
-    second: Sweeper_Decagram_Taser_Normal_Attack_Ing
+      74: -8363200803151283291
+    second: Drone_Decagram_Vulcan_Normal_Attack_Ing
   - first:
-      74: 904743039861867822
-    second: Sweeper_Decagram_Taser_Normal02_Attack_Start
+      74: -2344012927862627382
+    second: Drone_Decagram_Vulcan_Normal_Attack_End
   - first:
-      74: 3625560833532402797
-    second: Sweeper_Decagram_Taser_Normal_Idle
+      74: -3852077283287624153
+    second: Drone_Decagram_Vulcan_Normal_Attack_Delay
   - first:
-      74: 4117398121863382928
-    second: Sweeper_Decagram_Taser_Normal02_Attack_End
+      74: -4560153161893558208
+    second: Drone_Decagram_Vulcan_Move_Ing
   - first:
-      74: 4973594379390025306
-    second: Sweeper_Decagram_Taser_Normal02_Attack_Ing
+      74: 7548095188539715277
+    second: Drone_Decagram_Vulcan_Move_End_Normal
+  - first:
+      74: -4174757298866330279
+    second: Drone_Decagram_Vulcan_Exs
+  - first:
+      74: -1620698076362023530
+    second: Drone_Decagram_Vulcan_Colour_Vital_Death
+  - first:
+      74: -5416383354619845107
+    second: Drone_Decagram_Vulcan_Appear
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -71,11 +80,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal_Attack_Start
-      takeName: Sweeper_Decagram_Taser_Normal_Attack_Start
+      name: Drone_Decagram_Vulcan_Vital_Panic
+      takeName: Drone_Decagram_Vulcan_Vital_Panic
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -100,11 +109,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Vital_Panic
-      takeName: Sweeper_Decagram_Taser_Vital_Panic
+      name: Drone_Decagram_Vulcan_Vital_Death
+      takeName: Drone_Decagram_Vulcan_Vital_Death
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 77
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -129,11 +138,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Vital_Death
-      takeName: Sweeper_Decagram_Taser_Vital_Death
+      name: Drone_Decagram_Vulcan_Public
+      takeName: Drone_Decagram_Vulcan_Public
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 90
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -158,11 +167,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Move_End_Normal
-      takeName: Sweeper_Decagram_Taser_Move_End_Normal
+      name: Drone_Decagram_Vulcan_Normal02_Attack_Start
+      takeName: Drone_Decagram_Vulcan_Normal02_Attack_Start
       internalID: 0
       firstFrame: 0
-      lastFrame: 36
+      lastFrame: 90
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -187,11 +196,69 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Move_Ing
-      takeName: Sweeper_Decagram_Taser_Move_Ing
+      name: Drone_Decagram_Vulcan_Normal02_Attack_Ing
+      takeName: Drone_Decagram_Vulcan_Normal02_Attack_Ing
       internalID: 0
       firstFrame: 0
-      lastFrame: 36
+      lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Drone_Decagram_Vulcan_Normal_Reload
+      takeName: Drone_Decagram_Vulcan_Normal_Reload
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Drone_Decagram_Vulcan_Normal_Idle
+      takeName: Drone_Decagram_Vulcan_Normal_Idle
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -216,11 +283,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal_Attack_all
-      takeName: Sweeper_Decagram_Taser_Normal_Attack_all
+      name: Drone_Decagram_Vulcan_Normal_Attack_Start
+      takeName: Drone_Decagram_Vulcan_Normal_Attack_Start
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -245,11 +312,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal_Attack_Delay
-      takeName: Sweeper_Decagram_Taser_Normal_Attack_Delay
+      name: Drone_Decagram_Vulcan_Normal_Attack_Ing
+      takeName: Drone_Decagram_Vulcan_Normal_Attack_Ing
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -274,11 +341,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal_Attack_End
-      takeName: Sweeper_Decagram_Taser_Normal_Attack_End
+      name: Drone_Decagram_Vulcan_Normal_Attack_End
+      takeName: Drone_Decagram_Vulcan_Normal_Attack_End
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -303,11 +370,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal_Attack_Ing
-      takeName: Sweeper_Decagram_Taser_Normal_Attack_Ing
+      name: Drone_Decagram_Vulcan_Normal_Attack_Delay
+      takeName: Drone_Decagram_Vulcan_Normal_Attack_Delay
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -332,40 +399,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal02_Attack_Start
-      takeName: Sweeper_Decagram_Taser_Normal02_Attack_Start
+      name: Drone_Decagram_Vulcan_Move_Ing
+      takeName: Drone_Decagram_Vulcan_Move_Ing
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal_Idle
-      takeName: Sweeper_Decagram_Taser_Normal_Idle
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 64
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -390,11 +428,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal02_Attack_End
-      takeName: Sweeper_Decagram_Taser_Normal02_Attack_End
+      name: Drone_Decagram_Vulcan_Move_End_Normal
+      takeName: Drone_Decagram_Vulcan_Move_End_Normal
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 160
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -419,11 +457,69 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sweeper_Decagram_Taser_Normal02_Attack_Ing
-      takeName: Sweeper_Decagram_Taser_Normal02_Attack_Ing
+      name: Drone_Decagram_Vulcan_Exs
+      takeName: Drone_Decagram_Vulcan_Exs
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 185
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Drone_Decagram_Vulcan_Colour_Vital_Death
+      takeName: Drone_Decagram_Vulcan_Colour_Vital_Death
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 185
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Drone_Decagram_Vulcan_Appear
+      takeName: Drone_Decagram_Vulcan_Appear
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 185
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
