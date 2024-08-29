@@ -5,16 +5,8 @@ using UnityEngine.AI;
 
 public class EnemyControl : MonoBehaviour
 {
-    public enum EnemyState
-    {
-        Idle,
-        Move,
-        Attack,
-        Dead
-    }
 
-    private State curState;
-
+    private IState curState;
 
     [SerializeField] private Transform route;
     [SerializeField] private Animator anim;
@@ -28,16 +20,15 @@ public class EnemyControl : MonoBehaviour
     
     private void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
 
         waypoints = new Waypoint[route.childCount];
         for(int i =0; i < route.childCount; i++)
         {
             waypoints[i] = route.GetChild(i).GetComponent<Waypoint>();
         }
+        agent = GetComponent<NavMeshAgent>();
 
         agent.SetDestination(waypoints[index].transform.position);
-        anim.Play("Move");
     }
 
     private void Update()
