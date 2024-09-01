@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class IdleState : MonoBehaviour,IState
 {
-    EnemyControl enemy;
-
-    public IdleState(EnemyControl enemy)
-    {
-        this.enemy = enemy;
-    }
-
+   
     public void Enter()
     {
        
