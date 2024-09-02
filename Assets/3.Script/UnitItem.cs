@@ -4,17 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using TMPro;
 
 public class UnitItem : MonoBehaviour
 {
     public Image unitImage;
     public Image originIcon;
     public Image classIcon;
-    public TMP_Text nameText;
-    public TMP_Text costText;
-    public TMP_Text originText;
-    public TMP_Text classText;
+    public Text nameText;
+    public Text costText;
+    public Text originText;
+    public Text classText;
 
     private GameObject unitPrefab;
 
