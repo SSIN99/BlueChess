@@ -7,38 +7,47 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class UnitItem : MonoBehaviour
 {
-    public Image unitImage;
+    [Header("UnitData Indicator UI")]
+    public Image memorial;
     public Image originIcon;
     public Image classIcon;
+    public Image border;
     public Text nameText;
     public Text costText;
     public Text originText;
     public Text classText;
 
+    public int unitNo;
     private GameObject unitPrefab;
-
-    public void SetItemData(GameObject unit, Dictionary<string, object> data)
+    private Color[] rankColor =
     {
-        unitPrefab = unit;
-        nameText.text = data["Name"].ToString();
-        costText.text = data["Cost"].ToString();
-        originText.text = data["Origin"].ToString();
-        classText.text = data["Class"].ToString();
+        new Color(1f, 1f, 1f),
+        new Color(0.35f, 1f, 0.7f),
+        new Color(0.45f, 1f, 1f),
+        new Color(1f, 0.35f, 1f),
+        new Color(1f, 0.81f, 0.25f)
+    };
 
-        Addressables.LoadAssetAsync<Sprite>(data["Memorial"]).Completed += OnImgaeLoaded;
+    public void SetItemData(int no, GameObject unit, Sprite memo, Dictionary<string, string> data)
+    {
+        if (unitPrefab.Equals(unit)) return;
+
+        unitNo = no;
+        unitPrefab = unit;
+        memorial.sprite = memo;
+        border.color = rankColor[int.Parse(data["Cost"]) - 1];
+        nameText.text = data["Name"];
+        costText.text = data["Cost"];
+        originText.text = data["Origin"];
+        classText.text = data["Class"];
+
     }
 
     public void OnClicked()
     {
         GameObject newUnit = Instantiate(unitPrefab, Vector3.zero, Quaternion.identity);
         newUnit.SetActive(false);
+        unitPrefab = null;
         gameObject.SetActive(false);
-    }
-    private void OnImgaeLoaded(AsyncOperationHandle<Sprite> image)
-    {
-        if (image.Status == AsyncOperationStatus.Succeeded)
-        {
-            unitImage.sprite = image.Result;
-        }
     }
 }
