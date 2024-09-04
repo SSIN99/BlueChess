@@ -1,135 +1,98 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    //À¯´Öº° Á¤º¸ csv
-    private List<Dictionary<string, string>> unitData;
-    //·¹º§¿¡ µû¸¥ °¡Ã­È®·ü csv
-    private List<Dictionary<string, string>> unitRatio;
-    //À¯´Öº° ÃÖ´ë°¹¼ö
-    private Dictionary<int, int> unitCount;
-    //À¯´Ö ÇÁ¸®Æé ¸®½ºÆ®
-    public GameObject[] unitList;
-    //À¯´Ö ¸Þ¸ð¸®¾ó ¸®½ºÆ®
-    public Sprite[] unitMemorial;
-    //À¯´Ö ¹öÆ°µé
-    public UnitItem[] unitItems;
-    //À¯´Ö °¡Ã­Ç® 
-    private WeightedRandomPicker<int> unitPool;
-    //»óÁ¡ Àá±Ý bool°ª
+    [SerializeField] private ShopItem[] itemList;
+    [SerializeField] private Text[] ratio;
+    [SerializeField] private Info info;
+    [SerializeField] private PlayerControl player;
+
+    private WeightedRandomPicker<int> pickUpPool;
     private bool isLocked = false;
 
     private void Start()
     {
-        unitData = CSVReader.Read("UnitData");
-        unitRatio = CSVReader.Read("UnitRatio");
-        unitCount = new Dictionary<int, int>();
-        unitPool = new WeightedRandomPicker<int>();
-
-        InitUnitCount();
-        InitUnitPool();
-        SetUnitItem();
+        pickUpPool = new WeightedRandomPicker<int>();
+        SetRatio(player.Level);
+        AddUnitPool(1);
+        UpdateWeightPool(player.Level);
+        SetShopItem();
     }
-    //ÃÊ±â À¯´Ö Ä«¿îÆ® ¼¼ÆÃ
-    private void InitUnitCount()
+    
+    private void SetRatio(int level) 
     {
-        for (int i = 0; i < unitData.Count; i++)
+        for(int i = 0; i< ratio.Length; i++)
         {
-            switch (int.Parse(unitData[i]["Cost"]))
+            ratio[i].text = $"{info.ratioPerLevel[level][$"Wei{i + 1}"]}%";
+        }
+    }
+    private void AddUnitPool(int cost)
+    {
+        for (int i = 0; i < info.dataPerUnit.Count; i++)
+        {
+            if (int.Parse(info.dataPerUnit[i]["Cost"]).Equals(cost))
+            {
+                pickUpPool.Add(i, 1);
+            }
+        }
+    }
+    private void UpdateWeightPool(int level)
+    {
+        for (int i = 0; i < pickUpPool.GetCount(); i++)
+        {
+            switch (int.Parse(info.dataPerUnit[i]["Cost"]))
             {
                 case 1:
-                    unitCount.Add(i, int.Parse(unitRatio[0]["Cost1"]));
+                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost1"]));
                     break;
                 case 2:
-                    unitCount.Add(i, int.Parse(unitRatio[0]["Cost2"]));
+                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost2"]));
                     break;
                 case 3:
-                    unitCount.Add(i, int.Parse(unitRatio[0]["Cost3"]));
+                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost3"]));
                     break;
                 case 4:
-                    unitCount.Add(i, int.Parse(unitRatio[0]["Cost4"]));
+                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost4"]));
                     break;
                 case 5:
-                    unitCount.Add(i, int.Parse(unitRatio[0]["Cost5"]));
+                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost5"]));
                     break;
             }
         }
     }
-
-    // ÃÊ±â À¯´ÖÇ® ¼¼ÆÃ 
-    private void InitUnitPool() 
-    {
-        for(int i = 0; i < unitData.Count; i++)
-        {
-            if (unitData[i]["Cost"].Equals(1))
-            {
-                unitPool.Add(i, 100);        
-            }
-            else
-            {
-                unitPool.Add(i, 0);
-            }
-        }
-    }
-    // ·¹º§¿¡ µû¶ó À¯´ÖÇ® È®·ü °»½Å
-    public void UpdateUnitPool(int level)
-    {
-        for (int i = 0; i < unitData.Count; i++)
-        {
-            switch (int.Parse(unitData[i]["Cost"]))
-            {
-                case 1:
-                    unitPool.ModifyWeight(i, int.Parse(unitRatio[0]["Cost1"]));
-                    break;
-                case 2:
-                    unitPool.ModifyWeight(i, int.Parse(unitRatio[0]["Cost2"]));
-                    break;
-                case 3:
-                    unitPool.ModifyWeight(i, int.Parse(unitRatio[0]["Cost3"]));
-                    break;
-                case 4:
-                    unitPool.ModifyWeight(i, int.Parse(unitRatio[0]["Cost4"]));
-                    break;
-                case 5:
-                    unitPool.ModifyWeight(i, int.Parse(unitRatio[0]["Cost5"]));
-                    break;
-            }
-        }
-    }
-    // À¯´Ö ¹öÆ° ¾ÆÀÌÅÛ Á¤º¸ ¼¼ÆÃ
-    public void SetUnitItem()
+    public void SetShopItem()
     {
         if (isLocked) return;
 
-        foreach(var item in unitItems)
+        foreach(var item in itemList)
         {
-            int unitNo = GetRandomUnit();
             if (item.gameObject.activeSelf.Equals(false))
             {
                 item.gameObject.SetActive(true);
             }
             else
             {
-                unitCount[item.unitNo]++;
-                Debug.Log($"À¯´Ö³Ñ¹ö {unitNo} ÀÜ¿©°¹¼ö {unitCount[unitNo]} ");
+                info.countPerUnit[item.unitNo]++;
+                Debug.Log($"À¯´ÖÈ¸¼ö {info.dataPerUnit[item.unitNo]["Name"]} ÀÜ¿©°¹¼ö { info.countPerUnit[item.unitNo]} ");
             }
-            item.SetItemData(unitNo ,unitList[unitNo],unitMemorial[unitNo], unitData[unitNo]);
-            Debug.Log($"»ÌÈùÀ¯´Ö {unitNo}");
+            int no = GetRandomUnit();
+            item.SetItemInfo(no);
         }
     }
-    // ·£´ý À¯´Ö »Ì±â
     private int GetRandomUnit()
     {
-        int unitNo = unitPool.GetRandomPick();
-        while(unitCount[unitNo] <= 0)
+        int rand = pickUpPool.GetRandomPick();
+
+        while(info.countPerUnit[rand] <= 0)
         {
-            unitNo = unitPool.GetRandomPick();
+            rand = pickUpPool.GetRandomPick();
         }
-        unitCount[unitNo]--;
-        Debug.Log($"À¯´Ö³Ñ¹ö {unitNo} ÀÜ¿©°¹¼ö {unitCount[unitNo]} ");
-        return unitNo;
+        info.countPerUnit[rand]--;
+        Debug.Log($"»ÌÀºÀ¯´Ö {info.dataPerUnit[rand]["Name"]} ÀÜ¿©°¹¼ö { info.countPerUnit[rand]} ");
+        return rand;
     }
     public void ToggleLock()
     {

@@ -132,7 +132,6 @@ public class WeightedRandomPicker<T>
     {
         randomInstance = new System.Random(seed);
     }
-
     #endregion
     /***********************************************************************
     *                               Getter Methods
@@ -175,7 +174,11 @@ public class WeightedRandomPicker<T>
     {
         return itemWeightDict[item];
     }
-
+    /// <summary> 아이템 목록 갯수 확인 </summary>
+    public int GetCount()
+    {
+        return itemWeightDict.Count;
+    }
     /// <summary> 대상 아이템의 정규화된 가중치 확인 </summary>
     public double GetNormalizedWeight(T item)
     {
