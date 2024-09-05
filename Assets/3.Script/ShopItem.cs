@@ -6,18 +6,21 @@ using UnityEngine.UI;
 public class ShopItem : MonoBehaviour
 {
     [Header("UnitInfo Image")]
-    public Image border;
-    public Image memorial;
-    public Image originIcon;
-    public Image classIcon;
+    [SerializeField] private Image border;
+    [SerializeField] private Image memorial;
+    [SerializeField] private Image originIcon;
+    [SerializeField] private Image classIcon;
     [Header("UnitInfo Text")]
-    public Text nameText;
-    public Text costText;
-    public Text originText;
-    public Text classText;
+    [SerializeField] private Text nameText;
+    [SerializeField] private Text costText;
+    [SerializeField] private Text originText;
+    [SerializeField] private Text classText;
 
-    public Info info;
-    public int unitNo;
+    [Header("External Class")]
+    [SerializeField] private Info info;
+    [SerializeField] private Player player;
+
+    private int cost;
     private GameObject unitPrefab;
     private Color[] colorOfCost =
     {
@@ -27,37 +30,38 @@ public class ShopItem : MonoBehaviour
         new Color(1f, 0.35f, 1f),
         new Color(1f, 0.81f, 0.25f)
     };
+    public int unitNo = -1;
 
-    public void SetItemInfo(int no)
+    public void SetItemInfo(int n)
     {
-        //if (unitPrefab.Equals(info.unitPrefabs[no])) return;
+        if (unitNo.Equals(n)) return;
 
-        unitNo = no;
-        //unitPrefab = info.unitPrefabs[no];
+        unitNo = n;
+        unitPrefab = info.prefabs[n];
 
-        border.color = colorOfCost[int.Parse(info.dataPerUnit[no]["Cost"]) - 1];
-        //Debug.Log("컬러세팅");
-        memorial.sprite = info.unitMemorials[no];
-        //Debug.Log("메모리얼");
-        originIcon.sprite = info.traitIcons[int.Parse(info.dataPerUnit[no]["Origin"])];
-        //Debug.Log("소속");
-        classIcon.sprite = info.traitIcons[int.Parse(info.dataPerUnit[no]["Class"])];
-        //Debug.Log("직업");
+        border.color = colorOfCost[int.Parse(info.unitData[n]["Cost"]) - 1];
+        memorial.sprite = info.memorials[n];
+        originIcon.sprite = info.traits[int.Parse(info.unitData[n]["Origin"])];
+        classIcon.sprite = info.traits[int.Parse(info.unitData[n]["Class"])];
 
-        nameText.text = info.dataPerUnit[no]["Name"];
-        //Debug.Log("이름");
-        costText.text = info.dataPerUnit[no]["Cost"];
-        //Debug.Log("비용");
-        originText.text = info.dataPerTrait[int.Parse(info.dataPerUnit[no]["Origin"])]["Name"];
-        //Debug.Log("소속 텍스트");
-        classText.text = info.dataPerTrait[int.Parse(info.dataPerUnit[no]["Class"])]["Name"];
-        //Debug.Log("직업 텍스트");
+        nameText.text = info.unitData[n]["Name"];
+        cost = int.Parse(info.unitData[n]["Cost"]);
+        costText.text = cost.ToString(); 
+        originText.text = info.traitData[int.Parse(info.unitData[n]["Origin"])]["Name"];
+        classText.text = info.traitData[int.Parse(info.unitData[n]["Class"])]["Name"];
+
     }
 
     public void OnClicked()
     {
-        //GameObject newUnit = Instantiate(unitPrefab, Vector3.zero, Quaternion.identity);
+        if (unitPrefab == null) return;
+        if(player.Gold < cost)
+        {
+            return;
+        }
+        player.PurchaseUnit(cost, unitPrefab);
         unitPrefab = null;
         gameObject.SetActive(false);
     }
+
 }

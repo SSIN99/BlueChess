@@ -9,80 +9,52 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 public class Info : MonoBehaviour
 {
     //유닛별 정보 csv
-    public List<Dictionary<string, string>> dataPerUnit;
+    public  List<Dictionary<string, string>> unitData;
     //특성별 정보 csv
-    public List<Dictionary<string, string>> dataPerTrait;
+    public  List<Dictionary<string, string>> traitData;
     //레벨에 따른 가챠확률 csv
-    public List<Dictionary<string, string>> ratioPerLevel;
+    public  List<Dictionary<string, string>> ratioData;
     //유닛별 최대갯수
-    public Dictionary<int, int> countPerUnit;
+    public Dictionary<int, int> unitCount;
     //유닛 프리펩 리스트
-    public List<GameObject> unitPrefabs;
+    public List<GameObject> prefabs;
     //유닛 메모리얼 리스트
-    public List<Sprite> unitMemorials;
+    public List<Sprite> memorials;
     //특성별 아이콘 리스트
-    public List<Sprite> traitIcons;
+    public List<Sprite> traits;
 
-    public string memorialLabel = "Memorial";
-    private string traitLabel = "Trait";
-
-    private void Start()
+    private void Awake()
     {
-        dataPerUnit = CSVReader.Read("UnitData");
-        dataPerTrait = CSVReader.Read("TraitData");
-        ratioPerLevel = CSVReader.Read("UnitRatio");
+        unitData = CSVReader.Read("UnitData");
+        traitData = CSVReader.Read("TraitData");
+        ratioData = CSVReader.Read("RatioData");
 
         InitCountPerUnit();
-        //InitResourceList();
     }
 
     private void InitCountPerUnit()
     {
-        countPerUnit = new Dictionary<int, int>();
-        for (int i = 0; i < dataPerUnit.Count; i++)
+        unitCount = new Dictionary<int, int>();
+        for (int i = 0; i < unitData.Count; i++)
         {
-            switch (int.Parse(dataPerUnit[i]["Cost"]))
+            switch (int.Parse(unitData[i]["Cost"]))
             {
                 case 1:
-                    countPerUnit.Add(i, int.Parse(ratioPerLevel[0]["Cost1"]));
+                    unitCount.Add(i, int.Parse(ratioData[0]["Wei1"]));
                     break;
                 case 2:
-                    countPerUnit.Add(i, int.Parse(ratioPerLevel[0]["Cost2"]));
+                    unitCount.Add(i, int.Parse(ratioData[0]["Wei2"]));
                     break;
                 case 3:
-                    countPerUnit.Add(i, int.Parse(ratioPerLevel[0]["Cost3"]));
+                    unitCount.Add(i, int.Parse(ratioData[0]["Wei3"]));
                     break;
                 case 4:
-                    countPerUnit.Add(i, int.Parse(ratioPerLevel[0]["Cost4"]));
+                    unitCount.Add(i, int.Parse(ratioData[0]["Wei4"]));
                     break;
                 case 5:
-                    countPerUnit.Add(i, int.Parse(ratioPerLevel[0]["Cost5"]));
+                    unitCount.Add(i, int.Parse(ratioData[0]["Wei5"]));
                     break;
             }
         }
-    }
-    
-    private void InitResourceList()
-    {
-        unitPrefabs = new List<GameObject>();
-        unitMemorials = new List<Sprite>();
-        traitIcons = new List<Sprite>();
-
-        AsyncOperationHandle<IList<Sprite>> handle = Addressables.LoadAssetsAsync<Sprite>(memorialLabel, null);
-
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            foreach (Sprite s in handle.Result)
-            {
-                unitMemorials.Add(s);
-            }
-
-            Debug.Log($"Loaded {unitMemorials.Count} sprites with label: {memorialLabel}");
-        }
-        else
-        {
-            Debug.LogError($"Failed to load sprites with label: {memorialLabel}");
-        }
-
-    }
+    } 
 }

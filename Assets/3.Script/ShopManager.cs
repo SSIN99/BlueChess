@@ -5,68 +5,95 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] private ShopItem[] itemList;
-    [SerializeField] private Text[] ratio;
     [SerializeField] private Info info;
-    [SerializeField] private PlayerControl player;
+    [SerializeField] private Player player;
+    [SerializeField] private ShopItem[] itemList;
+    [SerializeField] private Text[] ratioText;
 
-    private WeightedRandomPicker<int> pickUpPool;
-    private bool isLocked = false;
+    private WeightedRandomPicker<int> unitPool;
+    private int poolCount = 0;
 
+    private void OnEnable()
+    {
+        player.OnLevelUp += AddUnitPool;
+        player.OnLevelUp += UpdateWeightPool;
+        player.OnLevelUp += SetRatio;
+    }
     private void Start()
     {
-        pickUpPool = new WeightedRandomPicker<int>();
-        SetRatio(player.Level);
-        AddUnitPool(1);
-        UpdateWeightPool(player.Level);
-        SetShopItem();
+        unitPool = new WeightedRandomPicker<int>();
     }
-    
-    private void SetRatio(int level) 
+    private void SetRatio() 
     {
-        for(int i = 0; i< ratio.Length; i++)
+        for(int i = 0; i< ratioText.Length; i++)
         {
-            ratio[i].text = $"{info.ratioPerLevel[level][$"Wei{i + 1}"]}%";
+            ratioText[i].text = $"{info.ratioData[player.Level][$"Ratio{i + 1}"]}%";
         }
     }
-    private void AddUnitPool(int cost)
+    private void AddUnitPool()
     {
-        for (int i = 0; i < info.dataPerUnit.Count; i++)
+        switch (player.Level)
         {
-            if (int.Parse(info.dataPerUnit[i]["Cost"]).Equals(cost))
-            {
-                pickUpPool.Add(i, 1);
-            }
+            case 1:
+                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio1"]); i++)
+                {
+                    unitPool.Add(i + poolCount, 1);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio2"]); i++)
+                {
+                    unitPool.Add(i + poolCount, 1);
+                }
+                poolCount = unitPool.GetCount();
+                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio3"]); i++)
+                {
+                    unitPool.Add(i + poolCount, 1);
+                }
+                break;
+            case 5:
+                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio4"]); i++)
+                {
+                    unitPool.Add(i + poolCount, 1);
+                }
+                break;
+            case 7:
+                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio5"]); i++)
+                {
+                    unitPool.Add(i + poolCount, 1);
+                }
+                break;
+            default:
+                return;
         }
+        poolCount = unitPool.GetCount();
     }
-    private void UpdateWeightPool(int level)
+    private void UpdateWeightPool()
     {
-        for (int i = 0; i < pickUpPool.GetCount(); i++)
+        for (int i = 0; i < poolCount; i++)
         {
-            switch (int.Parse(info.dataPerUnit[i]["Cost"]))
+            switch (int.Parse(info.unitData[i]["Cost"]))
             {
                 case 1:
-                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost1"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei1"]));
                     break;
                 case 2:
-                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost2"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei2"]));
                     break;
                 case 3:
-                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost3"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei3"]));
                     break;
                 case 4:
-                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost4"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei4"]));
                     break;
                 case 5:
-                    pickUpPool.ModifyWeight(i, double.Parse(info.ratioPerLevel[level]["Cost5"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei5"]));
                     break;
             }
         }
     }
     public void SetShopItem()
     {
-        if (isLocked) return;
-
         foreach(var item in itemList)
         {
             if (item.gameObject.activeSelf.Equals(false))
@@ -75,8 +102,7 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
-                info.countPerUnit[item.unitNo]++;
-                Debug.Log($"À¯´ÖÈ¸¼ö {info.dataPerUnit[item.unitNo]["Name"]} ÀÜ¿©°¹¼ö { info.countPerUnit[item.unitNo]} ");
+                info.unitCount[item.unitNo]++;
             }
             int no = GetRandomUnit();
             item.SetItemInfo(no);
@@ -84,19 +110,15 @@ public class ShopManager : MonoBehaviour
     }
     private int GetRandomUnit()
     {
-        int rand = pickUpPool.GetRandomPick();
+        int rand = unitPool.GetRandomPick();
 
-        while(info.countPerUnit[rand] <= 0)
+        while(info.unitCount[rand] <= 0)
         {
-            rand = pickUpPool.GetRandomPick();
+            rand = unitPool.GetRandomPick();
         }
-        info.countPerUnit[rand]--;
-        Debug.Log($"»ÌÀºÀ¯´Ö {info.dataPerUnit[rand]["Name"]} ÀÜ¿©°¹¼ö { info.countPerUnit[rand]} ");
+        info.unitCount[rand]--;
+        Debug.Log($"»ÌÀºÀ¯´Ö {info.unitData[rand]["Name"]} ÀÜ¿©°¹¼ö { info.unitCount[rand]} ");
         return rand;
     }
-    public void ToggleLock()
-    {
-        isLocked = !isLocked;
 
-    }
 }
