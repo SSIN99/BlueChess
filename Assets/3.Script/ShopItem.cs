@@ -21,7 +21,6 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Player player;
 
     private int cost;
-    private GameObject unitPrefab;
     private Color[] colorOfCost =
     {
         new Color(1f, 1f, 1f),
@@ -37,8 +36,6 @@ public class ShopItem : MonoBehaviour
         if (unitNo.Equals(n)) return;
 
         unitNo = n;
-        unitPrefab = info.prefabs[n];
-
         border.color = colorOfCost[int.Parse(info.unitData[n]["Cost"]) - 1];
         memorial.sprite = info.memorials[n];
         originIcon.sprite = info.traits[int.Parse(info.unitData[n]["Origin"])];
@@ -54,13 +51,11 @@ public class ShopItem : MonoBehaviour
 
     public void OnClicked()
     {
-        if (unitPrefab == null) return;
         if(player.Gold < cost)
         {
             return;
         }
-        player.PurchaseUnit(cost, unitPrefab);
-        unitPrefab = null;
+        player.PurchaseUnit(unitNo, cost);
         gameObject.SetActive(false);
     }
 

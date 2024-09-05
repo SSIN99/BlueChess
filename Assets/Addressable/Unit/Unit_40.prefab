@@ -14459,6 +14459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3522520570706478805}
   - component: {fileID: 4299056823606385774}
+  - component: {fileID: -7754159436894868549}
   m_Layer: 0
   m_Name: Unit_40
   m_TagString: Untagged
@@ -14504,6 +14505,33 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-7754159436894868549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4299056823606385775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3258d95b18c5cd54298dbc7f1a4d1f2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  origin: 0
+  jobClass: 0
+  cost: 0
+  maxHealth: 0
+  curHealth: 0
+  maxMP: 0
+  startMP: 0
+  curMP: 0
+  AD: 0
+  AP: 0
+  Armor: 0
+  Resistance: 0
+  AS: 0
+  Range: 0
 --- !u!1 &4316768345367484222
 GameObject:
   m_ObjectHideFlags: 0

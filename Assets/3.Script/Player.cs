@@ -6,20 +6,24 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [Header("UI")]
     [SerializeField] private Text levelText;
     [SerializeField] private Text goldText;
     [SerializeField] private Text expText;
     [SerializeField] private Slider expSlider;
+    [SerializeField] private Image lockImage;
+    [SerializeField] private Sprite[] lockSprite;
+    
     [SerializeField] private ShopManager shop;
-
+    [SerializeField] private Info info;
     private int level;
     private int gold;
     private int maxExp;
     private int curExp;
     private bool isLocked;
     private int[] maxExpList = { 2, 4, 6, 10, 20, 36, 48, 76 };
-    private List<GameObject> unitList;
 
+    private List<GameObject> unitList;
     public event Action OnLevelUp;
     public int Level
     {
@@ -67,10 +71,8 @@ public class Player : MonoBehaviour
         levelText.text = $"Lv.{level.ToString()}";
         if (level >= 9)
         {
-            expSlider.maxValue = 100;
             expSlider.value = expSlider.maxValue;
             expText.text = "Max";
-            Debug.Log("Max");
         }
         else
         {
@@ -79,7 +81,6 @@ public class Player : MonoBehaviour
             expSlider.value = curExp;
             expText.text = $"{curExp}/{maxExp}";
         }
-        Debug.Log("levelUp");
     }
     public void PurchaseExp()
     {
@@ -116,10 +117,16 @@ public class Player : MonoBehaviour
             shop.SetShopItem();
         }
     }
-    public void PurchaseUnit(int cost, GameObject unit)
+    public void PurchaseUnit(int n, int cost)
     {
         Gold -= cost;
-        GameObject newUnit = Instantiate(unit, Vector3.zero, Quaternion.identity);
+        GameObject newUnit = Instantiate(info.prefabs[n], Vector3.zero, Quaternion.identity);
         unitList.Add(newUnit);
+        newUnit.GetComponent<Unit>().InitData(info.unitData[n]);
+    }
+    public void ToggleLock()
+    {
+        isLocked = !isLocked;
+        lockImage.sprite = isLocked ? lockSprite[0] : lockSprite[1];
     }
 }
