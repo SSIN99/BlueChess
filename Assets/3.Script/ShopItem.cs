@@ -38,6 +38,7 @@ public class ShopItem : MonoBehaviour
 
         no = n;
         unit = info.unitPool[n].Dequeue();
+        Debug.Log($"{n}Ãâ·Â {info.unitPool[n].Count}");
         border.color = colorOfCost[int.Parse(info.unitData[n]["Cost"]) - 1];
         memorial.sprite = info.memorials[n];
         originIcon.sprite = info.traits[int.Parse(info.unitData[n]["Origin"])];
@@ -63,6 +64,7 @@ public class ShopItem : MonoBehaviour
     public void ReturnUnit()
     {
         info.unitPool[no].Enqueue(unit);
+        Debug.Log($"{no}¹Ý³³ {info.unitPool[no].Count}");
         unit = null;
         no = -1;
     }

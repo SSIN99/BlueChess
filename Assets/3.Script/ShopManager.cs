@@ -8,10 +8,14 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Info info;
     [SerializeField] private Player player;
     [SerializeField] private ShopItem[] itemList;
+
     [SerializeField] private Text[] ratioText;
+    [SerializeField] private Image lockImage;
+    [SerializeField] private Sprite[] lockSprite;
 
     private WeightedRandomPicker<int> unitPool;
     private int poolCount = 0;
+    private bool isLocked = false;
 
     private void OnEnable()
     {
@@ -94,6 +98,10 @@ public class ShopManager : MonoBehaviour
     }
     public void SetShopItem()
     {
+        if (isLocked) return;
+        if (player.Gold < 2) return;
+
+        player.PayCost(2);
         foreach(var item in itemList)
         {
             if (item.gameObject.activeSelf.Equals(false))
@@ -123,6 +131,15 @@ public class ShopManager : MonoBehaviour
         }
         return rand;
     }
-
-
+    public void ToggleLock()
+    {
+        isLocked = !isLocked;
+        lockImage.sprite = isLocked ? lockSprite[0] : lockSprite[1];
+    }
+    private void OnDisable()
+    {
+        player.OnLevelUp -= AddUnitPool;
+        player.OnLevelUp -= UpdateWeightPool;
+        player.OnLevelUp -= SetRatio;
+    }
 }

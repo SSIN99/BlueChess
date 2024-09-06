@@ -11,9 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Text goldText;
     [SerializeField] private Text expText;
     [SerializeField] private Slider expSlider;
-    [SerializeField] private Image lockImage;
-    [SerializeField] private Sprite[] lockSprite;
-    
+
     [SerializeField] private ShopManager shop;
     [SerializeField] private Info info;
     [SerializeField] private Transform waitingSeat;
@@ -22,7 +20,6 @@ public class Player : MonoBehaviour
     private int gold;
     private int maxExp;
     private int curExp;
-    private bool isLocked;
     private int[] maxExpList = { 2, 4, 6, 10, 20, 36, 48, 76 };
 
     private List<GameObject> unitList;
@@ -52,21 +49,11 @@ public class Player : MonoBehaviour
         Level = 1;
         curExp = 0;
         Gold = 1000;
-        isLocked = false;
         unitList = new List<GameObject>();
     }
-    public bool PayCost(int cost)
+    public void PayCost(int cost)
     {
-        if(gold < cost)
-        {
-            Debug.Log("돈 부족");
-            return false;
-        }
-        else
-        {
-            Gold -= cost;
-            return true;
-        }
+        Gold -= cost;
     }
     public void LevelUp()
     {
@@ -92,8 +79,9 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (PayCost(4))
+        if (gold >= 4)
         {
+            Gold -= 4;
             curExp += 4;
             if (curExp >= maxExp)
             {
@@ -107,18 +95,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-    public void Recruit()
-    {
-        if (isLocked)
-        {
-            Debug.Log("잠금상태");
-            return;
-        }
-        if (PayCost(2))
-        {
-            shop.SetShopItem();
-        }
-    }
     public void PurchaseUnit(int n, GameObject unit, int cost)
     {
         Gold -= cost;
@@ -126,10 +102,5 @@ public class Player : MonoBehaviour
         unit.transform.parent = waitingSeat;
         unit.SetActive(true);
         unit.GetComponent<Unit>().InitData(info.unitData[n]);
-    }
-    public void ToggleLock()
-    {
-        isLocked = !isLocked;
-        lockImage.sprite = isLocked ? lockSprite[0] : lockSprite[1];
     }
 }
