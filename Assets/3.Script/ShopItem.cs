@@ -21,6 +21,7 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Player player;
 
     private int cost;
+    private GameObject unit;
     private Color[] colorOfCost =
     {
         new Color(1f, 1f, 1f),
@@ -29,13 +30,14 @@ public class ShopItem : MonoBehaviour
         new Color(1f, 0.35f, 1f),
         new Color(1f, 0.81f, 0.25f)
     };
-    public int unitNo = -1;
+    public int no = -1;
 
     public void SetItemInfo(int n)
     {
-        if (unitNo.Equals(n)) return;
+        if (no.Equals(n)) return;
 
-        unitNo = n;
+        no = n;
+        unit = info.unitPool[n].Dequeue();
         border.color = colorOfCost[int.Parse(info.unitData[n]["Cost"]) - 1];
         memorial.sprite = info.memorials[n];
         originIcon.sprite = info.traits[int.Parse(info.unitData[n]["Origin"])];
@@ -55,8 +57,18 @@ public class ShopItem : MonoBehaviour
         {
             return;
         }
-        player.PurchaseUnit(unitNo, cost);
+        player.PurchaseUnit(no, unit, cost);
         gameObject.SetActive(false);
     }
-
+    public void ReturnUnit()
+    {
+        info.unitPool[no].Enqueue(unit);
+        unit = null;
+        no = -1;
+    }
+    private void OnDisable()
+    {
+        unit = null;
+        no = -1;
+    }
 }

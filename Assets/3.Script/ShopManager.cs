@@ -102,7 +102,7 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
-                info.unitCount[item.unitNo]++;
+                item.ReturnUnit(); 
             }
             int no = GetRandomUnit();
             item.SetItemInfo(no);
@@ -112,13 +112,17 @@ public class ShopManager : MonoBehaviour
     {
         int rand = unitPool.GetRandomPick();
 
-        while(info.unitCount[rand] <= 0)
+        while(info.unitPool[rand].Count.Equals(0))
         {
             rand = unitPool.GetRandomPick();
+            if(info.unitPool[rand].Count < 0)
+            {
+                Debug.Log("Ç® °¹¼ö ¿À·ù ¹ß»ý!!!");
+                break;
+            }
         }
-        info.unitCount[rand]--;
-        Debug.Log($"»ÌÀºÀ¯´Ö {info.unitData[rand]["Name"]} ÀÜ¿©°¹¼ö { info.unitCount[rand]} ");
         return rand;
     }
+
 
 }

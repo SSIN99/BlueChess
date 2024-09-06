@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     
     [SerializeField] private ShopManager shop;
     [SerializeField] private Info info;
+    [SerializeField] private Transform waitingSeat;
+
     private int level;
     private int gold;
     private int maxExp;
@@ -117,12 +119,13 @@ public class Player : MonoBehaviour
             shop.SetShopItem();
         }
     }
-    public void PurchaseUnit(int n, int cost)
+    public void PurchaseUnit(int n, GameObject unit, int cost)
     {
         Gold -= cost;
-        GameObject newUnit = Instantiate(info.prefabs[n], Vector3.zero, Quaternion.identity);
-        unitList.Add(newUnit);
-        newUnit.GetComponent<Unit>().InitData(info.unitData[n]);
+        unitList.Add(unit);
+        unit.transform.parent = waitingSeat;
+        unit.SetActive(true);
+        unit.GetComponent<Unit>().InitData(info.unitData[n]);
     }
     public void ToggleLock()
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [Header("Unit Info")]
+    [SerializeField] private string no;
     [SerializeField] private string name;
     [SerializeField] private int origin;
     [SerializeField] private int jobClass;
@@ -25,6 +26,7 @@ public class Unit : MonoBehaviour
     
     public void InitData(Dictionary<string, string> data)
     {
+        no = data["No"];
         name = data["Name"];
         origin = int.Parse(data["Origin"]);
         jobClass = int.Parse(data["Class"]);
