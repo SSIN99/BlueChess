@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour, IDragHandler 
 {
     [Header("Unit Info")]
     [SerializeField] private string no;
-    [SerializeField] private string name;
+    [SerializeField] private string unitName;
     [SerializeField] private int origin;
     [SerializeField] private int jobClass;
     [SerializeField] private int cost;
@@ -22,12 +23,13 @@ public class Unit : MonoBehaviour
     [SerializeField] private int Resistance;
     [SerializeField] private int AS;
     [SerializeField] private int Range;
-    
+
+    private bool isOnField;
     
     public void InitData(Dictionary<string, string> data)
     {
         no = data["No"];
-        name = data["Name"];
+        unitName = data["Name"];
         origin = int.Parse(data["Origin"]);
         jobClass = int.Parse(data["Class"]);
         cost = int.Parse(data["Cost"]);
@@ -43,5 +45,22 @@ public class Unit : MonoBehaviour
         Resistance = int.Parse(data["Resistance"]);
         AS = int.Parse(data["AS"]);
         Range = int.Parse(data["Range"]);
+
+        isOnField = false;
     }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Vector3 mousePosition
+          = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
+        this.transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
+    }
+
+    //private void OnMouseDrag()
+    //{
+    //    Vector3 mousePosition
+    //        = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
+    //    this.transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
+    //
+    //}
 }

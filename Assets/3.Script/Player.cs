@@ -11,10 +11,12 @@ public class Player : MonoBehaviour
     [SerializeField] private Text goldText;
     [SerializeField] private Text expText;
     [SerializeField] private Slider expSlider;
-
-    [SerializeField] private ShopManager shop;
+    [Header("Object")]
     [SerializeField] private Info info;
-    [SerializeField] private Transform waitingSeat;
+    [SerializeField] private ShopManager shop;
+    [SerializeField] private UnitManager unitManager;
+
+    public event Action OnLevelUp;
 
     private int level;
     private int gold;
@@ -22,8 +24,6 @@ public class Player : MonoBehaviour
     private int curExp;
     private int[] maxExpList = { 2, 4, 6, 10, 20, 36, 48, 76 };
 
-    private List<GameObject> unitList;
-    public event Action OnLevelUp;
     public int Level
     {
         get { return level; }
@@ -48,8 +48,7 @@ public class Player : MonoBehaviour
     {
         Level = 1;
         curExp = 0;
-        Gold = 1000;
-        unitList = new List<GameObject>();
+        Gold = 100;
     }
     public void PayCost(int cost)
     {
@@ -98,8 +97,7 @@ public class Player : MonoBehaviour
     public void PurchaseUnit(int n, GameObject unit, int cost)
     {
         Gold -= cost;
-        unitList.Add(unit);
-        unit.transform.parent = waitingSeat;
+        unitManager.PlaceWaitingUnit(unit);
         unit.SetActive(true);
         unit.GetComponent<Unit>().InitData(info.unitData[n]);
     }

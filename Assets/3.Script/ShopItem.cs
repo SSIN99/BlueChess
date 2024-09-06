@@ -19,6 +19,7 @@ public class ShopItem : MonoBehaviour
     [Header("External Class")]
     [SerializeField] private Info info;
     [SerializeField] private Player player;
+    [SerializeField] private UnitManager unitManager;
 
     private int cost;
     private GameObject unit;
@@ -34,8 +35,6 @@ public class ShopItem : MonoBehaviour
 
     public void SetItemInfo(int n)
     {
-        if (no.Equals(n)) return;
-
         no = n;
         unit = info.unitPool[n].Dequeue();
         Debug.Log($"{n}Ãâ·Â {info.unitPool[n].Count}");
@@ -51,10 +50,10 @@ public class ShopItem : MonoBehaviour
         classText.text = info.traitData[int.Parse(info.unitData[n]["Class"])]["Name"];
 
     }
-
     public void OnClicked()
     {
-        if(player.Gold < cost)
+        if(player.Gold < cost ||
+            unitManager.numOfWaitingUnit >= 8)
         {
             return;
         }

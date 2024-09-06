@@ -745,19 +745,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b6dac67b950b845881380e693a5467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn: {fileID: 8762950586236012813}
   border: {fileID: 6747387889086357816}
   memorial: {fileID: 8829768650869726059}
   originIcon: {fileID: 8762950585119999547}
   classIcon: {fileID: 8762950586717453328}
-  disableImage: {fileID: 0}
   nameText: {fileID: 6478117721370266225}
   costText: {fileID: 5399460533469888929}
   originText: {fileID: 8250165954954902757}
   classText: {fileID: 604548577722213410}
   info: {fileID: 0}
   player: {fileID: 0}
-  unitNo: 0
+  unitManager: {fileID: 0}
+  no: -1
 --- !u!1 &8762950586272310481
 GameObject:
   m_ObjectHideFlags: 0
