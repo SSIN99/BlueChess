@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
-    [SerializeField] private Tile[] waitingSeat;
-    public int numOfWaitingUnit = 0;
+    [SerializeField] private Info info;
+    [SerializeField] private Tile[] benchTile;
+    public int numOfBench = 0;
+    private Unit unit;
 
-    public void PlaceWaitingUnit(GameObject unit)
+    public void PlaceBenchUnit(int n, GameObject u)
     {
-        for (int i = 0; i < waitingSeat.Length; i++)
+        u.transform.parent = transform;
+        u.SetActive(true);
+        unit = u.GetComponent<Unit>();
+        for (int i = 0; i < benchTile.Length; i++)
         {
-            if (waitingSeat[i].isEmpty)
+            if (benchTile[i].isEmpty)
             {
-                unit.transform.position = waitingSeat[i].pos;
-                waitingSeat[i].isEmpty = false;
-                numOfWaitingUnit++;
+                unit.SetTile(benchTile[i]);
+                unit.InitData(info.unitData[n]);
+
+                benchTile[i].isEmpty = false;
+                numOfBench++;
                 break;
             }
         }

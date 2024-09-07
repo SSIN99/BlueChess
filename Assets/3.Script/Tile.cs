@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Type
+{
+    Bench,
+    Field
+}
+
 public class Tile : MonoBehaviour
 {
-    public enum Type {
-        Waiting,
-        Field
-    }
-
     public Type type;
     public Vector3 pos;
-    public Vector3 offset;
     public bool isEmpty;
+    public Unit unit;
 
     private void Start()
     {
-        pos = transform.position + offset;
+        pos = transform.position;
+        pos.y += 0.2f;
         isEmpty = true;
     }
 }

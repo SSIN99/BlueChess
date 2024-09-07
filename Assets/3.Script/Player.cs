@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Text expText;
     [SerializeField] private Slider expSlider;
     [Header("Object")]
-    [SerializeField] private Info info;
     [SerializeField] private ShopManager shop;
     [SerializeField] private UnitManager unitManager;
 
@@ -72,11 +71,7 @@ public class Player : MonoBehaviour
     }
     public void PurchaseExp()
     {
-        if(level.Equals(9))
-        {
-            Debug.Log("최대 레벨");
-            return;
-        }
+        if(level.Equals(9)) return;
 
         if (gold >= 4)
         {
@@ -94,11 +89,15 @@ public class Player : MonoBehaviour
             }
         }
     }
-    public void PurchaseUnit(int n, GameObject unit, int cost)
+    public void PurchaseUnit(int no, GameObject unit, int cost)
     {
+        if (gold < cost ||
+            unitManager.numOfBench >= 8)
+        {
+            return;
+        }
+
         Gold -= cost;
-        unitManager.PlaceWaitingUnit(unit);
-        unit.SetActive(true);
-        unit.GetComponent<Unit>().InitData(info.unitData[n]);
+        unitManager.PlaceBenchUnit(no, unit);
     }
 }

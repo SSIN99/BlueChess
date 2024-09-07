@@ -19,7 +19,6 @@ public class ShopItem : MonoBehaviour
     [Header("External Class")]
     [SerializeField] private Info info;
     [SerializeField] private Player player;
-    [SerializeField] private UnitManager unitManager;
 
     private int cost;
     private GameObject unit;
@@ -52,11 +51,6 @@ public class ShopItem : MonoBehaviour
     }
     public void OnClicked()
     {
-        if(player.Gold < cost ||
-            unitManager.numOfWaitingUnit >= 8)
-        {
-            return;
-        }
         player.PurchaseUnit(no, unit, cost);
         gameObject.SetActive(false);
     }

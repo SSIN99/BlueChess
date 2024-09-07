@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Unit : MonoBehaviour, IDragHandler 
+public class Unit : MonoBehaviour
 {
+    #region Info
     [Header("Unit Info")]
     [SerializeField] private string no;
     [SerializeField] private string unitName;
@@ -23,8 +24,15 @@ public class Unit : MonoBehaviour, IDragHandler
     [SerializeField] private int Resistance;
     [SerializeField] private int AS;
     [SerializeField] private int Range;
+    #endregion
 
+    [SerializeField]
     private bool isOnField;
+    private Tile curTile;
+    private Tile targetTile;
+    private RaycastHit hit;
+    private Ray ray;
+    [SerializeField] private LayerMask layer;
     
     public void InitData(Dictionary<string, string> data)
     {
@@ -48,19 +56,57 @@ public class Unit : MonoBehaviour, IDragHandler
 
         isOnField = false;
     }
-
-    public void OnDrag(PointerEventData eventData)
+    
+    public void SetTile(Tile tile)
     {
-        Vector3 mousePosition
-          = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
-        this.transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
+        if(curTile != null)
+        {
+            curTile.isEmpty = true;
+            curTile.unit = null;
+        }
+        if (!tile.isEmpty)
+        {
+            tile.unit.SetTile(curTile);
+        }
+        transform.position = tile.pos;
+        curTile = tile;
+        curTile.unit = this;
+        curTile.isEmpty = false;
+        if (curTile.type.Equals(Type.Field))
+        {
+            isOnField = true;
+        }
+        else
+        {
+            isOnField = false;
+        }
     }
+    private void OnMouseDrag()
+    {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-    //private void OnMouseDrag()
-    //{
-    //    Vector3 mousePosition
-    //        = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
-    //    this.transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
-    //
-    //}
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
+        {
+            targetTile = hit.transform.GetComponent<Tile>();
+            transform.position = targetTile.pos;
+        }
+        else
+        {
+            targetTile = null;
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+            plane.Raycast(ray, out float range);
+            transform.position = ray.GetPoint(range);
+        }
+    }
+    private void OnMouseUp()
+    {
+        if (targetTile == null)
+        {
+            transform.position = curTile.pos;
+        }
+        else
+        {
+            SetTile(targetTile);
+        }
+    }
 }
