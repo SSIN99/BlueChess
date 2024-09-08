@@ -3590,6 +3590,7 @@ GameObject:
   - component: {fileID: 7302735030876624376}
   - component: {fileID: -3472184680485686351}
   - component: {fileID: 4857866465727724462}
+  - component: {fileID: 4318628572635469342}
   m_Layer: 7
   m_Name: Unit_53
   m_TagString: Untagged
@@ -3641,7 +3642,6 @@ MonoBehaviour:
   AS: 0
   Range: 0
   isOnField: 0
-  curTile: {fileID: 0}
   layer:
     serializedVersion: 2
     m_Bits: 256
@@ -3658,6 +3658,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1.5, z: 0.5}
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &4318628572635469342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7931778464515067714}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 2.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &7950103092074638184
 GameObject:
   m_ObjectHideFlags: 0

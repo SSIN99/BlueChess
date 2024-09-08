@@ -26,14 +26,24 @@ public class Unit : MonoBehaviour
     [SerializeField] private int Range;
     #endregion
 
-    [SerializeField]
+
     private bool isOnField;
+    [SerializeField]
+    private GameObject tileLine;
     private Tile curTile;
     private Tile targetTile;
+    private MonoBehaviour outline;
+    private BoxCollider col;
     private RaycastHit hit;
     private Ray ray;
     [SerializeField] private LayerMask layer;
-    
+
+    private void OnEnable()
+    {
+        tileLine = GameObject.FindGameObjectWithTag("Map").transform.GetChild(1).gameObject;
+        col = GetComponent<BoxCollider>();
+        outline = GetComponent<Outline>();
+    }
     public void InitData(Dictionary<string, string> data)
     {
         no = data["No"];
@@ -56,7 +66,6 @@ public class Unit : MonoBehaviour
 
         isOnField = false;
     }
-    
     public void SetTile(Tile tile)
     {
         if(curTile != null)
@@ -68,7 +77,7 @@ public class Unit : MonoBehaviour
         {
             tile.unit.SetTile(curTile);
         }
-        transform.position = tile.pos;
+        transform.position = tile.transform.position;
         curTile = tile;
         curTile.unit = this;
         curTile.isEmpty = false;
@@ -83,23 +92,27 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDrag()
     {
+        col.enabled = false;
+        tileLine.SetActive(true);
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
         {
             targetTile = hit.transform.GetComponent<Tile>();
-            transform.position = targetTile.pos;
         }
         else
         {
             targetTile = null;
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-            plane.Raycast(ray, out float range);
-            transform.position = ray.GetPoint(range);
         }
+        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        plane.Raycast(ray, out float range);
+        Vector3 pos = ray.GetPoint(range);
+        pos.y += 0.5f;
+        transform.position = pos;
     }
     private void OnMouseUp()
     {
+        col.enabled = true;
+        tileLine.SetActive(false);
         if (targetTile == null)
         {
             transform.position = curTile.pos;
@@ -108,5 +121,15 @@ public class Unit : MonoBehaviour
         {
             SetTile(targetTile);
         }
+    }
+    private void OnMouseEnter()
+    {
+        if (!outline.enabled)
+            outline.enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        if (outline.enabled)
+            outline.enabled = false;
     }
 }

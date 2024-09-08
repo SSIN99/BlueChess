@@ -7,13 +7,14 @@ public class UnitManager : MonoBehaviour
     [SerializeField] private Info info;
     [SerializeField] private Tile[] benchTile;
     public int numOfBench = 0;
-    private Unit unit;
+    private List<Unit> unitList = new List<Unit>();
 
     public void PlaceBenchUnit(int n, GameObject u)
     {
         u.transform.parent = transform;
         u.SetActive(true);
-        unit = u.GetComponent<Unit>();
+        Unit unit = u.GetComponent<Unit>();
+        unitList.Add(unit);
         for (int i = 0; i < benchTile.Length; i++)
         {
             if (benchTile[i].isEmpty)

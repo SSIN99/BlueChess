@@ -91,12 +91,6 @@ public class Player : MonoBehaviour
     }
     public void PurchaseUnit(int no, GameObject unit, int cost)
     {
-        if (gold < cost ||
-            unitManager.numOfBench >= 8)
-        {
-            return;
-        }
-
         Gold -= cost;
         unitManager.PlaceBenchUnit(no, unit);
     }
