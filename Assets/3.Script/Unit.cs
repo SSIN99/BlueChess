@@ -57,8 +57,9 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnEnable()
     {
-        dragHandler = GameObject.FindGameObjectWithTag("Player").GetComponent<DragHandler>();
-        unitManager = GameObject.FindGameObjectWithTag("Player").GetComponent<UnitManager>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        dragHandler = player.GetComponent<DragHandler>();
+        unitManager = player.GetComponent<UnitManager>();
         outline = GetComponent<Outline>();
     }
     public void InitData(Dictionary<string, string> data)
@@ -72,14 +73,10 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             curTile.isEmpty = true;
             curTile.unit = null;
         }
-        if (!tagetTile.isEmpty)
-        {
-            tagetTile.unit.SetTile(curTile);
-        }
-        transform.position = tagetTile.transform.position;
         curTile = tagetTile;
         curTile.unit = this;
         curTile.isEmpty = false;
+        transform.position = curTile.transform.position;
         if (curTile.type.Equals(Type.Field))
         {
             isOnField = true;
@@ -88,13 +85,30 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         {
             isOnField = false;
         }
-        unitManager.CheckBench();
+        unitManager.CheckUnitList();
+    }
+    public void ShiftTile(Tile targetTile)
+    {
+        targetTile.unit.SetTile(curTile);
+        curTile = targetTile;
+        curTile.unit = this;
+        curTile.isEmpty = false;
+        transform.position = curTile.transform.position;
+        if (curTile.type.Equals(Type.Field))
+        {
+            isOnField = true;
+        }
+        else
+        {
+            isOnField = false;
+        }
     }
     public void BeSold()
     {
         curTile.isEmpty = true;
         curTile.unit = null;
         curTile = null;
+        unitManager.CheckUnitList();
         dragHandler.EndDrag();
     }
 
@@ -139,9 +153,26 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
         else
         {
-            SetTile(targetTile);
+            if (!targetTile.isEmpty)
+            {
+                ShiftTile(targetTile);
+            }
+            else
+            {
+                if (unitManager.numOfField.Equals(unitManager.maxNumOfField))
+                {
+                    transform.position = curTile.pos;
+                    Debug.Log("²ËÃ¡¾î");
+                }
+                else
+                {
+                    SetTile(targetTile);
+                }
+            }
         }
         dragHandler.EndDrag();
     }
     #endregion
+
+
 }
