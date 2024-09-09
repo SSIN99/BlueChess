@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     {
         Level = 1;
         curExp = 0;
-        Gold = 100;
+        Gold = 999;
     }
     public void PayCost(int cost)
     {
@@ -92,6 +92,11 @@ public class Player : MonoBehaviour
     public void PurchaseUnit(int no, GameObject unit, int cost)
     {
         Gold -= cost;
-        unitManager.PlaceBenchUnit(no, unit);
+        unitManager.AddUnit(no, unit);
+    }
+    public void SellUnit(Unit unit)
+    {
+        Gold += unit.info.cost;
+        unitManager.RemoveUnit(unit);
     }
 }

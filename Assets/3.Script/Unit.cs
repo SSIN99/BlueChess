@@ -1,84 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    #region Info
-    [Header("Unit Info")]
-    [SerializeField] private string no;
-    [SerializeField] private string unitName;
-    [SerializeField] private int origin;
-    [SerializeField] private int jobClass;
-    [SerializeField] private int cost;
-    [Header("Unit Stat")]
-    [SerializeField] private int maxHealth;
-    [SerializeField] private int curHealth;
-    [SerializeField] private int maxMP;
-    [SerializeField] private int startMP;
-    [SerializeField] private int curMP;
-    [SerializeField] private int AD;
-    [SerializeField] private int AP;
-    [SerializeField] private int Armor;
-    [SerializeField] private int Resistance;
-    [SerializeField] private int AS;
-    [SerializeField] private int Range;
-    #endregion
+    public class UnitInfo
+    {
+        public int no;
+        public string unitName;
+        public int origin;
+        public int jobClass;
+        public int cost;
+        public int maxHealth;
+        public int curHealth;
+        public int maxMP;
+        public int startMP;
+        public int curMP;
+        public int AD;
+        public int AP;
+        public int Armor;
+        public int Resistance;
+        public int AS;
+        public int Range;
+        public void SetInfo(Dictionary<string, string> data)
+        {
+            no = int.Parse(data["No"]);
+            unitName = data["Name"];
+            origin = int.Parse(data["Origin"]);
+            jobClass = int.Parse(data["Class"]);
+            cost = int.Parse(data["Cost"]);
+            maxHealth = int.Parse(data["Health"]);
+            curHealth = maxHealth;
+            maxMP = int.Parse(data["MaxMP"]);
+            startMP = int.Parse(data["StartMP"]);
+            curMP = startMP;
+            AD = int.Parse(data["AD"]);
+            AP = int.Parse(data["AP"]);
+            Armor = int.Parse(data["Armor"]);
+            Resistance = int.Parse(data["Resistance"]);
+            AS = int.Parse(data["AS"]);
+            Range = int.Parse(data["Range"]);
+        }
+    }
 
-
-    private bool isOnField;
-    [SerializeField]
-    private GameObject tileLine;
+    public UnitInfo info = new UnitInfo();
     private Tile curTile;
     private Tile targetTile;
     private MonoBehaviour outline;
-    private BoxCollider col;
-    private RaycastHit hit;
-    private Ray ray;
-    [SerializeField] private LayerMask layer;
+    private DragHandler dragHandler;
+    private UnitManager unitManager;
 
-    private void OnEnable()
+    public bool isOnField = false;
+
+    public void OnEnable()
     {
-        tileLine = GameObject.FindGameObjectWithTag("Map").transform.GetChild(1).gameObject;
-        col = GetComponent<BoxCollider>();
+        dragHandler = GameObject.FindGameObjectWithTag("Player").GetComponent<DragHandler>();
+        unitManager = GameObject.FindGameObjectWithTag("Player").GetComponent<UnitManager>();
         outline = GetComponent<Outline>();
     }
     public void InitData(Dictionary<string, string> data)
     {
-        no = data["No"];
-        unitName = data["Name"];
-        origin = int.Parse(data["Origin"]);
-        jobClass = int.Parse(data["Class"]);
-        cost = int.Parse(data["Cost"]);
-
-        maxHealth = int.Parse(data["Health"]);
-        curHealth = maxHealth;
-        maxMP = int.Parse(data["MaxMP"]);
-        startMP = int.Parse(data["StartMP"]);
-        curMP = startMP;
-        AD = int.Parse(data["AD"]);
-        AP = int.Parse(data["AP"]);
-        Armor = int.Parse(data["Armor"]);
-        Resistance = int.Parse(data["Resistance"]);
-        AS = int.Parse(data["AS"]);
-        Range = int.Parse(data["Range"]);
-
-        isOnField = false;
+        info.SetInfo(data);
     }
-    public void SetTile(Tile tile)
+    public void SetTile(Tile tagetTile)
     {
         if(curTile != null)
         {
             curTile.isEmpty = true;
             curTile.unit = null;
         }
-        if (!tile.isEmpty)
+        if (!tagetTile.isEmpty)
         {
-            tile.unit.SetTile(curTile);
+            tagetTile.unit.SetTile(curTile);
         }
-        transform.position = tile.transform.position;
-        curTile = tile;
+        transform.position = tagetTile.transform.position;
+        curTile = tagetTile;
         curTile.unit = this;
         curTile.isEmpty = false;
         if (curTile.type.Equals(Type.Field))
@@ -89,30 +88,51 @@ public class Unit : MonoBehaviour
         {
             isOnField = false;
         }
+        unitManager.CheckBench();
     }
-    private void OnMouseDrag()
+    public void BeSold()
     {
-        col.enabled = false;
-        tileLine.SetActive(true);
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity, layer))
-        {
-            targetTile = hit.transform.GetComponent<Tile>();
-        }
-        else
+        curTile.isEmpty = true;
+        curTile.unit = null;
+        curTile = null;
+        dragHandler.EndDrag();
+    }
+
+    #region MouseEvent
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (outline.enabled)
+            outline.enabled = false;
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!outline.enabled)
+            outline.enabled = true;
+    }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        dragHandler.StartDrag(info.cost);
+    }
+    public void OnDrag(PointerEventData eventData)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        plane.Raycast(ray, out float distnace);
+        Vector3 pos = ray.GetPoint(distnace);
+        pos.y += 0.5f;
+        transform.position = pos;
+        if(eventData.pointerEnter == null)
         {
             targetTile = null;
         }
-        Plane plane = new Plane(Vector3.up, Vector3.zero);
-        plane.Raycast(ray, out float range);
-        Vector3 pos = ray.GetPoint(range);
-        pos.y += 0.5f;
-        transform.position = pos;
+        else
+        {
+            targetTile = eventData.pointerEnter.GetComponent<Tile>();
+        }
     }
-    private void OnMouseUp()
+    public void OnEndDrag(PointerEventData eventData)
     {
-        col.enabled = true;
-        tileLine.SetActive(false);
+        
         if (targetTile == null)
         {
             transform.position = curTile.pos;
@@ -121,15 +141,7 @@ public class Unit : MonoBehaviour
         {
             SetTile(targetTile);
         }
+        dragHandler.EndDrag();
     }
-    private void OnMouseEnter()
-    {
-        if (!outline.enabled)
-            outline.enabled = true;
-    }
-    private void OnMouseExit()
-    {
-        if (outline.enabled)
-            outline.enabled = false;
-    }
+    #endregion
 }

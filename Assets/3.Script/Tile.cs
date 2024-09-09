@@ -8,7 +8,7 @@ public enum Type
     Field
 }
 
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Type type;
     public Vector3 pos;
@@ -25,16 +25,18 @@ public class Tile : MonoBehaviour
         pos = transform.position;
     }
 
-    private void OnMouseEnter()
-    {
-        rend.material.color = new Color(0, 0.9f, 0.3f);
-    }
-    private void OnMouseExit()
-    {
-        rend.material.color = defaultColor;
-    }
     private void OnDisable()
     {
         rend.material.color = defaultColor;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        rend.material.color = defaultColor;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        rend.material.color = new Color(0, 0.9f, 0.3f);
     }
 }

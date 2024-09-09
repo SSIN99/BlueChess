@@ -14,7 +14,6 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Sprite[] lockSprite;
 
     private WeightedRandomPicker<int> unitPool;
-    private int poolCount = 0;
     private bool isLocked = false;
 
     private void OnEnable()
@@ -39,42 +38,50 @@ public class ShopManager : MonoBehaviour
         switch (player.Level)
         {
             case 1:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio1"]); i++)
+                for (int i = 0; i < info.unitData.Count; i++)
                 {
-                    unitPool.Add(i + poolCount, 1);
+                    if (int.Parse(info.unitData[i]["Cost"]).Equals(1))
+                    {
+                        unitPool.Add(i, 1);
+                    }
                 }
                 break;
             case 3:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio2"]); i++)
+                for (int i = 0; i < info.unitData.Count; i++)
                 {
-                    unitPool.Add(i + poolCount, 1);
-                }
-                poolCount = unitPool.GetCount();
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio3"]); i++)
-                {
-                    unitPool.Add(i + poolCount, 1);
+                    if (int.Parse(info.unitData[i]["Cost"]).Equals(2) ||
+                        int.Parse(info.unitData[i]["Cost"]).Equals(3))
+                    {
+                        unitPool.Add(i, 1);
+                    }
                 }
                 break;
             case 5:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio4"]); i++)
+                for (int i = 0; i < info.unitData.Count; i++)
                 {
-                    unitPool.Add(i + poolCount, 1);
+                    if (int.Parse(info.unitData[i]["Cost"]).Equals(4))
+                    {
+                        unitPool.Add(i, 1);
+                    }
                 }
                 break;
             case 7:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio5"]); i++)
+                for (int i = 0; i < info.unitData.Count; i++)
                 {
-                    unitPool.Add(i + poolCount, 1);
+                    if (int.Parse(info.unitData[i]["Cost"]).Equals(5))
+                    {
+                        unitPool.Add(i, 1);
+                    }
                 }
                 break;
             default:
                 return;
         }
-        poolCount = unitPool.GetCount();
     }
     private void UpdateWeightPool()
     {
-        for (int i = 0; i < poolCount; i++)
+        int unitCount = unitPool.GetCount(); 
+        for (int i = 0; i < unitCount; i++)
         {
             switch (int.Parse(info.unitData[i]["Cost"]))
             {
