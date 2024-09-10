@@ -157,6 +157,8 @@ public class WeightedRandomPicker<T>
         double current = 0.0;
         foreach (var pair in itemWeightDict)
         {
+            if (pair.Value.Equals(0))
+                continue;
             current += pair.Value;
 
             if (randomValue < current)
