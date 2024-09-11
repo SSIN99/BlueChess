@@ -104,6 +104,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     }
     public void OnDrag(PointerEventData eventData)
     {
+        if (round.IsBattleStep && isOnField) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         plane.Raycast(ray, out float distnace);

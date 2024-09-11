@@ -96,7 +96,52 @@ ModelImporter:
   - first:
       74: -3696131802240705272
     second: CH0225_Vital_Retreat
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Body
+    second: {fileID: 2100000, guid: 1629535b0b7d510459fda423d24014b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_EyeMouth
+    second: {fileID: 2100000, guid: d8c2dd1762b331e49b0c82ec162f6754, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Eyebrow
+    second: {fileID: 2100000, guid: baef8c9174ec8c247a37038730a688c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Face
+    second: {fileID: 2100000, guid: 070e2e60a28272e428443a9106a3c8d1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Hair
+    second: {fileID: 2100000, guid: f527f9d2c84a5554699dab45f953988c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Halo
+    second: {fileID: 2100000, guid: 2a8fa47682378b640a082f0cc9204403, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Item
+    second: {fileID: 2100000, guid: e18f7e64a29f07343a921703fb97d3f6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Prop
+    second: {fileID: 2100000, guid: 4f3db9de3e2bd9143a67a9a2ca97c9fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0225_Weapon
+    second: {fileID: 2100000, guid: 6b36b31574eb323459388558a5eb1a35, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

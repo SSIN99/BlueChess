@@ -50,11 +50,11 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7984102561635161869, guid: 89fe9feb57db9da49b8860d2ba9e0cb3, type: 3}
-  - {fileID: 2233747726044204101, guid: 89fe9feb57db9da49b8860d2ba9e0cb3, type: 3}
-  - {fileID: 1313047863519433699, guid: 89fe9feb57db9da49b8860d2ba9e0cb3, type: 3}
-  - {fileID: 1672940054178072567, guid: 89fe9feb57db9da49b8860d2ba9e0cb3, type: 3}
-  - {fileID: 6749188373990865986, guid: 89fe9feb57db9da49b8860d2ba9e0cb3, type: 3}
+  - {fileID: 2100000, guid: d43fb9c021694fc439d6994f3289ca3d, type: 2}
+  - {fileID: 2100000, guid: 886869ddcffee3144b89994a8923dc98, type: 2}
+  - {fileID: 2100000, guid: 679b27b384837eb45967f1f5a0c8ef1b, type: 2}
+  - {fileID: 2100000, guid: 6615385d9e5cd26498d7667305ba44a0, type: 2}
+  - {fileID: 2100000, guid: d1aa221621aebd64e9aee89d6281fade, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -507,7 +507,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6025349675821531266, guid: 89fe9feb57db9da49b8860d2ba9e0cb3, type: 3}
+  - {fileID: 2100000, guid: c706ef7d832f8d149b488b4f0b985df1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1704,7 +1704,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6741407525832350154, guid: 89fe9feb57db9da49b8860d2ba9e0cb3, type: 3}
+  - {fileID: 2100000, guid: 0526d53ea8e2ed44caa484abd64f8deb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2975,11 +2975,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3258d95b18c5cd54298dbc7f1a4d1f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  no: 
-  unitName: 
-  origin: 0
-  jobClass: 0
-  cost: 0
+  No: 0
+  Name: 
+  Origin: 0
+  Class: 0
+  Cost: 0
   maxHealth: 0
   curHealth: 0
   maxMP: 0
@@ -2991,10 +2991,7 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  targetTile: {fileID: 0}
-  layer:
-    serializedVersion: 2
-    m_Bits: 256
+  isOnField: 0
 --- !u!65 &2287524453600513141
 BoxCollider:
   m_ObjectHideFlags: 0

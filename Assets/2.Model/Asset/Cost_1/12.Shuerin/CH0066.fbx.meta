@@ -90,7 +90,32 @@ ModelImporter:
   - first:
       74: -7928487848788701411
     second: CH0066_Vital_Retreat
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0066_Hair
+    second: {fileID: 2100000, guid: 70124272964de2245bed3ddafbe3492a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch0066_Body
+    second: {fileID: 2100000, guid: ad776a9fb4b7474458b098504d544517, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch0066_EyeMouth
+    second: {fileID: 2100000, guid: a304b908d73cce84e9a2b5aedc357c48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch0066_Eyebrow
+    second: {fileID: 2100000, guid: 0cdd86482c3840941ad6960c73897a46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ch0066_Face
+    second: {fileID: 2100000, guid: a9eb83bb115525d43ac90691baa02cd4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

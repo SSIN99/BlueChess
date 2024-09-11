@@ -18,7 +18,47 @@ ModelImporter:
   - first:
       74: -4060943261419681673
     second: CH0170_Tactical_Start
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_Body
+    second: {fileID: 2100000, guid: 8aedac58286164d45964a6ade2a0515b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_EyeMouth
+    second: {fileID: 2100000, guid: 50d9a50ce2f28884fa92d60e9b72b5e2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_Eyebrow
+    second: {fileID: 2100000, guid: abb6417478adf36458b176031509a93d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_Face
+    second: {fileID: 2100000, guid: 4238b8f2925e305418e2ecc7224563d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_Hair
+    second: {fileID: 2100000, guid: f0903ef134b677c44acac3da7b68168a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_Halo
+    second: {fileID: 2100000, guid: 8624d7ecaa332b7469e796c6050a6f38, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_SkillProp
+    second: {fileID: 2100000, guid: 81a01f274ec1a1943aca4d7cd9c658f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CH0170_Weapon
+    second: {fileID: 2100000, guid: 58db48130bf67a346a4de5f3876b099d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

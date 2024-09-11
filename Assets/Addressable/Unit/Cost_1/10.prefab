@@ -30,7 +30,6 @@ Transform:
   m_Children:
   - {fileID: 8210537285120646455}
   - {fileID: 2576256712067452449}
-  - {fileID: 6655746012991761781}
   - {fileID: 1261486443257344667}
   - {fileID: 1332512521472136731}
   m_Father: {fileID: 133158519847770253}
@@ -351,11 +350,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3258d95b18c5cd54298dbc7f1a4d1f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  no: 
-  unitName: 
-  origin: 0
-  jobClass: 0
-  cost: 0
+  No: 0
+  Name: 
+  Origin: 0
+  Class: 0
+  Cost: 0
   maxHealth: 0
   curHealth: 0
   maxMP: 0
@@ -367,10 +366,7 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  targetTile: {fileID: 0}
-  layer:
-    serializedVersion: 2
-    m_Bits: 256
+  isOnField: 0
 --- !u!65 &-3503195320983808013
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1048,13 +1044,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2452176490257972914}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.010299999, z: -0.002}
+  m_LocalRotation: {x: 0.5494329, y: -0.44916525, z: -0.4956446, w: -0.5007101}
+  m_LocalPosition: {x: -0.003924991, y: -0.0017902054, z: -0.00033033467}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7404872621543534652}
-  m_Father: {fileID: 834614833121493847}
-  m_RootOrder: 2
+  m_Father: {fileID: 4057965166151736379}
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2740029577391176665
 GameObject:
@@ -2221,7 +2217,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 834614833121493847}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6519754394930463416
 SkinnedMeshRenderer:
@@ -2242,7 +2238,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1577607587841078127, guid: 00bd2267bd4115543b67a5510ff21f6f, type: 3}
+  - {fileID: 2100000, guid: 7f7af0aa4894ba24085ad0cce1fe41f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2319,6 +2315,7 @@ Transform:
   - {fileID: 2445690672022335000}
   - {fileID: 3476304073007217551}
   - {fileID: 4490202117484253503}
+  - {fileID: 6655746012991761781}
   m_Father: {fileID: 2294649538516372752}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2750,7 +2747,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 834614833121493847}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1842302112383361876
 SkinnedMeshRenderer:
@@ -2771,11 +2768,11 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6834925675948562451, guid: 00bd2267bd4115543b67a5510ff21f6f, type: 3}
-  - {fileID: -3709758185113133745, guid: 00bd2267bd4115543b67a5510ff21f6f, type: 3}
-  - {fileID: -4003938299885918716, guid: 00bd2267bd4115543b67a5510ff21f6f, type: 3}
-  - {fileID: -5890871545131952616, guid: 00bd2267bd4115543b67a5510ff21f6f, type: 3}
-  - {fileID: 6018140357849997782, guid: 00bd2267bd4115543b67a5510ff21f6f, type: 3}
+  - {fileID: 2100000, guid: cada04abec5bada4e8ec515e071adbd9, type: 2}
+  - {fileID: 2100000, guid: a314ee4dd77206d4791c506a7b1a9c54, type: 2}
+  - {fileID: 2100000, guid: cada04abec5bada4e8ec515e071adbd9, type: 2}
+  - {fileID: 2100000, guid: cc2fc71106ca2c04f9313348c65195e2, type: 2}
+  - {fileID: 2100000, guid: 80565bead8f8714488adfcbe17321ed9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3153,7 +3150,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8798117850508495676, guid: 00bd2267bd4115543b67a5510ff21f6f, type: 3}
+  - {fileID: 2100000, guid: ce7a5bb588d93ee44962430b843154d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
