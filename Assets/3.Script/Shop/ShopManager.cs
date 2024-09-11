@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     [SerializeField] private Info info;
-    [SerializeField] private UnitManager unitManager;
+    [SerializeField] private Player player;
     [SerializeField] private ShopItem[] itemList;
 
     [SerializeField] private Text[] ratioText;
@@ -19,21 +19,21 @@ public class ShopManager : MonoBehaviour
     private void OnEnable()
     {
         unitPool = new WeightedRandomPicker<int>();
-        unitManager.OnLevelUp += AddUnitPool;
-        unitManager.OnLevelUp += UpdateWeightPool;
-        unitManager.OnLevelUp += SetRatio;
+        player.OnLevelUp += AddUnitPool;
+        player.OnLevelUp += UpdateWeightPool;
+        player.OnLevelUp += SetRatio;
     }
     private void SetRatio() 
     {
         for(int i = 0; i< ratioText.Length; i++)
         {
-            ratioText[i].text = $"{info.ratioData[unitManager.Level][$"Ratio{i + 1}"]}%";
+            ratioText[i].text = $"{info.ratioData[player.Level][$"Ratio{i + 1}"]}%";
         }
     }
     private void AddUnitPool()
     {
         int count = unitPool.GetCount();
-        switch (unitManager.Level)
+        switch (player.Level)
         {
             
             case 1:
@@ -78,19 +78,19 @@ public class ShopManager : MonoBehaviour
             switch (int.Parse(info.unitData[i]["Cost"]))
             {
                 case 1:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[unitManager.Level]["Wei1"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei1"]));
                     break;
                 case 2:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[unitManager.Level]["Wei2"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei2"]));
                     break;
                 case 3:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[unitManager.Level]["Wei3"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei3"]));
                     break;
                 case 4:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[unitManager.Level]["Wei4"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei4"]));
                     break;
                 case 5:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[unitManager.Level]["Wei5"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei5"]));
                     break;
             }
         }
@@ -135,8 +135,8 @@ public class ShopManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        unitManager.OnLevelUp -= AddUnitPool;
-        unitManager.OnLevelUp -= UpdateWeightPool;
-        unitManager.OnLevelUp -= SetRatio;
+        player.OnLevelUp -= AddUnitPool;
+        player.OnLevelUp -= UpdateWeightPool;
+        player.OnLevelUp -= SetRatio;
     }
 }

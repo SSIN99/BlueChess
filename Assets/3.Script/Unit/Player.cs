@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UnitManager : MonoBehaviour
+public class Player : MonoBehaviour
 {
     #region UIº¯¼ö
     [SerializeField] private Text levelText;
@@ -71,6 +71,7 @@ public class UnitManager : MonoBehaviour
             expText.text = $"{curExp}/{maxExp}";
         }
         fieldText.text = $"{numOfField} / {level}";
+        fieldText.color = new Color(0.35f, 0.75f, 1);
     }
     public void PurchaseExp()
     {
@@ -148,14 +149,7 @@ public class UnitManager : MonoBehaviour
             }
         }
         fieldText.text = $"{numOfField} / {level}";
-        if (numOfField.Equals(level))
-        {
-            fieldText.color = Color.red;
-        }
-        else
-        {
-            fieldText.color = new Color(0.35f, 0.75f, 1);
-        }
+        fieldText.color = isFullField ? Color.red : new Color(0.35f, 0.75f, 1);
     }
     #endregion
 

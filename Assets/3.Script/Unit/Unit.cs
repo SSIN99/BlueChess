@@ -29,7 +29,8 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     #region À¯´Ö¹èÄ¡
     private Tile curTile;
     private Tile targetTile;
-    private UnitManager unitManager;
+    private Player player;
+    private RoundManager round;
     private DragHandler dragHandler;
     private MonoBehaviour outline;
     #endregion
@@ -62,6 +63,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         curTile.unit = null;
         curTile = null;
         dragHandler.SetHand(null);
+        player.CheckUnitList();
     }
     public void SetTile(Tile target)
     {
@@ -83,18 +85,21 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         else
         {
             isOnField = false;
-        }   
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        outline.enabled = false;
+        }
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (round.IsBattleStep && isOnField) return;
         outline.enabled = true;
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(outline.enabled)
+            outline.enabled = false;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (round.IsBattleStep && isOnField) return;
         dragHandler.SetHand(eventData.pointerDrag);
     }
     public void OnDrag(PointerEventData eventData)
@@ -105,6 +110,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         Vector3 pos = ray.GetPoint(distnace);
         pos.y += 0.5f;
         transform.position = pos;
+
         if(eventData.pointerEnter == null)
         {
             targetTile = null;
@@ -125,7 +131,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             if(targetTile.type.Equals(Type.Field) &&
                 targetTile.unit == null &&
                 curTile.type.Equals(Type.Bench) &&
-                unitManager.isFullField)
+                player.isFullField)
             {
                 transform.position = curTile.transform.position;
             }
@@ -135,6 +141,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             }
         }
         dragHandler.SetHand(null);
+        player.CheckUnitList();
     }
     #endregion
 
@@ -144,8 +151,9 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     private void Awake()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        this.player = player.GetComponent<Player>();
         dragHandler = player.GetComponent<DragHandler>();
-        unitManager = player.GetComponent<UnitManager>();
+        round = GameObject.FindGameObjectWithTag("Round").GetComponent<RoundManager>();
         outline = GetComponent<Outline>();
     }
 

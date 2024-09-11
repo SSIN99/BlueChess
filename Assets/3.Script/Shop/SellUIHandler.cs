@@ -6,12 +6,12 @@ using UnityEngine.EventSystems;
 
 public class SellUIHandler : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private UnitManager unitManager;
+    [SerializeField] private Player player;
     [SerializeField] private Image image;
 
     public void OnDrop(PointerEventData eventData)
     {
-        unitManager.SellUnit(eventData.pointerDrag.GetComponent<Unit>());
+        player.SellUnit(eventData.pointerDrag.GetComponent<Unit>());
     }
 
     public void OnPointerEnter(PointerEventData eventData)

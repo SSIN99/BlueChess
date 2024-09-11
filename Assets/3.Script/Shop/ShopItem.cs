@@ -26,7 +26,7 @@ public class ShopItem : MonoBehaviour
 
     #region Info
     [SerializeField] private Info info;
-    [SerializeField] private UnitManager unitManager;
+    [SerializeField] private Player player;
     public int no;
     private int cost;
     private Unit unit;
@@ -59,12 +59,12 @@ public class ShopItem : MonoBehaviour
     }
     public void OnClicked()
     {
-        if (unitManager.Gold < cost ||
-            unitManager.isFullBench)
+        if (player.Gold < cost ||
+            player.isFullBench)
         {
             return;
         }
-        unitManager.PurchaseUnit(unit);
+        player.PurchaseUnit(unit);
         gameObject.SetActive(false);
     }
 }
