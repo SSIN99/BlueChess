@@ -29,12 +29,25 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     #region 유닛배치
     private Tile curTile;
     private Tile targetTile;
-    private UnitManager unitManager;
-    private DragHandler dragHandler;
     private MonoBehaviour outline;
+    private DragHandler dragHandler;
+    private UnitManager unitManager;
+    public RoundManager roundManager;
     #endregion
 
-    #region 유닛정보메소드
+    #region 유닛전투
+    public Unit enemyTarget;
+    #endregion
+
+    private void Awake()
+    {
+        dragHandler = GameObject.FindGameObjectWithTag("Drag").GetComponent<DragHandler>();
+        unitManager = dragHandler.unitManager;
+        roundManager = dragHandler.roundManager;
+        outline = GetComponent<MonoBehaviour>();
+    }
+
+    #region 정보메소드
     public void InitInfo(Dictionary<string, string> data)
     {
         No = int.Parse(data["No"]);
@@ -56,7 +69,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     }
     #endregion
 
-    #region 유닛배치메소드
+    #region 배치메소드
     public void BeSold()
     {
         curTile.unit = null;
@@ -76,25 +89,29 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         curTile = target;
         curTile.unit = this;
         transform.position = curTile.transform.position;
-        if (curTile.type.Equals(Type.Field))
+
+        isOnField = curTile.type == Type.Field ? true : false;
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (isOnField &&
+           roundManager.isBattle)
         {
-            isOnField = true;
+            return;
         }
-        else
-        {
-            isOnField = false;
-        }   
+        outline.enabled = true;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         outline.enabled = false;
     }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        outline.enabled = true;
-    }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if(isOnField &&
+            roundManager.isBattle)
+        {
+            return;
+        }
         dragHandler.SetHand(eventData.pointerDrag);
     }
     public void OnDrag(PointerEventData eventData)
@@ -122,7 +139,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
         else
         { 
-            if(targetTile.type.Equals(Type.Field) &&
+            if(targetTile.type == Type.Field &&
                 targetTile.unit == null &&
                 curTile.type.Equals(Type.Bench) &&
                 unitManager.isFullField)
@@ -138,15 +155,12 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     }
     #endregion
 
-
-
-
-    private void Awake()
+    #region 전투메소드
+    public void SetEnemyTarget(Unit target)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        dragHandler = player.GetComponent<DragHandler>();
-        unitManager = player.GetComponent<UnitManager>();
-        outline = GetComponent<Outline>();
+        enemyTarget = target;
     }
 
+
+    #endregion
 }

@@ -68,7 +68,6 @@ public class ShopManager : MonoBehaviour
             default:
                 return;
         }
-        Debug.Log(unitPool.GetCount());
     }
     private void UpdateWeightPool()
     {

@@ -7,8 +7,10 @@ using UnityEngine.EventSystems;
 public class DragHandler : MonoBehaviour
 {
     #region À¯´Ö µå·¡±×
-    [SerializeField] private UnitManager unitManager;
-    [SerializeField] private GameObject tile;
+    public UnitManager unitManager;
+    public RoundManager roundManager;
+    [SerializeField] private GameObject bench;
+    [SerializeField] private GameObject field;
     [SerializeField] private GameObject sellUI;
     [SerializeField] private PhysicsRaycaster raycaster;
     [SerializeField] private Text[] costText;
@@ -44,7 +46,11 @@ public class DragHandler : MonoBehaviour
     {
         if (isDragUnit)
         {
-            tile.SetActive(true);
+            if (!roundManager.isBattle)
+            {
+                field.SetActive(true);
+            }
+            bench.SetActive(true);
             sellUI.SetActive(true);
             LayerMask layerMask = LayerMask.GetMask("Tile");
             raycaster.eventMask = layerMask;
@@ -57,7 +63,8 @@ public class DragHandler : MonoBehaviour
         if (isDragUnit)
         {
             unitManager.CheckUnitList();
-            tile.SetActive(false);
+            field.SetActive(false);
+            bench.SetActive(false);
             sellUI.SetActive(false);
             LayerMask layerMask = LayerMask.GetMask("Unit");
             raycaster.eventMask = layerMask;

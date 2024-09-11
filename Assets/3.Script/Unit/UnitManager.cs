@@ -71,6 +71,14 @@ public class UnitManager : MonoBehaviour
             expText.text = $"{curExp}/{maxExp}";
         }
         fieldText.text = $"{numOfField} / {level}";
+        if (isFullField)
+        {
+            fieldText.color = Color.red;
+        }
+        else
+        {
+            fieldText.color = new Color(0.35f, 0.75f, 1);
+        }
     }
     public void PurchaseExp()
     {
@@ -148,7 +156,7 @@ public class UnitManager : MonoBehaviour
             }
         }
         fieldText.text = $"{numOfField} / {level}";
-        if (numOfField.Equals(level))
+        if (isFullField)
         {
             fieldText.color = Color.red;
         }
