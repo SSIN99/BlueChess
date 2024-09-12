@@ -10,6 +10,7 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Player player;
     private DragHandler dragHandler;
     private MonoBehaviour outline;
+    private Animator ani;
     public bool isOnField;
 
     private void Awake()
@@ -18,6 +19,7 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         this.player = player.GetComponent<Player>();
         dragHandler = player.GetComponent<DragHandler>();
         outline = GetComponent<Outline>();
+        ani = GetComponentInChildren<Animator>();
     }
     public void BeSold()
     {
@@ -58,8 +60,8 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-
         dragHandler.SetHand(eventData.pointerDrag);
+        ani.SetTrigger("Pick");
     }
     public void OnDrag(PointerEventData eventData)
     {
@@ -100,6 +102,7 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             }
         }
         dragHandler.SetHand(null);
+        ani.SetTrigger("Idle");
         player.CheckUnitList();
     }
 }
