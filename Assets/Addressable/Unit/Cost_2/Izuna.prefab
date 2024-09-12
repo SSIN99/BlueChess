@@ -2983,7 +2983,7 @@ Animator:
   m_GameObject: {fileID: 4695908483206281978}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: cca530cbbc54eb94b81ad93effcc7554, type: 2}
+  m_Controller: {fileID: 22100000, guid: 637d412ae9e241049a4942b45f3ada57, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5251,6 +5251,7 @@ GameObject:
   - component: {fileID: 8581879600821358104}
   - component: {fileID: 6166710356590101546}
   - component: {fileID: -1602870509230997754}
+  - component: {fileID: 8237286464171354926}
   m_Layer: 7
   m_Name: Izuna
   m_TagString: Unit
@@ -5301,7 +5302,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &6166710356590101546
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5333,6 +5333,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &8237286464171354926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952367149457688707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &7979236774813924263
 GameObject:
   m_ObjectHideFlags: 0

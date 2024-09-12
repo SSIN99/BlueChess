@@ -1101,7 +1101,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fieldText: {fileID: 576056852}
-  step: 0
 --- !u!4 &204414042
 Transform:
   m_ObjectHideFlags: 0
@@ -6320,7 +6319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1146706700
 Transform:
   m_ObjectHideFlags: 0
@@ -11953,6 +11952,7 @@ MonoBehaviour:
   fieldText: {fileID: 576056854}
   info: {fileID: 270923506}
   shop: {fileID: 55702254}
+  round: {fileID: 204414041}
   bench:
   - {fileID: 3718114549195208687}
   - {fileID: 1778267772}

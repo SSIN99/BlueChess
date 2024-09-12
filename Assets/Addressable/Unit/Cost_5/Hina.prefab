@@ -2078,7 +2078,7 @@ Animator:
   m_GameObject: {fileID: 4546675090661095422}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: bc195544e4ed2c04c8b43f7eb82808a1, type: 2}
+  m_Controller: {fileID: 22100000, guid: 992e9ba3970119b44b3b35de3864b9d2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2941,6 +2941,7 @@ GameObject:
   - component: {fileID: 1763209238306077124}
   - component: {fileID: 2287524453600513141}
   - component: {fileID: -7474135776538391625}
+  - component: {fileID: -6195533655443149909}
   m_Layer: 7
   m_Name: Hina
   m_TagString: Unit
@@ -2991,7 +2992,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &2287524453600513141
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3023,6 +3023,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-6195533655443149909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6639780963183107766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &6745832279020574593
 GameObject:
   m_ObjectHideFlags: 0

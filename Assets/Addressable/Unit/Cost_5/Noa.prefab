@@ -3753,7 +3753,7 @@ Animator:
   m_GameObject: {fileID: 6861439994869219965}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: ed2938ea22d0acd41a21d8f4b7ea47e5, type: 2}
+  m_Controller: {fileID: 22100000, guid: db3a7dbfa27960b4489599beb8ebaf90, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3804,6 +3804,7 @@ GameObject:
   - component: {fileID: 5928942440692609647}
   - component: {fileID: -5534610206213957572}
   - component: {fileID: -6195200724267056}
+  - component: {fileID: 6042120267309109923}
   m_Layer: 7
   m_Name: Noa
   m_TagString: Unit
@@ -3854,7 +3855,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-5534610206213957572
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3886,6 +3886,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &6042120267309109923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6886770222830487118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &7043027292445807834
 GameObject:
   m_ObjectHideFlags: 0

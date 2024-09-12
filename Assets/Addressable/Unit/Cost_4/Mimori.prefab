@@ -1833,7 +1833,7 @@ Animator:
   m_GameObject: {fileID: 3097592705554489824}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: af2850decdaf4364c8c5a326ec7f77cd, type: 2}
+  m_Controller: {fileID: 22100000, guid: ed43a0a250745cb4c90bb98c2dcfc9cc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2658,6 +2658,7 @@ GameObject:
   - component: {fileID: 4991262509734579591}
   - component: {fileID: -7257637836242363341}
   - component: {fileID: -9179631506452386594}
+  - component: {fileID: 8969921324934866701}
   m_Layer: 7
   m_Name: Mimori
   m_TagString: Unit
@@ -2708,7 +2709,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-7257637836242363341
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2740,6 +2740,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &8969921324934866701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4638809556852471971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &4664821501293154326
 GameObject:
   m_ObjectHideFlags: 0

@@ -106,7 +106,7 @@ Animator:
   m_GameObject: {fileID: 107044678786843099}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 09f65756d526ab64392aac774c379db7, type: 2}
+  m_Controller: {fileID: 22100000, guid: 959fa000554018a4caae1bca9739f4da, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4037,6 +4037,7 @@ GameObject:
   - component: {fileID: 597449036838076142}
   - component: {fileID: -754124664952701077}
   - component: {fileID: -1023684594822704696}
+  - component: {fileID: -2114712426055953645}
   m_Layer: 7
   m_Name: Mika
   m_TagString: Unit
@@ -4087,7 +4088,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-754124664952701077
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4119,6 +4119,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-2114712426055953645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5807401205725956590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &5827427542535826884
 GameObject:
   m_ObjectHideFlags: 0

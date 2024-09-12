@@ -2709,6 +2709,7 @@ GameObject:
   - component: {fileID: 6452025380552705121}
   - component: {fileID: 7179382720882612518}
   - component: {fileID: 2270222529306488019}
+  - component: {fileID: 1827609194374949189}
   m_Layer: 7
   m_Name: Mutsuki
   m_TagString: Unit
@@ -2759,7 +2760,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &7179382720882612518
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2791,6 +2791,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &1827609194374949189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6267971133047530252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &6275505024646901305
 GameObject:
   m_ObjectHideFlags: 0
@@ -3822,7 +3837,7 @@ Animator:
   m_GameObject: {fileID: 8711732144435165420}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: d7a9023dc22dc9e449bb2280beb03b76, type: 2}
+  m_Controller: {fileID: 22100000, guid: 01b51dc337b2a8d4e8520df1cf023e86, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

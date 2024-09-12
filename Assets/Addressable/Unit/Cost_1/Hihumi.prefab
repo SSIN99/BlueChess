@@ -1118,7 +1118,7 @@ Animator:
   m_GameObject: {fileID: 2336572675178095429}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: a65d98b4a74643141a70af85fd0766f9, type: 2}
+  m_Controller: {fileID: 22100000, guid: 29de9b075fdbd6449bc85fb76eb7cd14, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4010,6 +4010,7 @@ GameObject:
   - component: {fileID: -437248855327456425}
   - component: {fileID: -956685461696497887}
   - component: {fileID: 890322797427678566}
+  - component: {fileID: -2384177944604738083}
   m_Layer: 7
   m_Name: Hihumi
   m_TagString: Unit
@@ -4060,7 +4061,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-956685461696497887
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4092,6 +4092,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-2384177944604738083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8549509661249796200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &8566641869386423362
 GameObject:
   m_ObjectHideFlags: 0

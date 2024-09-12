@@ -1767,7 +1767,7 @@ Animator:
   m_GameObject: {fileID: 3667528400735637050}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 5e6a2008ced94e34a96ff0bd4ced12e0, type: 2}
+  m_Controller: {fileID: 22100000, guid: 4afc8bb72acca0645b298b14ff38edd4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3341,6 +3341,7 @@ GameObject:
   - component: {fileID: 111419543307547587}
   - component: {fileID: -3641410808001188717}
   - component: {fileID: -5946934739547068199}
+  - component: {fileID: -7607191844696587870}
   m_Layer: 7
   m_Name: Saori
   m_TagString: Unit
@@ -3375,11 +3376,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3258d95b18c5cd54298dbc7f1a4d1f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  no: 
-  unitName: 
-  origin: 0
-  jobClass: 0
-  cost: 0
+  No: 0
+  Name: 
+  Origin: 0
+  Class: 0
+  Cost: 0
   maxHealth: 0
   curHealth: 0
   maxMP: 0
@@ -3391,10 +3392,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  targetTile: {fileID: 0}
-  layer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &-3641410808001188717
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3426,6 +3423,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-7607191844696587870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6346817559531213946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &6364512237121810512
 GameObject:
   m_ObjectHideFlags: 0

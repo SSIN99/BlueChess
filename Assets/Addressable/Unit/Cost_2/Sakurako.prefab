@@ -2565,7 +2565,7 @@ Animator:
   m_GameObject: {fileID: 5563146055878245309}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: c37f290864eac034597d8a1a5330bd06, type: 2}
+  m_Controller: {fileID: 22100000, guid: 053362601fa7a404284044f50ea08553, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2918,6 +2918,7 @@ GameObject:
   - component: {fileID: 3153514521762583337}
   - component: {fileID: 7700791743913884002}
   - component: {fileID: -2526897141595896129}
+  - component: {fileID: 6499458935942895431}
   m_Layer: 7
   m_Name: Sakurako
   m_TagString: Unit
@@ -2968,7 +2969,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &7700791743913884002
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3000,6 +3000,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &6499458935942895431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6177063393422702391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &6196514059803890461
 GameObject:
   m_ObjectHideFlags: 0

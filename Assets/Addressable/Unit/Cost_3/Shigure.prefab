@@ -1385,7 +1385,7 @@ Animator:
   m_GameObject: {fileID: 2210390158800704404}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: b1bbe5e72af49964b9b8bfa1349314cb, type: 2}
+  m_Controller: {fileID: 22100000, guid: 4d8a94bbbd8d77f43bcd066a0d91ae2a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1534,6 +1534,7 @@ GameObject:
   - component: {fileID: 5255589444015899518}
   - component: {fileID: -4939840475022129737}
   - component: {fileID: -6488348837648006469}
+  - component: {fileID: 7985903476680396489}
   m_Layer: 7
   m_Name: Shigure
   m_TagString: Unit
@@ -1584,7 +1585,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-4939840475022129737
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1616,6 +1616,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &7985903476680396489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2544552968087716285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &2613445069981311779
 GameObject:
   m_ObjectHideFlags: 0

@@ -387,6 +387,7 @@ GameObject:
   - component: {fileID: -4736051921817674236}
   - component: {fileID: -5030518812286452202}
   - component: {fileID: 8562494605071107163}
+  - component: {fileID: -1368555696951309046}
   m_Layer: 7
   m_Name: Koharu
   m_TagString: Unit
@@ -437,7 +438,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-5030518812286452202
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -469,6 +469,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-1368555696951309046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619647662480553689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &639028036890104563
 GameObject:
   m_ObjectHideFlags: 0
@@ -3879,7 +3894,7 @@ Animator:
   m_GameObject: {fileID: 6832793034875084496}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 766aecf9814b5d741bbaec21e56bb2fb, type: 2}
+  m_Controller: {fileID: 22100000, guid: 8ee2d9e31f6fd6a4f9f9266e42388432, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

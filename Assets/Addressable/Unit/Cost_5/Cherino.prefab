@@ -13459,7 +13459,7 @@ Animator:
   m_GameObject: {fileID: 4179242902611841428}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 984e25bf20a36234399c048adb8a76df, type: 2}
+  m_Controller: {fileID: 22100000, guid: ab2e8f8a6e009dc4f9fef2717f2c0da2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -14002,6 +14002,7 @@ GameObject:
   - component: {fileID: -7754159436894868549}
   - component: {fileID: -4291049525118746960}
   - component: {fileID: 7471582856612895804}
+  - component: {fileID: -1918035063089888448}
   m_Layer: 7
   m_Name: Cherino
   m_TagString: Unit
@@ -14052,7 +14053,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-4291049525118746960
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14084,6 +14084,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-1918035063089888448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4299056823606385775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &4304847948630592406
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,8 +46,9 @@ public class Player : MonoBehaviour
     #region Unitº¯¼ö
     [SerializeField] private Info info;
     [SerializeField] private ShopManager shop;
+    [SerializeField] private RoundManager round;
     [SerializeField] private Tile[] bench;
-    private List<Unit> unitList;
+    private List<UnitArrange> unitList;
     private int numOfBench = 0;
     private int numOfField = 0;
     public bool isFullField => numOfField >= level;
@@ -102,33 +103,38 @@ public class Player : MonoBehaviour
         Gold -= 2;
         shop.SetShopItem();
     }
-    public void PurchaseUnit(Unit unit)
+    public void PurchaseUnit(int n, GameObject unit)
     {
-        Gold -= unit.Cost;
+        UnitArrange unitArrange = unit.GetComponent<UnitArrange>();
+        UnitControl unitInfo = unit.GetComponent<UnitControl>();
+
+        Gold -= unitInfo.Cost;
         numOfBench++;
-        unitList.Add(unit);
-        unit.gameObject.SetActive(true);
+        unitList.Add(unitArrange);
+        unit.SetActive(true);
         for (int i = 0; i < bench.Length; i++)
         {
             if (bench[i].unit == null)
             {
-                unit.SetTile(bench[i]);
-                unit.InitInfo(info.unitData[unit.No]);
+                unitArrange.SetTile(bench[i]);
                 break;
             }
         }
     }
-    public void SellUnit(Unit unit)
+    public void SellUnit(GameObject unit)
     {
-        Gold += unit.Cost;
+        UnitArrange unitArrange = unit.GetComponent<UnitArrange>();
+        UnitControl unitInfo = unit.GetComponent<UnitControl>();
+
+        Gold += unitInfo.Cost;
         for (int i = unitList.Count - 1; i >= 0; i--)
         {
-            if (unit.Equals(unitList[i]))
+            if (unitArrange.Equals(unitList[i]))
             {
-                unitList.Remove(unit);
-                unit.BeSold();
-                info.unitPool[unit.No].Enqueue(unit.gameObject);
-                unit.gameObject.SetActive(false);
+                unitList.Remove(unitArrange);
+                unitArrange.BeSold();
+                info.unitPool[unitInfo.No].Enqueue(unit);
+                unit.SetActive(false);
                 break;
             }
         }
@@ -151,14 +157,47 @@ public class Player : MonoBehaviour
         fieldText.text = $"{numOfField} / {level}";
         fieldText.color = isFullField ? Color.red : new Color(0.35f, 0.75f, 1);
     }
+    private void SetArrangeFieldUnit()
+    {
+        MonoBehaviour arrangeControl;
+        if (round.IsBattleStep)
+        {
+            for (int i = 0; i < unitList.Count; i++)
+            {
+                if (unitList[i].isOnField)
+                {
+                    arrangeControl = unitList[i];
+                    arrangeControl.enabled = false;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < unitList.Count; i++)
+            {
+                if (unitList[i].isOnField)
+                {
+                    arrangeControl = unitList[i];
+                    arrangeControl.enabled = true;
+                }
+            }
+        }
+    }
     #endregion
-
+    private void OnEnable()
+    {
+        round.OnStepChange += SetArrangeFieldUnit;
+    }
     private void Start()
     {
         Level = 1;
         Gold = 999;
         curExp = 0;
         maxExp = maxExpList[0];
-        unitList = new List<Unit>();
+        unitList = new List<UnitArrange>();
+    }
+    private void OnDisable()
+    {
+        round.OnStepChange -= SetArrangeFieldUnit;
     }
 }

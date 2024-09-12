@@ -196,7 +196,7 @@ Animator:
   m_GameObject: {fileID: 376981580489432736}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 7bc4eab57f21103459f8286268019646, type: 2}
+  m_Controller: {fileID: 22100000, guid: b084fa5feab092c49a9ac7522b61c9b6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1768,6 +1768,7 @@ GameObject:
   - component: {fileID: 2945625717456001757}
   - component: {fileID: -8897340998825122611}
   - component: {fileID: -6343520472024060061}
+  - component: {fileID: 2761952867104767073}
   m_Layer: 7
   m_Name: Shuerin
   m_TagString: Unit
@@ -1818,7 +1819,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-8897340998825122611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1850,6 +1850,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &2761952867104767073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587836144760552332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &3880758119847611371
 GameObject:
   m_ObjectHideFlags: 0

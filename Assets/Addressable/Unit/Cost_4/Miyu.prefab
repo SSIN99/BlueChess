@@ -4089,6 +4089,7 @@ GameObject:
   - component: {fileID: -6076841427778319892}
   - component: {fileID: 334903676242279994}
   - component: {fileID: -7142838483015130316}
+  - component: {fileID: -4996069440383957753}
   m_Layer: 7
   m_Name: Miyu
   m_TagString: Unit
@@ -4139,7 +4140,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &334903676242279994
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4171,6 +4171,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-4996069440383957753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6898757217939019150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &6915956701497569700
 GameObject:
   m_ObjectHideFlags: 0
@@ -4615,7 +4630,7 @@ Animator:
   m_GameObject: {fileID: 7649216532248445352}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 4e03e48d4c903054b9c704614087f0a1, type: 2}
+  m_Controller: {fileID: 22100000, guid: febbf9584633e3246831825c29039118, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

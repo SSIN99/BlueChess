@@ -451,7 +451,7 @@ Animator:
   m_GameObject: {fileID: 1008413758156108150}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: d8779eed806e6b940a0c4dd6ec4c8d03, type: 2}
+  m_Controller: {fileID: 22100000, guid: f1ad85e538a20c547971f60d1c6f7d3d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1704,6 +1704,7 @@ GameObject:
   - component: {fileID: 6308249806638738136}
   - component: {fileID: -8381657299315108817}
   - component: {fileID: 5362337626807191293}
+  - component: {fileID: -9161704195813011323}
   m_Layer: 7
   m_Name: Hiyori
   m_TagString: Unit
@@ -1754,7 +1755,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-8381657299315108817
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1786,6 +1786,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-9161704195813011323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3162843529283435161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &3241623560615572647
 GameObject:
   m_ObjectHideFlags: 0

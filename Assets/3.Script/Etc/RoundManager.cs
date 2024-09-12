@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,13 +14,24 @@ public enum Step
 public class RoundManager : MonoBehaviour
 {
     [SerializeField] private GameObject fieldText;
-    public Step step;
+    private Step step;
+    public Step curStep
+    {
+        get { return step; }
+        private set
+        {
+            step = value;
+            OnStepChange?.Invoke();
+        }
+    }
     public bool IsBattleStep => step == Step.Battle;
+
+    public event Action OnStepChange;
 
     public void TransitionStep()
     {
-        step = step == Step.Battle ? Step.Prepare : Step.Battle;
-        if(step == Step.Battle)
+        curStep = step == Step.Battle ? Step.Prepare : Step.Battle;
+        if(IsBattleStep)
         {
             fieldText.SetActive(false);
         }

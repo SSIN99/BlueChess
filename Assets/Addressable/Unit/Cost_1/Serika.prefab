@@ -1718,6 +1718,7 @@ GameObject:
   - component: {fileID: 5674536142753876904}
   - component: {fileID: 1961660177047423222}
   - component: {fileID: 6910152893844644116}
+  - component: {fileID: 7110573898842213259}
   m_Layer: 7
   m_Name: Serika
   m_TagString: Unit
@@ -1768,7 +1769,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &1961660177047423222
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1800,6 +1800,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &7110573898842213259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3978498150680618065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &3995062460247277691
 GameObject:
   m_ObjectHideFlags: 0
@@ -3111,7 +3126,7 @@ Animator:
   m_GameObject: {fileID: 7144121116979385806}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: f3c1ce0751fb713419effc49e9aac87c, type: 2}
+  m_Controller: {fileID: 22100000, guid: d35194f7dd1209741abf13add3a38c67, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

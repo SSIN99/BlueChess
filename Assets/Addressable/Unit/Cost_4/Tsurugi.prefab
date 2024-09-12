@@ -2635,6 +2635,7 @@ GameObject:
   - component: {fileID: -4660754559005384378}
   - component: {fileID: 8091089494792914522}
   - component: {fileID: -6867920730793389486}
+  - component: {fileID: -1114226278426342034}
   m_Layer: 7
   m_Name: Tsurugi
   m_TagString: Unit
@@ -2685,7 +2686,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &8091089494792914522
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2717,6 +2717,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-1114226278426342034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4078609406303104477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &4097439467082025463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3522,7 +3537,7 @@ Animator:
   m_GameObject: {fileID: 5291269769137572063}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: c306ad11d45cba74988faae711e9d721, type: 2}
+  m_Controller: {fileID: 22100000, guid: c12d8b6e3e89b6849b8770c853285e4c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

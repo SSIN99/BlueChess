@@ -106,7 +106,7 @@ Animator:
   m_GameObject: {fileID: 235229827351908136}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: c8520a6ff54a5484ebe4e59be8284655, type: 2}
+  m_Controller: {fileID: 22100000, guid: 5dcb0a380f5e60e4abd772e99ed2dd08, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2096,6 +2096,7 @@ GameObject:
   - component: {fileID: 2445337185525386220}
   - component: {fileID: -7559522318289659864}
   - component: {fileID: 4878401173690718492}
+  - component: {fileID: -852941560073188106}
   m_Layer: 7
   m_Name: Ayane
   m_TagString: Unit
@@ -2146,7 +2147,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-7559522318289659864
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2178,6 +2178,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-852941560073188106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3797648847938034402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &3815907161873120968
 GameObject:
   m_ObjectHideFlags: 0

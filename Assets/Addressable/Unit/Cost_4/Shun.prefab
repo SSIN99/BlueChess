@@ -2437,7 +2437,7 @@ Animator:
   m_GameObject: {fileID: 5626926708479916308}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: eb5ad8d39793c494dbc3c3d3ceba0713, type: 2}
+  m_Controller: {fileID: 22100000, guid: 7bf352684c388a243856d75508731525, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3126,6 +3126,7 @@ GameObject:
   - component: {fileID: -8856304431302586619}
   - component: {fileID: -1162901559120105149}
   - component: {fileID: 691429454865072324}
+  - component: {fileID: -2289033752319565496}
   m_Layer: 7
   m_Name: Shun
   m_TagString: Unit
@@ -3160,11 +3161,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3258d95b18c5cd54298dbc7f1a4d1f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  no: 
-  unitName: 
-  origin: 0
-  jobClass: 0
-  cost: 0
+  No: 0
+  Name: 
+  Origin: 0
+  Class: 0
+  Cost: 0
   maxHealth: 0
   curHealth: 0
   maxMP: 0
@@ -3176,10 +3177,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  targetTile: {fileID: 0}
-  layer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &-1162901559120105149
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3211,6 +3208,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-2289033752319565496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6490487801384418940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &6552516561883299940
 GameObject:
   m_ObjectHideFlags: 0

@@ -768,6 +768,7 @@ GameObject:
   - component: {fileID: 1163014249272150203}
   - component: {fileID: 1163014249272150200}
   - component: {fileID: 1163014249272150201}
+  - component: {fileID: -4190943197152154270}
   m_Layer: 7
   m_Name: Sumire
   m_TagString: Unit
@@ -849,6 +850,20 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
+--- !u!114 &-4190943197152154270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163014249272150150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
   isOnField: 0
 --- !u!1 &1167419914971489037
 GameObject:
@@ -3329,7 +3344,7 @@ Animator:
   m_GameObject: {fileID: 6348907692230391611}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 54b5b4a796fe8d8409671d1b46a207a5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

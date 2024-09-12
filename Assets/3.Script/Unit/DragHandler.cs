@@ -52,8 +52,8 @@ public class DragHandler : MonoBehaviour
             sellUI.SetActive(true);
             LayerMask layerMask = LayerMask.GetMask("Tile");
             raycaster.eventMask = layerMask;
-            costText[0].text = $"+{hand.GetComponent<Unit>().Cost}";
-            costText[1].text = $"+{hand.GetComponent<Unit>().Cost}";
+            costText[0].text = $"+{hand.GetComponent<UnitControl>().Cost}";
+            costText[1].text = $"+{hand.GetComponent<UnitControl>().Cost}";
         }
     }
     private void EndDrag()

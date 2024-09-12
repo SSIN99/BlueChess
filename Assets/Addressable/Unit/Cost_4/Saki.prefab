@@ -2648,7 +2648,7 @@ Animator:
   m_GameObject: {fileID: 4411789462514005757}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: ca999419b40abbd4e9dcf721f73a5ce9, type: 2}
+  m_Controller: {fileID: 22100000, guid: 2b677785996af71458df311bccfdeeda, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4625,6 +4625,7 @@ GameObject:
   - component: {fileID: -3597716810226494103}
   - component: {fileID: 6717989348872127944}
   - component: {fileID: 1039718221090929612}
+  - component: {fileID: -7704854216233765609}
   m_Layer: 7
   m_Name: Saki
   m_TagString: Unit
@@ -4675,7 +4676,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &6717989348872127944
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4707,6 +4707,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-7704854216233765609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589511072930825840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &7662261302054389254
 GameObject:
   m_ObjectHideFlags: 0

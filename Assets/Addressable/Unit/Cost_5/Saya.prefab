@@ -1372,6 +1372,7 @@ GameObject:
   - component: {fileID: -4025579380568537570}
   - component: {fileID: 6174891792687043387}
   - component: {fileID: -8360781794474395459}
+  - component: {fileID: 4753125812261495177}
   m_Layer: 7
   m_Name: Saya
   m_TagString: Unit
@@ -1422,7 +1423,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &6174891792687043387
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1454,6 +1454,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &4753125812261495177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821140126169646256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &1844619379942321157
 GameObject:
   m_ObjectHideFlags: 0
@@ -3068,7 +3083,7 @@ Animator:
   m_GameObject: {fileID: 4124648529271179678}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 2c98d796c94f96a4a8d592686f17186a, type: 2}
+  m_Controller: {fileID: 22100000, guid: cd7b3fd843f7792408e1d716f06a5aa2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

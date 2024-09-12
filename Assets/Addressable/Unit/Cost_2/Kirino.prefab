@@ -815,7 +815,7 @@ Animator:
   m_GameObject: {fileID: 1311567787743197523}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: b4d67cc21c7c6a1408bd46cac35f3c46, type: 2}
+  m_Controller: {fileID: 22100000, guid: d8855756831beb346b77f9a578ed4c8b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2755,6 +2755,7 @@ GameObject:
   - component: {fileID: 677512158058908137}
   - component: {fileID: -3709640913744091056}
   - component: {fileID: 1169903728342966630}
+  - component: {fileID: 899956278746331038}
   m_Layer: 7
   m_Name: Kirino
   m_TagString: Unit
@@ -2805,7 +2806,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-3709640913744091056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2837,6 +2837,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &899956278746331038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212974973391119356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &6341056485221824930
 GameObject:
   m_ObjectHideFlags: 0

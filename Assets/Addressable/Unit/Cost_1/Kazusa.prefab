@@ -1650,7 +1650,7 @@ Animator:
   m_GameObject: {fileID: 2427379007252450453}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 05b0ae73a374a6c40ac407a9451320c4, type: 2}
+  m_Controller: {fileID: 22100000, guid: 02fe2af3a32b26142a49d5ebcb3fc6fc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2247,6 +2247,7 @@ GameObject:
   - component: {fileID: -4437508375877043740}
   - component: {fileID: -5058209782632644340}
   - component: {fileID: 8800961600794601523}
+  - component: {fileID: -3983517052333093517}
   m_Layer: 7
   m_Name: Kazusa
   m_TagString: Unit
@@ -2297,7 +2298,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-5058209782632644340
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2329,6 +2329,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-3983517052333093517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3479514020013878550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &3850564991419771166
 GameObject:
   m_ObjectHideFlags: 0

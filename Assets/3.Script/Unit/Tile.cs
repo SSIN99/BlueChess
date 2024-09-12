@@ -11,7 +11,7 @@ public enum Type
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Type type;
-    public Unit unit;
+    public UnitArrange unit;
     private Renderer rend;
     private Color basicColor;
 

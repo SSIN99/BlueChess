@@ -4603,7 +4603,7 @@ Animator:
   m_GameObject: {fileID: 8570299353001663951}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 9ef38bf40f8aef442afd27e456a909af, type: 2}
+  m_Controller: {fileID: 22100000, guid: 84efe77046b01674eadb5b44d166b669, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4624,6 +4624,7 @@ GameObject:
   - component: {fileID: 1994679199626966033}
   - component: {fileID: -3658611029954935409}
   - component: {fileID: 7676487728799771355}
+  - component: {fileID: 1167929220696781367}
   m_Layer: 7
   m_Name: Neru
   m_TagString: Unit
@@ -4674,7 +4675,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-3658611029954935409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4706,6 +4706,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &1167929220696781367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8607551605699185761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &8647306555162766360
 GameObject:
   m_ObjectHideFlags: 0

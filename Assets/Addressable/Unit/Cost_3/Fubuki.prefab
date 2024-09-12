@@ -4068,6 +4068,7 @@ GameObject:
   - component: {fileID: -7181305893537037249}
   - component: {fileID: 4216537062634635896}
   - component: {fileID: 8621933904497997925}
+  - component: {fileID: -47643521206901768}
   m_Layer: 7
   m_Name: Fubuki
   m_TagString: Unit
@@ -4118,7 +4119,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &4216537062634635896
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4150,6 +4150,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-47643521206901768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7958238034443020911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &8026523409555630949
 GameObject:
   m_ObjectHideFlags: 0
@@ -4384,7 +4399,7 @@ Animator:
   m_GameObject: {fileID: 8267218279274880454}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: ef19a32be927c24459b636cba589705c, type: 2}
+  m_Controller: {fileID: 22100000, guid: 2704038e301455140b2cd835738f5f4c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

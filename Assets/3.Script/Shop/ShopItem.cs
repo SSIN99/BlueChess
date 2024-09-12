@@ -29,17 +29,18 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Player player;
     public int no;
     private int cost;
-    private Unit unit;
+    private GameObject unit;
     #endregion
 
     public void SetItem(int n)
     {
         no = n;
-        unit = info.unitPool[n].Dequeue().GetComponent<Unit>();
+        unit = info.unitPool[n].Dequeue();
 
-        if (unit.Name.Equals(string.Empty))
+        UnitControl unitInfo = unit.GetComponent<UnitControl>();
+        if(unitInfo.Name == string.Empty)
         {
-            unit.InitInfo(info.unitData[no]);
+            unitInfo.InitInfo(info.unitData[n]);
         }
 
         border.color = colorList[int.Parse(info.unitData[n]["Cost"]) - 1];
@@ -64,7 +65,7 @@ public class ShopItem : MonoBehaviour
         {
             return;
         }
-        player.PurchaseUnit(unit);
+        player.PurchaseUnit(no,unit);
         gameObject.SetActive(false);
     }
 }

@@ -648,7 +648,7 @@ Animator:
   m_GameObject: {fileID: 725544110523074925}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 0fc9c96e1cbbfc543a6f56839a85592d, type: 2}
+  m_Controller: {fileID: 22100000, guid: 4c0afea589752f04ab7bf7dd3dbc67c2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3441,6 +3441,7 @@ GameObject:
   - component: {fileID: -3265860662576925147}
   - component: {fileID: -2778763726432909898}
   - component: {fileID: 2445814191295040408}
+  - component: {fileID: -9001820610396076961}
   m_Layer: 7
   m_Name: Kikyou
   m_TagString: Unit
@@ -3491,7 +3492,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-2778763726432909898
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3523,6 +3523,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-9001820610396076961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3654090657993329246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &3671232830313098868
 GameObject:
   m_ObjectHideFlags: 0

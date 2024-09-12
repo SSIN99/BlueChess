@@ -1843,7 +1843,7 @@ Animator:
   m_GameObject: {fileID: 2792362391649094057}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 4f52acef3bbb59a46986310c44b68e12, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4406,6 +4406,7 @@ GameObject:
   - component: {fileID: 6910968628850392020}
   - component: {fileID: 6910968628850392021}
   - component: {fileID: 6910968628850392018}
+  - component: {fileID: 3662016578668644256}
   m_Layer: 7
   m_Name: Mina
   m_TagString: Unit
@@ -4487,6 +4488,20 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
+--- !u!114 &3662016578668644256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910968628850392019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
   isOnField: 0
 --- !u!1 &6911739699339263654
 GameObject:

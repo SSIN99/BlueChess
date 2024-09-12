@@ -11,7 +11,7 @@ public class SellUIHandler : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
 
     public void OnDrop(PointerEventData eventData)
     {
-        player.SellUnit(eventData.pointerDrag.GetComponent<Unit>());
+        player.SellUnit(eventData.pointerDrag);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

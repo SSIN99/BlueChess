@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: -7799537547193668529}
   - component: {fileID: 6584397684232682101}
   - component: {fileID: -8208628403152771012}
+  - component: {fileID: 8648787160566071582}
   m_Layer: 7
   m_Name: Meru
   m_TagString: Unit
@@ -311,7 +312,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &6584397684232682101
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -343,6 +343,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &8648787160566071582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625478149709279582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &667457091153971187
 GameObject:
   m_ObjectHideFlags: 0
@@ -2479,7 +2494,7 @@ Animator:
   m_GameObject: {fileID: 3991901692787015164}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: b56c02a70dac6c1479c72215c13b30a1, type: 2}
+  m_Controller: {fileID: 22100000, guid: ffb11cdcd8a6dc14d84c84e947939449, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

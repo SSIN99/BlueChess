@@ -2197,6 +2197,7 @@ GameObject:
   - component: {fileID: -7058621689238916057}
   - component: {fileID: 8584772375339362164}
   - component: {fileID: 6661843305859865643}
+  - component: {fileID: -8046007771198124542}
   m_Layer: 7
   m_Name: Iori
   m_TagString: Unit
@@ -2247,7 +2248,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &8584772375339362164
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2279,6 +2279,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-8046007771198124542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4875418179798513905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &4895362053638413531
 GameObject:
   m_ObjectHideFlags: 0
@@ -3658,7 +3673,7 @@ Animator:
   m_GameObject: {fileID: 7501320623077296502}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 00e29703d9faa3045a2bbff920e7e54c, type: 2}
+  m_Controller: {fileID: 22100000, guid: e23939f4a3d24ea4d91b0495bf4cf266, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

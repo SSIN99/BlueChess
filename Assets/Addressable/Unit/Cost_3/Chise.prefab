@@ -1965,7 +1965,7 @@ Animator:
   m_GameObject: {fileID: 3816999531869859295}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: a29de06407aacba43a7ddd15f799f5e5, type: 2}
+  m_Controller: {fileID: 22100000, guid: 0c0deda86aa8d124583c5cfc2d1cc885, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2516,6 +2516,7 @@ GameObject:
   - component: {fileID: 2769578222784951868}
   - component: {fileID: 5163032348089504772}
   - component: {fileID: -3279601884931294645}
+  - component: {fileID: 6248334622197334408}
   m_Layer: 7
   m_Name: Chise
   m_TagString: Unit
@@ -2566,7 +2567,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &5163032348089504772
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2598,6 +2598,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &6248334622197334408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5336419121997500899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &5347749612694529215
 GameObject:
   m_ObjectHideFlags: 0

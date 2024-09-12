@@ -2461,6 +2461,7 @@ GameObject:
   - component: {fileID: -7037238732053720427}
   - component: {fileID: -1731245925890561577}
   - component: {fileID: -3719948353171163527}
+  - component: {fileID: 3226123096464917455}
   m_Layer: 7
   m_Name: Nonomi
   m_TagString: Unit
@@ -2511,7 +2512,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &-1731245925890561577
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2543,6 +2543,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &3226123096464917455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5553481108544307187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &5572865323326266329
 GameObject:
   m_ObjectHideFlags: 0
@@ -2897,7 +2912,7 @@ Animator:
   m_GameObject: {fileID: 6104299195830949777}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 4c78f6389c381cb428c44e6af95f2699, type: 2}
+  m_Controller: {fileID: 22100000, guid: e4381d3cb5ef9fc4bb6473edd169df6c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

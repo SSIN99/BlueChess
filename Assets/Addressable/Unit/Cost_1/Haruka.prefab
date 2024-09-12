@@ -1888,7 +1888,7 @@ Animator:
   m_GameObject: {fileID: 4621609675230093903}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 0bd2fa8e96df7cb49ac403293f34e2b6, type: 2}
+  m_Controller: {fileID: 22100000, guid: f808f40059a9e5941997f492a93ef832, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2191,6 +2191,7 @@ GameObject:
   - component: {fileID: -1522795148430049552}
   - component: {fileID: -545769267435131141}
   - component: {fileID: 1605677547994082988}
+  - component: {fileID: -6684093901015593401}
   m_Layer: 7
   m_Name: Haruka
   m_TagString: Unit
@@ -2225,11 +2226,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3258d95b18c5cd54298dbc7f1a4d1f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  no: 
-  unitName: 
-  origin: 0
-  jobClass: 0
-  cost: 0
+  No: 0
+  Name: 
+  Origin: 0
+  Class: 0
+  Cost: 0
   maxHealth: 0
   curHealth: 0
   maxMP: 0
@@ -2241,10 +2242,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  targetTile: {fileID: 0}
-  layer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &-545769267435131141
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2276,6 +2273,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-6684093901015593401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5390308440208099418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &5414845095173571951
 GameObject:
   m_ObjectHideFlags: 0

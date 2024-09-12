@@ -1547,6 +1547,7 @@ GameObject:
   - component: {fileID: -378388760658383414}
   - component: {fileID: 7532864242676611062}
   - component: {fileID: -1833690080963733613}
+  - component: {fileID: 3642120813467253503}
   m_Layer: 7
   m_Name: Hoshino
   m_TagString: Unit
@@ -1597,7 +1598,6 @@ MonoBehaviour:
   Resistance: 0
   AS: 0
   Range: 0
-  isOnField: 0
 --- !u!65 &7532864242676611062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1629,6 +1629,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &3642120813467253503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3390539664677415610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curTile: {fileID: 0}
+  targetTile: {fileID: 0}
+  isOnField: 0
 --- !u!1 &3407741699444461200
 GameObject:
   m_ObjectHideFlags: 0
@@ -2425,7 +2440,7 @@ Animator:
   m_GameObject: {fileID: 4911229587352758474}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 9b48f875999027741bd9bf9ca9d2d964, type: 2}
+  m_Controller: {fileID: 22100000, guid: 35eda259d67d295469a3e9ceb372bcd5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
