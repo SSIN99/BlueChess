@@ -151,27 +151,25 @@ public class Player : MonoBehaviour
         unit.transform.parent = info.transform;
         unit.SetActive(false);
     }
-    private void SetArrangeFieldUnit()
+    private void SetFieldUnitState()
     {
-        MonoBehaviour arrangeControl;
         if (round.IsBattleStep)
         {
             for (int i = 0; i < fieldList.Count; i++)
             {
-                arrangeControl = fieldList[i].GetComponent<UnitArrange>();
-                arrangeControl.enabled = false;
+                fieldList[i].GetComponent<UnitArrange>().enabled = false;
+                fieldList[i].GetComponentInChildren<Animator>().SetTrigger("Search");
             }
         }
         else
         {
             for (int i = 0; i < fieldList.Count; i++)
             {
-                arrangeControl = fieldList[i].GetComponent<UnitArrange>();
-                arrangeControl.enabled = true;
+                fieldList[i].GetComponent<UnitArrange>().enabled = true;
+                fieldList[i].GetComponent<UnitArrange>().ReturnTile();
             }
         }
     }
-
     public void AddBench(GameObject unit)
     {
         benchList.Add(unit);
@@ -195,7 +193,7 @@ public class Player : MonoBehaviour
     #endregion
     private void OnEnable()
     {
-        round.OnStepChange += SetArrangeFieldUnit;
+        round.OnStepChange += SetFieldUnitState;
     }
     private void Start()
     {
@@ -208,6 +206,6 @@ public class Player : MonoBehaviour
     }
     private void OnDisable()
     {
-        round.OnStepChange -= SetArrangeFieldUnit;
+        round.OnStepChange -= SetFieldUnitState;
     }
 }

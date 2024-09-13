@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 public class UnitControl : MonoBehaviour
@@ -23,6 +24,9 @@ public class UnitControl : MonoBehaviour
     public float AS;
     public int Range;
 
+    public float radius;
+    public GameObject enemy;
+
     public void InitInfo(Dictionary<string, string> data)
     {
         No = int.Parse(data["No"]);
@@ -41,7 +45,11 @@ public class UnitControl : MonoBehaviour
         Resistance = int.Parse(data["Resistance"]);
         AS = float.Parse(data["AS"]);
         Range = int.Parse(data["Range"]);
+
     }
-
-
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, radius);
+    }
 }

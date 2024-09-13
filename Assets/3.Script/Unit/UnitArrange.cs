@@ -19,7 +19,7 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         this.player = player.GetComponent<Player>();
         dragHandler = player.GetComponent<DragHandler>();
         outline = GetComponent<Outline>();
-        ani = GetComponentInChildren<Animator>();
+        ani = GetComponent<Animator>();
     }
     public void BeSold()
     {
@@ -61,6 +61,11 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         curTile = target;
         curTile.unit = this;
         transform.position = curTile.transform.position;
+    }
+    public void ReturnTile()
+    {
+        transform.position = curTile.transform.position;
+        ani.SetTrigger("Idle");
     }
     public void OnPointerEnter(PointerEventData eventData)
     {

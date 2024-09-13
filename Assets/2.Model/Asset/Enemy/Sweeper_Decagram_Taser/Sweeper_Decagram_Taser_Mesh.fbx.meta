@@ -42,7 +42,12 @@ ModelImporter:
   - first:
       74: 4973594379390025306
     second: Sweeper_Decagram_Taser_Normal02_Attack_Ing
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sweeper_Decagram_Taser_White
+    second: {fileID: 2100000, guid: 2e8885b38f860244085d6bfadda80534, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
