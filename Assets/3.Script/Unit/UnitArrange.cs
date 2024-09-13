@@ -26,7 +26,12 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         curTile.unit = null;
         curTile = null;
         dragHandler.SetHand(null);
-        player.CheckUnitList();
+    }
+    public void InitTile(Tile target)
+    {
+        curTile = target;
+        curTile.unit = this;
+        transform.position = curTile.transform.position;
     }
     public void SetTile(Tile target)
     {
@@ -38,17 +43,24 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             target.unit.SetTile(curTile);
         }
+        if(curTile.type != target.type)
+        {
+            if(curTile.type == Type.Bench)
+            {
+                isOnField = true;
+                player.RemoveBench(gameObject);
+                player.AddField(gameObject);
+            }
+            else
+            {
+                isOnField = false;
+                player.RemoveField(gameObject);
+                player.AddBench(gameObject);
+            }
+        }
         curTile = target;
         curTile.unit = this;
         transform.position = curTile.transform.position;
-        if (curTile.type.Equals(Type.Field))
-        {
-            isOnField = true;
-        }
-        else
-        {
-            isOnField = false;
-        }
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -103,6 +115,5 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         dragHandler.SetHand(null);
         ani.SetTrigger("Idle");
-        player.CheckUnitList();
     }
 }
