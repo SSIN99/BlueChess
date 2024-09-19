@@ -9,7 +9,13 @@ public class SearchState : StateMachineBehaviour
     {
         LayerMask layer = LayerMask.GetMask("Enemy");
 
-        Collider[] objs = Physics.OverlapSphere(animator.transform.position, 10f, layer);
+        Collider[] objs = Physics.OverlapSphere(animator.transform.position, 15f, layer);
+
+        if(objs.Length == 0)
+        {
+            animator.SetTrigger("Win");
+            return;
+        }
 
         Array.Sort(objs, (a, b) 
             => Vector3.Distance(animator.transform.position, a.transform.position)

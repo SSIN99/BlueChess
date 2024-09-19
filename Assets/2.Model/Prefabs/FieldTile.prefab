@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2228747327052548394}
   - component: {fileID: 2228747327052548393}
   - component: {fileID: 2228747327052548392}
-  - component: {fileID: 2228747327052548375}
+  - component: {fileID: 2154361995719763291}
   m_Layer: 8
   m_Name: FieldTile
   m_TagString: Untagged
@@ -27,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2228747327052548374}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 0.10000004}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -95,9 +95,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab9607522c0aa7468bc30ce47ef7036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
   unit: {fileID: 0}
---- !u!64 &2228747327052548375
+  type: 1
+  position: {x: 0, y: 0, z: 0}
+  parent: {fileID: 0}
+  walkable: 0
+  gCost: 0
+  hCost: 0
+--- !u!64 &2154361995719763291
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

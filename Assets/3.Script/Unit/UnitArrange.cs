@@ -106,9 +106,9 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         else
         {
-            if (targetTile.type.Equals(Type.Field) &&
+            if (targetTile.type == Type.Field &&
                 targetTile.unit == null &&
-                curTile.type.Equals(Type.Bench) &&
+                curTile.type == Type.Bench &&
                 player.isFullField)
             {
                 transform.position = curTile.transform.position;

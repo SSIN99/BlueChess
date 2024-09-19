@@ -26,7 +26,13 @@ public class UnitControl : MonoBehaviour
 
     public float radius;
     public GameObject enemy;
+    public GameObject healthBar;
+    public NavMeshAgent agent;
 
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();  
+    }
     public void InitInfo(Dictionary<string, string> data)
     {
         No = int.Parse(data["No"]);
@@ -47,6 +53,23 @@ public class UnitControl : MonoBehaviour
         Range = int.Parse(data["Range"]);
 
     }
+    public void SetBattleMode() 
+    {
+        UnitArrange unit = GetComponent<UnitArrange>();
+        unit.enabled = false;
+        healthBar.SetActive(true);
+        healthBar.GetComponent<HealthBar>().InitHpBar(maxHealth);
+        GetComponent<Animator>().SetTrigger("Search");
+    }
+    public void SetIdleMode()
+    {
+        UnitArrange unit = GetComponent<UnitArrange>();
+        unit.enabled = true;
+        healthBar.SetActive(false);
+        unit.ReturnTile();
+        agent.enabled = false;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
