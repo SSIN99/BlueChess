@@ -157,14 +157,14 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < fieldList.Count; i++)
             {
-                fieldList[i].GetComponent<UnitControl>().SetBattleMode();     
+                fieldList[i].GetComponent<UnitControl>().StartBattle();     
             }
         }
         else
         {
             for (int i = 0; i < fieldList.Count; i++)
             {
-                fieldList[i].GetComponent<UnitControl>().SetIdleMode();
+                fieldList[i].GetComponent<UnitControl>().ReturnIdle();
             }
         }
     }

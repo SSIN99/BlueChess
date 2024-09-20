@@ -29,34 +29,30 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Player player;
     public int no;
     private int cost;
-    private GameObject unit;
+    private GameObject item;
     #endregion
 
     public void SetItem(int n)
     {
         no = n;
-        unit = info.unitPool[n].Dequeue();
+        item = info.unitPool[n].Dequeue();
 
-        UnitControl unitInfo = unit.GetComponent<UnitControl>();
-        if(unitInfo.Name == string.Empty)
-        {
-            unitInfo.InitInfo(info.unitData[n]);
-        }
-
-        border.color = colorList[int.Parse(info.unitData[n]["Cost"]) - 1];
+        UnitControl unit = item.GetComponent<UnitControl>();
+       
+        border.color = colorList[unit.Cost - 1];
         memorial.sprite = info.memorials[n];
-        originIcon.sprite = info.traits[int.Parse(info.unitData[n]["Origin"])];
-        classIcon.sprite = info.traits[int.Parse(info.unitData[n]["Class"])];
-        nameText.text = info.unitData[n]["Name"];
-        cost = int.Parse(info.unitData[n]["Cost"]);
+        originIcon.sprite = info.traits[unit.Origin];
+        classIcon.sprite = info.traits[unit.Class];
+        nameText.text = unit.Name;
+        cost = unit.Cost;
         costText.text = cost.ToString(); 
-        originText.text = info.traitData[int.Parse(info.unitData[n]["Origin"])]["Name"];
-        classText.text = info.traitData[int.Parse(info.unitData[n]["Class"])]["Name"];
+        originText.text = info.traitData[unit.Origin]["Name"];
+        classText.text = info.traitData[unit.Class]["Name"];
 
     }
     public void ReturnItem()
     {
-        info.unitPool[no].Enqueue(unit.gameObject);   
+        info.unitPool[no].Enqueue(item.gameObject);   
     }
     public void OnClicked()
     {
@@ -65,7 +61,7 @@ public class ShopItem : MonoBehaviour
         {
             return;
         }
-        player.PurchaseUnit(no,unit);
+        player.PurchaseUnit(no,item);
         gameObject.SetActive(false);
     }
 }

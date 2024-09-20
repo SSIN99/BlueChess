@@ -7,13 +7,21 @@ public class SearchState : StateMachineBehaviour
 {
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        LayerMask layer = LayerMask.GetMask("Enemy");
+        LayerMask layer;
+        if (animator.CompareTag("Unit"))
+        {
+            layer = LayerMask.GetMask("Enemy");
+        }
+        else
+        {
+            layer = LayerMask.GetMask("Unit");
+        }
 
         Collider[] objs = Physics.OverlapSphere(animator.transform.position, 15f, layer);
 
         if(objs.Length == 0)
         {
-            animator.SetTrigger("Win");
+            animator.Play("Win");
             return;
         }
 
@@ -21,7 +29,7 @@ public class SearchState : StateMachineBehaviour
             => Vector3.Distance(animator.transform.position, a.transform.position)
             .CompareTo(Vector3.Distance(animator.transform.position, b.transform.position)));
 
-        animator.GetComponent<UnitControl>().enemy = objs[0].gameObject;
-        animator.SetTrigger("Move");
+        animator.GetComponent<Unit>().target = objs[0].gameObject;
+        animator.Play("Move");
     }
 }

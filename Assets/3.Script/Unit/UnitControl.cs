@@ -5,74 +5,21 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
-public class UnitControl : MonoBehaviour
+public class UnitControl : Unit
 {
-    public int No;
-    public string Name;
-    public int Origin;
-    public int Class;
-    public int Cost;
-    public int maxHealth;
-    public int curHealth;
-    public int maxMP;
-    public int startMP;
-    public int curMP;
-    public int AD;
-    public int AP;
-    public int Armor;
-    public int Resistance;
-    public float AS;
-    public int Range;
-
-    public float radius;
-    public GameObject enemy;
-    public GameObject healthBar;
-    public NavMeshAgent agent;
-
-    private void Start()
-    {
-        agent = GetComponent<NavMeshAgent>();  
-    }
-    public void InitInfo(Dictionary<string, string> data)
-    {
-        No = int.Parse(data["No"]);
-        Name = data["Name"];
-        Origin = int.Parse(data["Origin"]);
-        Class = int.Parse(data["Class"]);
-        Cost = int.Parse(data["Cost"]);
-        maxHealth = int.Parse(data["Health"]);
-        curHealth = maxHealth;
-        maxMP = int.Parse(data["MaxMP"]);
-        startMP = int.Parse(data["StartMP"]);
-        curMP = startMP;
-        AD = int.Parse(data["AD"]);
-        AP = int.Parse(data["AP"]);
-        Armor = int.Parse(data["Armor"]);
-        Resistance = int.Parse(data["Resistance"]);
-        AS = float.Parse(data["AS"]);
-        Range = int.Parse(data["Range"]);
-
-    }
-    public void SetBattleMode() 
+    public override void StartBattle() 
     {
         UnitArrange unit = GetComponent<UnitArrange>();
         unit.enabled = false;
-        healthBar.SetActive(true);
-        healthBar.GetComponent<HealthBar>().InitHpBar(maxHealth);
-        GetComponent<Animator>().SetTrigger("Search");
+        base.StartBattle();
     }
-    public void SetIdleMode()
+    public override void ReturnIdle()
     {
         UnitArrange unit = GetComponent<UnitArrange>();
         unit.enabled = true;
-        healthBar.SetActive(false);
         unit.ReturnTile();
-        agent.enabled = false;
+        transform.rotation = Quaternion.identity;
+        base.ReturnIdle();
     }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
-    }
+   
 }
