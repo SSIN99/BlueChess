@@ -17,8 +17,9 @@ public class EnemyControl : Unit
     {
         round.OnStepChange += SetState;
     }
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         InitInfo(info.enemyData[No]);
     }
     public void SetState()

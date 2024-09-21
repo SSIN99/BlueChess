@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DragHandler : MonoBehaviour
+public class MouseHandler : MonoBehaviour
 {
     #region À¯´Ö µå·¡±×
     [SerializeField] private RoundManager round;
@@ -15,8 +15,10 @@ public class DragHandler : MonoBehaviour
     [SerializeField] private Text[] costText;
     #endregion
 
+    [SerializeField] GameObject unitInfoUI;
     private bool isDragUnit;
     private GameObject hand;
+    public GameObject target;
     public GameObject Hand
     {
         get { return Hand; }
@@ -30,6 +32,17 @@ public class DragHandler : MonoBehaviour
             else
             {
                 OnDrag();
+            }
+        }
+    }
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            if(target != null && target.CompareTag("Unit"))
+            {
+                unitInfoUI.SetActive(true);
+                unitInfoUI.GetComponent<UnitInfoUIHandler>().SetUnitInfo(target);
             }
         }
     }

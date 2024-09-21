@@ -2250,9 +2250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curTile: {fileID: 0}
-  targetTile: {fileID: 0}
-  isOnField: 0
 --- !u!114 &-1522795148430049552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2270,8 +2267,8 @@ MonoBehaviour:
   Origin: 0
   Class: 0
   Cost: 0
-  maxHealth: 0
-  curHealth: 0
+  maxHP: 0
+  curHP: 0
   maxMP: 0
   startMP: 0
   curMP: 0
@@ -2286,8 +2283,10 @@ MonoBehaviour:
   Speed: 0
   agent: {fileID: 0}
   anim: {fileID: 0}
-  statusBar: {fileID: 710128122474209871}
+  col: {fileID: 0}
+  statusBar: {fileID: 4612880397611763776}
   target: {fileID: 0}
+  isDead: 0
 --- !u!1 &5414845095173571951
 GameObject:
   m_ObjectHideFlags: 0
@@ -4096,13 +4095,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
---- !u!1 &710128122474209871 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6222366910854973550, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
-  m_PrefabInstance: {fileID: 6881685494886885921}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7946545628777109071 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3586947068129819758, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
   m_PrefabInstance: {fileID: 6881685494886885921}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4612880397611763776 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2271105275634377313, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
+  m_PrefabInstance: {fileID: 6881685494886885921}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 434faf01472b9b241b0a6af3cd3c84f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

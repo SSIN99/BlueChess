@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField] private Tile curTile;
-    [SerializeField] private Tile targetTile;
+    private Tile curTile;
+    private Tile targetTile;
     private Player player;
-    private DragHandler dragHandler;
+    private Unit unit;
+    private MouseHandler mouse;
     private MonoBehaviour outline;
     private Animator anim;
-    public bool isOnField;
+    public bool IsOnField => curTile.type == Type.Field;
 
     private void Awake()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         this.player = player.GetComponent<Player>();
-        dragHandler = player.GetComponent<DragHandler>();
+        unit = GetComponent<Unit>();
+        mouse = player.GetComponent<MouseHandler>();
         outline = GetComponent<Outline>();
         anim = GetComponent<Animator>();
     }
@@ -25,7 +27,7 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         curTile.unit = null;
         curTile = null;
-        dragHandler.SetHand(null);
+        mouse.SetHand(null);
     }
     public void InitTile(Tile target)
     {
@@ -47,13 +49,11 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             if(curTile.type == Type.Bench)
             {
-                isOnField = true;
                 player.RemoveBench(gameObject);
                 player.AddField(gameObject);
             }
             else
             {
-                isOnField = false;
                 player.RemoveField(gameObject);
                 player.AddBench(gameObject);
             }
@@ -62,25 +62,25 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         curTile.unit = this;
         transform.position = curTile.transform.position;
     }
-    public void ReturnTile()
-    {
-        transform.position = curTile.transform.position;
-    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         outline.enabled = true;
+        mouse.target = gameObject;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         outline.enabled = false;
+        mouse.target = null;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        dragHandler.SetHand(eventData.pointerDrag);
+        if (unit.isBattle) return;
+        mouse.SetHand(eventData.pointerDrag);
         anim.Play("PickUp");
     }
     public void OnDrag(PointerEventData eventData)
     {
+        if (unit.isBattle) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         plane.Raycast(ray, out float distnace);
@@ -99,6 +99,7 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (unit.isBattle) return;
         if (targetTile == null)
         {
             transform.position = curTile.transform.position;
@@ -117,7 +118,7 @@ public class UnitArrange : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 SetTile(targetTile);
             }
         }
-        dragHandler.SetHand(null);
+        mouse.SetHand(null);
         anim.Play("Idle");
     }
 }

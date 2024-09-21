@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Renderer rend;
     private Color basicColor;
-    public UnitArrange unit;
+    public ArrangeControl unit;
     public Type type;
 
 

@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
     }
     public void PurchaseUnit(int n, GameObject unit)
     {
-        UnitArrange arrange = unit.GetComponent<UnitArrange>();
+        ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
         UnitControl unitInfo = unit.GetComponent<UnitControl>();
 
         Gold -= unitInfo.Cost;
@@ -134,11 +134,11 @@ public class Player : MonoBehaviour
     }
     public void SellUnit(GameObject unit)
     {
-        UnitArrange arrange = unit.GetComponent<UnitArrange>();
+        ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
         UnitControl unitInfo = unit.GetComponent<UnitControl>();
 
         Gold += unitInfo.Cost;
-        if (arrange.isOnField)
+        if (arrange.IsOnField)
         {
             RemoveField(unit);
         }
@@ -164,6 +164,10 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < fieldList.Count; i++)
             {
+                if(fieldList[i].activeSelf == false)
+                {
+                    fieldList[i].SetActive(true);
+                }
                 fieldList[i].GetComponent<UnitControl>().ReturnIdle();
             }
         }
