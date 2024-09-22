@@ -174,6 +174,7 @@ public class Player : MonoBehaviour
     }
     public void AddBench(GameObject unit)
     {
+        unit.layer = LayerMask.NameToLayer("Bench");
         benchList.Add(unit);
         numOfBench++;
     }
@@ -184,6 +185,7 @@ public class Player : MonoBehaviour
     }
     public void AddField(GameObject unit)
     {
+        unit.layer = LayerMask.NameToLayer("Field");
         fieldList.Add(unit);
         NumOfField++;
     }

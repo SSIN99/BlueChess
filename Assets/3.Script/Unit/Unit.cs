@@ -231,10 +231,6 @@ public class Unit : MonoBehaviour
             isBattle = value;
             if (isBattle)
             {
-                if (transform.CompareTag("Unit"))
-                {
-                    gameObject.layer = LayerMask.NameToLayer("Battle");
-                }
                 pos = transform.position;
                 rot = transform.rotation;
                 agent.enabled = true;
@@ -242,10 +238,6 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                if (transform.CompareTag("Unit"))
-                {
-                    gameObject.layer = LayerMask.NameToLayer("Unit");
-                }
                 IsDead = false;
                 transform.position = pos;
                 transform.rotation = rot;
@@ -277,7 +269,7 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            layer = LayerMask.GetMask("Battle");
+            layer = LayerMask.GetMask("Field");
         }
 
         Collider[] objs = Physics.OverlapSphere(transform.position, 15f, layer);

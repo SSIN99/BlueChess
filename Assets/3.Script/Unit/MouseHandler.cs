@@ -65,7 +65,7 @@ public class MouseHandler : MonoBehaviour
             field.SetActive(false);
             bench.SetActive(false);
             sellUI.SetActive(false);
-            LayerMask layerMask = LayerMask.GetMask("Unit", "Battle");
+            LayerMask layerMask = LayerMask.GetMask("Bench", "Field");
             raycaster.eventMask = layerMask;
         }
     }
