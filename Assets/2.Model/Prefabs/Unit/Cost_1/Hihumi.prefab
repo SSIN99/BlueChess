@@ -4069,9 +4069,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curTile: {fileID: 0}
-  targetTile: {fileID: 0}
-  isOnField: 0
 --- !u!114 &-437248855327456425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4089,8 +4086,9 @@ MonoBehaviour:
   Origin: 0
   Class: 0
   Cost: 0
-  maxHealth: 0
-  curHealth: 0
+  Grade: 0
+  maxHP: 0
+  curHP: 0
   maxMP: 0
   startMP: 0
   curMP: 0
@@ -4105,8 +4103,12 @@ MonoBehaviour:
   Speed: 0
   agent: {fileID: 0}
   anim: {fileID: 0}
+  col: {fileID: 0}
   statusBar: {fileID: 5270253894658126321}
   target: {fileID: 0}
+  pos: {x: 0, y: 0, z: 0}
+  isDead: 0
+  isBattle: 0
 --- !u!1 &8566641869386423362
 GameObject:
   m_ObjectHideFlags: 0
@@ -4524,15 +4526,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6222366910854973550, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6319197698211265249, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6319197698211265249, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8631159018918193470, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
       propertyPath: m_PresetInfoIsWorld

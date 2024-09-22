@@ -18,7 +18,6 @@ public class MouseHandler : MonoBehaviour
     [SerializeField] GameObject unitInfoUI;
     private bool isDragUnit;
     private GameObject hand;
-    public GameObject target;
     public GameObject Hand
     {
         get { return Hand; }
@@ -35,17 +34,7 @@ public class MouseHandler : MonoBehaviour
             }
         }
     }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            if(target != null && target.CompareTag("Unit"))
-            {
-                unitInfoUI.SetActive(true);
-                unitInfoUI.GetComponent<UnitInfoUIHandler>().SetUnitInfo(target);
-            }
-        }
-    }
+    
     public void SetHand(GameObject target)
     {
         if(target != null)
@@ -76,7 +65,7 @@ public class MouseHandler : MonoBehaviour
             field.SetActive(false);
             bench.SetActive(false);
             sellUI.SetActive(false);
-            LayerMask layerMask = LayerMask.GetMask("Unit");
+            LayerMask layerMask = LayerMask.GetMask("Unit", "Battle");
             raycaster.eventMask = layerMask;
         }
     }

@@ -10,6 +10,7 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private Player player;
     private Unit unit;
     private MouseHandler mouse;
+    private UnitInfoUIHandler infoUI;
     private MonoBehaviour outline;
     private Animator anim;
     public bool IsOnField => curTile.type == Type.Field;
@@ -20,6 +21,7 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         this.player = player.GetComponent<Player>();
         unit = GetComponent<Unit>();
         mouse = player.GetComponent<MouseHandler>();
+        infoUI = GameObject.FindGameObjectWithTag("UnitInfoUI").GetComponent<UnitInfoUIHandler>();
         outline = GetComponent<Outline>();
         anim = GetComponent<Animator>();
     }
@@ -64,23 +66,23 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        outline.enabled = true;
-        mouse.target = gameObject;
+       outline.enabled = true;
+       infoUI.target = gameObject;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         outline.enabled = false;
-        mouse.target = null;
+        infoUI.target = null;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (unit.isBattle) return;
+        if (unit.IsBattle) return;
         mouse.SetHand(eventData.pointerDrag);
         anim.Play("PickUp");
     }
     public void OnDrag(PointerEventData eventData)
     {
-        if (unit.isBattle) return;
+        if (unit.IsBattle) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         plane.Raycast(ray, out float distnace);
@@ -99,7 +101,7 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (unit.isBattle) return;
+        if (unit.IsBattle) return;
         if (targetTile == null)
         {
             transform.position = curTile.transform.position;

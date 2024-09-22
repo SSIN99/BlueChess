@@ -15,7 +15,7 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Text originText;
     [SerializeField] private Text classText;
     private Color[] colorList =
-   {
+    {
         new Color(1f, 1f, 1f),
         new Color(0.35f, 1f, 0.7f),
         new Color(0.45f, 1f, 1f),

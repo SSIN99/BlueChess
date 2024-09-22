@@ -5,30 +5,67 @@ using UnityEngine.UI;
 
 public class StatusBar : MonoBehaviour
 {
+    private Unit unit;
     [SerializeField] private Transform pivot;
-    [SerializeField] private Text gradeText;
+    [SerializeField] private Sprite[] gradeImages;
+    [SerializeField] private Image grade;
     [SerializeField] private Slider hpBar;
     [SerializeField] private Slider mpBar;
 
-    public void InitStatus(int grade ,float maxHp, int maxMp, int curMp)
+    private void Awake()
     {
-        gradeText.text = $"{grade}";
-
-        hpBar.maxValue = maxHp;
-        hpBar.value = maxHp;
-
-        mpBar.maxValue = maxMp;
-        mpBar.value = curMp;
+        unit = transform.parent.GetComponent<Unit>();
     }
-    public void UpdateStatus(float curHp, float curMp)
+    private void OnEnable()
     {
-        hpBar.value = curHp;
-        mpBar.value = curMp;
+        unit.OnGradeChanged += UpdateGrade;
+        unit.OnCurHpChanged += UpdateCurHp;
+        unit.OnMaxHpChanged += UpdateMaxHp;
+        unit.OnCurMpChanged += UpdateCurMp;
+        unit.OnMaxMpChanged += UpdateMaxMp;
+        unit.OnIsDeadChanged += SetActiveStatus;
+    }
+
+    private void UpdateGrade()
+    {
+        grade.sprite = gradeImages[unit.Grade - 1];
+    }
+    private void UpdateCurHp()
+    {
+        hpBar.value = unit.CurHp;
+    }
+    private void UpdateMaxHp()
+    {
+        hpBar.maxValue = unit.MaxHp;
+    }
+    private void UpdateCurMp()
+    {
+        mpBar.value = unit.CurMp;
+    }
+    private void UpdateMaxMp()
+    {
+        mpBar.maxValue = unit.MaxMp;
+    }
+    private void SetActiveStatus()
+    {
+        if (unit.IsDead)
+            pivot.gameObject.SetActive(false);
+        else
+        {
+            pivot.gameObject.SetActive(true);
+        }
     }
     private void Update()
     {
         pivot.transform.forward = Camera.main.transform.forward;
     }
-
-
+    private void OnDisable()
+    {
+        unit.OnGradeChanged -= UpdateGrade;
+        unit.OnCurHpChanged -= UpdateCurHp;
+        unit.OnMaxHpChanged -= UpdateMaxHp;
+        unit.OnCurMpChanged -= UpdateCurMp;
+        unit.OnMaxMpChanged -= UpdateMaxMp;
+        unit.OnIsDeadChanged -= SetActiveStatus;
+    }
 }

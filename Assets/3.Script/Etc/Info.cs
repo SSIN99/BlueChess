@@ -22,6 +22,10 @@ public class Info : MonoBehaviour
     public List<GameObject> prefabs;
     //유닛 메모리얼 리스트
     public List<Sprite> memorials;
+    //유닛 아이콘 리스트
+    public List<Sprite> portraits;
+    //유닛 스킬 아이콘 리스트
+    public List<Sprite> skills;
     //특성별 아이콘 리스트
     public List<Sprite> traits;
 

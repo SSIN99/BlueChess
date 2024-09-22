@@ -157,7 +157,7 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < fieldList.Count; i++)
             {
-                fieldList[i].GetComponent<UnitControl>().StartBattle();     
+                fieldList[i].GetComponent<UnitControl>().IsBattle = true;
             }
         }
         else
@@ -168,7 +168,7 @@ public class Player : MonoBehaviour
                 {
                     fieldList[i].SetActive(true);
                 }
-                fieldList[i].GetComponent<UnitControl>().ReturnIdle();
+                fieldList[i].GetComponent<UnitControl>().IsBattle = false;
             }
         }
     }

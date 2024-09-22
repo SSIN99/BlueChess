@@ -25,17 +25,12 @@ public class EnemyControl : Unit
     public void SetState()
     {
         if (!round.IsBattleStep)
-            ReturnIdle();
+            IsBattle = false;
         else
-            StartBattle();
+            IsBattle = true;
     }
 
-    public override void ReturnIdle()
-    {
-        transform.rotation = Quaternion.Euler(0, 180, 0);
-        base.ReturnIdle();
-    }
-
+   
     private void OnDisable()
     {
         round.OnStepChange -= SetState;
