@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class Unit : MonoBehaviour
 {
@@ -148,8 +149,8 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnCDChanged;
-    private int armor;
-    public int Armor
+    private float armor;
+    public float Armor
     {
         get { return armor; }
         private set
@@ -159,8 +160,8 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnArmorChanged;
-    private int resist;
-    public int Resist
+    private float resist;
+    public float Resist
     {
         get { return resist; }
         private set
@@ -190,9 +191,9 @@ public class Unit : MonoBehaviour
         AP = 100;
         AS = float.Parse(data["AS"]);
         CritRatio = 25f;
-        CritRatio = 150f;
-        Armor = int.Parse(data["Armor"]);
-        Resist = int.Parse(data["Resistance"]);
+        CritDamage = 150f;
+        Armor = float.Parse(data["Armor"]);
+        Resist = float.Parse(data["Resistance"]);
         isDead = false;
         isBattle = false;
     }
@@ -340,16 +341,30 @@ public class Unit : MonoBehaviour
     {
         if (target.activeSelf == true && !target.GetComponent<Unit>().IsDead)
         {
-            target.GetComponent<Unit>().TakeDamage(AD);
+            float finalDamage;
+            float rand = Random.Range(0f, 100f);
+            bool isCritical;
+            if (rand < critRatio)
+            {
+                finalDamage = ad * (critDamage / 100f);
+                isCritical = true;
+            }
+            else
+            {
+                finalDamage = ad;
+                isCritical = false;
+            }
+            target.GetComponent<Unit>().TakeDamage(finalDamage, isCritical);
             curMp += 10;
             CurMp = Mathf.Clamp(curMp, 0, MaxMp);
         }
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, bool crit)
     {
         if (IsDead) return;
 
-        float actualDamage = damage * (1 - (Armor / (Armor + 100)));
+        float actualDamage = damage * (1f - (armor / (armor + 100f)));
+        actualDamage = Mathf.Round(actualDamage);
         curHp -= actualDamage;
         CurHp =  Mathf.Clamp(curHp, 0, MaxHp);
         curMp += 5;
@@ -358,7 +373,7 @@ public class Unit : MonoBehaviour
         {
             IsDead = true;
         }
-        damageTextHandler.PrintDamage(actualDamage, gameObject);
+        damageTextHandler.PrintDamage(actualDamage, gameObject, crit);
     }
     public void Dead()
     {

@@ -18,6 +18,8 @@ public class Info : MonoBehaviour
     public List<Dictionary<string, string>> enemyData;
     //À¯´Ö ¿ÀºêÁ§Æ® Ç®¸µ Å¥ ¸®½ºÆ®
     public List<Queue<GameObject>> unitPool;
+    //À¯´Ö Ç® °¹¼ö µñ¼Å³Ê¸®
+    public Dictionary<int, int> unitCount;
     //À¯´Ö ÇÁ¸®Æé ¸®½ºÆ®
     public List<GameObject> prefabs;
     //À¯´Ö ¸Þ¸ð¸®¾ó ¸®½ºÆ®
@@ -43,6 +45,7 @@ public class Info : MonoBehaviour
     {
         int count = 0;
         unitPool = new List<Queue<GameObject>>();
+        unitCount = new Dictionary<int, int>();
         for(int i = 0; i < unitData.Count; i++)
         {
             Queue<GameObject> pool = new Queue<GameObject>();
@@ -64,15 +67,15 @@ public class Info : MonoBehaviour
                     count = int.Parse(ratioData[0]["Wei5"]);
                     break;
             }
-            for (int j =0; j < count; j++)
+            for (int j =0; j < 15; j++)
             {
                 GameObject unit = Instantiate(prefabs[i]);
-                unit.GetComponent<Unit>().InitInfo(unitData[i]);
                 unit.SetActive(false);
                 unit.transform.parent = transform;
                 pool.Enqueue(unit);
             }
             unitPool.Add(pool);
+            unitCount.Add(i, count);
         }
     }
 }

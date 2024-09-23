@@ -10,11 +10,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private ShopItem[] itemList;
 
     [SerializeField] private Text[] ratioText;
-    [SerializeField] private Image lockImage;
-    [SerializeField] private Sprite[] lockSprite;
 
     private WeightedRandomPicker<int> unitPool;
-    private bool isLocked = false;
 
     private void OnEnable()
     {
@@ -96,8 +93,6 @@ public class ShopManager : MonoBehaviour
     }
     public void SetShopItem()
     {
-        if (isLocked) return;
-
         foreach(var item in itemList)
         {
             if (item.gameObject.activeSelf.Equals(false))
@@ -116,21 +111,11 @@ public class ShopManager : MonoBehaviour
     {
         int rand = unitPool.GetRandomPick();
 
-        while(info.unitPool[rand].Count.Equals(0))
+        while(info.unitCount[rand].Equals(0))
         {
             rand = unitPool.GetRandomPick();
-            if(info.unitPool[rand].Count < 0)
-            {
-                Debug.Log("풀 갯수 오류 발생!!!");
-                break;
-            }
         }
         return rand;
-    }
-    public void ToggleLock()
-    {
-        isLocked = !isLocked;
-        lockImage.sprite = isLocked ? lockSprite[0] : lockSprite[1];
     }
     private void OnDisable()
     {

@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Text expText;
     [SerializeField] private Slider expSlider;
     [SerializeField] private TMP_Text fieldText;
+    [SerializeField] private Image lockImage;
+    [SerializeField] private Sprite[] lockSprite;
     #endregion
 
     #region Info변수
@@ -20,7 +22,8 @@ public class Player : MonoBehaviour
     private int gold;
     private int curExp;
     private int maxExp;
-    private int[] maxExpList = { 2, 4, 6, 10, 20, 36, 48, 76 }; 
+    private int[] maxExpList = { 2, 4, 6, 10, 20, 36, 48, 76 };
+    private bool isLocked;
     public event Action OnLevelUp;
     public int Level
     {
@@ -108,16 +111,24 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Unit메소드
+    public void ToggleLock()
+    {
+        isLocked = !isLocked;
+        lockImage.sprite = isLocked ? lockSprite[0] : lockSprite[1];
+    }
     public void RecruitUnit()
     {
         if (Gold < 2) return;
         Gold -= 2;
         shop.SetShopItem();
     }
-    public void PurchaseUnit(int n, GameObject unit)
+    public void PurchaseUnit(int n)
     {
+        GameObject unit = info.unitPool[n].Dequeue();
         ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
         UnitControl unitInfo = unit.GetComponent<UnitControl>();
+        unit.SetActive(true);
+        unitInfo.InitInfo(info.unitData[n]);
 
         Gold -= unitInfo.Cost;
         AddBench(unit);
@@ -127,7 +138,6 @@ public class Player : MonoBehaviour
             {
                 arrange.InitTile(bench[i]);
                 unit.transform.parent = transform;
-                unit.SetActive(true);
                 break;
             }
         }
@@ -137,7 +147,22 @@ public class Player : MonoBehaviour
         ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
         UnitControl unitInfo = unit.GetComponent<UnitControl>();
 
-        Gold += unitInfo.Cost;
+        switch (unitInfo.Grade)
+        {
+            case 1:
+                Gold += unitInfo.Cost;
+                info.unitCount[unitInfo.No]++;
+                break;
+            case 2:
+                Gold += (unitInfo.Cost * 3) - 1;
+                info.unitCount[unitInfo.No] += 3;
+                break;
+            case 3:
+                Gold += (unitInfo.Cost * 9) - 1;
+                info.unitCount[unitInfo.No] += 9;
+                break;
+        }
+
         if (arrange.IsOnField)
         {
             RemoveField(unit);
@@ -150,6 +175,7 @@ public class Player : MonoBehaviour
         info.unitPool[unitInfo.No].Enqueue(unit);
         unit.transform.parent = info.transform;
         unit.SetActive(false);
+        Debug.Log($"{unitInfo.No}번 유닛 판매, { info.unitCount[unitInfo.No]}개 잔여");
     }
     private void SetFieldUnitState()
     {
@@ -193,6 +219,10 @@ public class Player : MonoBehaviour
     {
         fieldList.Remove(unit);
         NumOfField--;
+    }
+    public void UpdateUnitTrait()
+    {
+        
     }
     #endregion
     private void OnEnable()

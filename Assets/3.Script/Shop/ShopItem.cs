@@ -30,29 +30,32 @@ public class ShopItem : MonoBehaviour
     public int no;
     private int cost;
     private GameObject item;
+    private Dictionary<string, string> data;
     #endregion
 
     public void SetItem(int n)
     {
         no = n;
         item = info.unitPool[n].Dequeue();
+        info.unitCount[no]--;
+        data = info.unitData[n];
 
-        UnitControl unit = item.GetComponent<UnitControl>();
-       
-        border.color = colorList[unit.Cost - 1];
+        border.color = colorList[int.Parse(data["Cost"]) - 1];
         memorial.sprite = info.memorials[n];
-        originIcon.sprite = info.traits[unit.Origin];
-        classIcon.sprite = info.traits[unit.Class];
-        nameText.text = unit.Name;
-        cost = unit.Cost;
+        originIcon.sprite = info.traits[int.Parse(data["Origin"])];
+        classIcon.sprite = info.traits[int.Parse(data["Class"])];
+        nameText.text = data["Name"];
+        cost = int.Parse(data["Cost"]);
         costText.text = cost.ToString(); 
-        originText.text = info.traitData[unit.Origin]["Name"];
-        classText.text = info.traitData[unit.Class]["Name"];
+        originText.text = info.traitData[int.Parse(data["Origin"])]["Name"];
+        classText.text = info.traitData[int.Parse(data["Class"])]["Name"];
+        Debug.Log($"{no}¹ø À¯´Ö Áø¿­, { info.unitCount[no]}°³ ÀÜ¿©");
 
     }
     public void ReturnItem()
     {
-        info.unitPool[no].Enqueue(item.gameObject);   
+        info.unitCount[no]++;
+        Debug.Log($"{no}¹ø À¯´Ö Ãë¼Ò, { info.unitCount[no]}°³ ÀÜ¿©");
     }
     public void OnClicked()
     {
@@ -61,7 +64,7 @@ public class ShopItem : MonoBehaviour
         {
             return;
         }
-        player.PurchaseUnit(no,item);
+        player.PurchaseUnit(no);
         gameObject.SetActive(false);
     }
 }

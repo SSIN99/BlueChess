@@ -4030,7 +4030,7 @@ NavMeshAgent:
   m_Speed: 3
   m_Acceleration: 1000
   avoidancePriority: 50
-  m_AngularSpeed: 500
+  m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
@@ -4038,7 +4038,7 @@ NavMeshAgent:
   m_Height: 0.01
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &890322797427678566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4085,30 +4085,17 @@ MonoBehaviour:
   Name: 
   Origin: 0
   Class: 0
-  Cost: 0
-  Grade: 0
-  maxHP: 0
-  curHP: 0
-  maxMP: 0
-  startMP: 0
-  curMP: 0
-  AD: 0
-  AP: 0
-  AS: 0
-  CritRatio: 0
-  CritDamage: 0
-  Armor: 0
-  Resistance: 0
   Range: 0
   Speed: 0
+  damageTextHandler: {fileID: 0}
   agent: {fileID: 0}
   anim: {fileID: 0}
   col: {fileID: 0}
-  statusBar: {fileID: 5270253894658126321}
   target: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
-  isDead: 0
-  isBattle: 0
+  rot: {x: 0, y: 0, z: 0, w: 0}
+  moveSpeed: 0
+  rotSpeed: 0
 --- !u!1 &8566641869386423362
 GameObject:
   m_ObjectHideFlags: 0
@@ -4542,11 +4529,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
---- !u!1 &5270253894658126321 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6222366910854973550, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
-  m_PrefabInstance: {fileID: 2268119050419747231}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3368304500045579761 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3586947068129819758, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}

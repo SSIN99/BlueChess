@@ -20,7 +20,7 @@ public class DamageTextHandler : MonoBehaviour
             damageList.Enqueue(temp);
         }
     }
-    public void PrintDamage(float damage, GameObject target)
+    public void PrintDamage(float damage, GameObject target, bool crit)
     {
         GameObject temp = damageList.Dequeue();
         temp.SetActive(true);
@@ -29,9 +29,9 @@ public class DamageTextHandler : MonoBehaviour
         offset = Random.insideUnitCircle;
         Vector2 pos = Camera.main.WorldToScreenPoint(target.transform.position);
         pos.y += 50f;
-        pos.x += offset.x * 10f;
-        pos.y += offset.y * 10f;
+        pos.x += offset.x * 15f;
+        pos.y += offset.y * 15f;
 
-        temp.GetComponent<DamageText>().InitDamage(damage, pos);
+        temp.GetComponent<DamageText>().InitDamage(damage, pos, crit);
     }
 }
