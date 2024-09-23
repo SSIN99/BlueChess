@@ -199,6 +199,7 @@ public class Unit : MonoBehaviour
     #endregion
 
     [Header("Etc")]
+    public DamageTextHandler damageTextHandler;
     public NavMeshAgent agent;
     public Animator anim;
     public BoxCollider col;
@@ -257,6 +258,7 @@ public class Unit : MonoBehaviour
 
     protected virtual void Start()
     {
+        damageTextHandler = GameObject.FindGameObjectWithTag("Damage").GetComponent<DamageTextHandler>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         col = GetComponent<BoxCollider>();
@@ -301,6 +303,7 @@ public class Unit : MonoBehaviour
     }
     public void CheckAttackRange()
     {
+        CheckTargetDead();
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         float radius = 2 * Range;
         float distance = Vector3.Distance(transform.position, target.transform.position);
@@ -355,6 +358,7 @@ public class Unit : MonoBehaviour
         {
             IsDead = true;
         }
+        damageTextHandler.PrintDamage(actualDamage, gameObject);
     }
     public void Dead()
     {
