@@ -205,6 +205,8 @@ public class Unit : MonoBehaviour
     public GameObject target;
     public Vector3 pos;
     public Quaternion rot;
+    public float moveSpeed;
+    public float rotSpeed;
 
     private bool isDead;
     private bool isBattle;
@@ -258,6 +260,9 @@ public class Unit : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         col = GetComponent<BoxCollider>();
+        moveSpeed = 3f;
+        rotSpeed = 10f;
+        agent.speed = moveSpeed;
     }
     public void DetectTarget()
     {
@@ -287,21 +292,23 @@ public class Unit : MonoBehaviour
         target = objs[0].gameObject;
         anim.Play("Move");
     }
-    public void CheckAttackRange()
+    public void CheckTargetDead()
     {
         if (target == null || target.activeSelf == false || target.GetComponent<Unit>().IsDead)
         {
             anim.Play("Search");
         }
+    }
+    public void CheckAttackRange()
+    {
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         float radius = 2 * Range;
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (distance <= radius)
         {
-            transform.LookAt(target.transform.position);
-            anim.SetFloat("AttackSpeed", AS);
             if(agent.enabled)
                 agent.isStopped = true;
+            anim.SetFloat("AttackSpeed", AS);
             if (!stateInfo.IsName("Attack"))
                 anim.Play("Attack");
         }
@@ -312,6 +319,18 @@ public class Unit : MonoBehaviour
             agent.SetDestination(target.transform.position);
             if (!stateInfo.IsName("Move"))
                 anim.Play("Move");
+        }
+    }
+    public void LookAtTarget()
+    {
+        if (target != null)
+        {
+            Vector3 direction = target.transform.position - transform.position;
+            direction.y = 0;  
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
         }
     }
     public void AutoAttack()

@@ -55,7 +55,7 @@ public class StatusBar : MonoBehaviour
             pivot.gameObject.SetActive(true);
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
         pivot.transform.forward = Camera.main.transform.forward;
     }

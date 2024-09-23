@@ -12,6 +12,7 @@ public class MoveState : StateMachineBehaviour
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        unit.CheckTargetDead();
         unit.CheckAttackRange();
     }
 }
