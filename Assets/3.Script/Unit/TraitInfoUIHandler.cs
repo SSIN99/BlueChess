@@ -113,4 +113,5 @@ public class TraitInfoUIHandler : MonoBehaviour
             effects[3].color = color;
         }
     }
+
 }

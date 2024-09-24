@@ -55,7 +55,6 @@ public class ShopItem : MonoBehaviour
     public void ReturnItem()
     {
         info.unitCount[no]++;
-        Debug.Log($"{no}¹ø À¯´Ö Ãë¼Ò, { info.unitCount[no]}°³ ÀÜ¿©");
     }
     public void OnClicked()
     {
