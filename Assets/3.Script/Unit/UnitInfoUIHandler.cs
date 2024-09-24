@@ -49,8 +49,8 @@ public class UnitInfoUIHandler : MonoBehaviour
         portrait.sprite = info.portraits[unit.No];
         grade.sprite = gradeIcons[unit.Grade - 1];
         costColor.color = colorList[unit.Cost - 1];
-        origin.sprite = info.traits[unit.Origin];
-        jobClass.sprite = info.traits[unit.Class];
+        origin.sprite = info.traitIcon[unit.Origin];
+        jobClass.sprite = info.traitIcon[unit.Class];
         charName.text = unit.Name;
         switch (unit.Grade)
         {
@@ -70,7 +70,7 @@ public class UnitInfoUIHandler : MonoBehaviour
         mpBar.maxValue = unit.MaxMp;
         mpBar.value = unit.CurMp;
         mpText.text = $"{mpBar.value}/{mpBar.maxValue}";
-        skillIcon.sprite = info.skills[unit.No];
+        skillIcon.sprite = info.skillIcon[unit.No];
         //스킬이름
         //스킬설명 추가
         ad.text = unit.AD.ToString();

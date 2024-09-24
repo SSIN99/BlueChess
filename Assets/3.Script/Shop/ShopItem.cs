@@ -38,17 +38,17 @@ public class ShopItem : MonoBehaviour
         no = n;
         item = info.unitPool[n].Dequeue();
         info.unitCount[no]--;
-        data = info.unitData[n];
+        data = info.Units[n];
 
         border.color = colorList[int.Parse(data["Cost"]) - 1];
         memorial.sprite = info.memorials[n];
-        originIcon.sprite = info.traits[int.Parse(data["Origin"])];
-        classIcon.sprite = info.traits[int.Parse(data["Class"])];
+        originIcon.sprite = info.traitIcon[int.Parse(data["Origin"])];
+        classIcon.sprite = info.traitIcon[int.Parse(data["Class"])];
         nameText.text = data["Name"];
         cost = int.Parse(data["Cost"]);
         costText.text = cost.ToString(); 
-        originText.text = info.traitData[int.Parse(data["Origin"])]["Name"];
-        classText.text = info.traitData[int.Parse(data["Class"])]["Name"];
+        originText.text = info.Traits[int.Parse(data["Origin"])]["Name"];
+        classText.text = info.Traits[int.Parse(data["Class"])]["Name"];
         Debug.Log($"{no}¹ø À¯´Ö Áø¿­, { info.unitCount[no]}°³ ÀÜ¿©");
 
     }

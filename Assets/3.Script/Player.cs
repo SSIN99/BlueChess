@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class Player : MonoBehaviour
 {
-    #region UI변수
+    #region UI
     [SerializeField] private Text levelText;
     [SerializeField] private Text goldText;
     [SerializeField] private Text expText;
@@ -17,7 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite[] lockSprite;
     #endregion
 
-    #region Info변수
+    #region Info
     private int level;
     private int gold;
     private int curExp;
@@ -44,32 +45,6 @@ public class Player : MonoBehaviour
             goldText.text = gold.ToString();
         }
     }
-    #endregion
-
-    #region Unit변수
-    [SerializeField] private Info info;
-    [SerializeField] private ShopManager shop;
-    [SerializeField] private RoundManager round;
-    [SerializeField] private Tile[] bench;
-    private List<GameObject> benchList;
-    private List<GameObject> fieldList;
-    [SerializeField] private int numOfBench = 0;
-    [SerializeField] private int numOfField = 0;
-    public int NumOfField
-    {
-        get { return numOfField; }
-        private set
-        {
-            numOfField = value;
-            fieldText.text = $"{numOfField} / {level}";
-            fieldText.color = isFullField ? Color.red : new Color(0.35f, 0.75f, 1);
-        }
-    }
-    public bool isFullField => numOfField >= level;
-    public bool isFullBench => numOfBench >= 8;
-    #endregion
-
-    #region  Info메소드
     private void LevelUp()
     {
         levelText.text = $"Lv.{level.ToString()}";
@@ -110,7 +85,27 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    #region Unit메소드
+    #region Unit
+    [SerializeField] private Info info;
+    [SerializeField] private ShopManager shop;
+    [SerializeField] private RoundManager round;
+    [SerializeField] private Tile[] bench;
+    private List<GameObject> benchList;
+    private List<GameObject> fieldList;
+    [SerializeField] private int numOfBench = 0;
+    [SerializeField] private int numOfField = 0;
+    public int NumOfField
+    {
+        get { return numOfField; }
+        private set
+        {
+            numOfField = value;
+            fieldText.text = $"{numOfField} / {level}";
+            fieldText.color = isFullField ? Color.red : new Color(0.35f, 0.75f, 1);
+        }
+    }
+    public bool isFullField => numOfField >= level;
+    public bool isFullBench => numOfBench >= 8;
     public void ToggleLock()
     {
         isLocked = !isLocked;
@@ -128,7 +123,7 @@ public class Player : MonoBehaviour
         ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
         UnitControl unitInfo = unit.GetComponent<UnitControl>();
         unit.SetActive(true);
-        unitInfo.InitInfo(info.unitData[n]);
+        unitInfo.InitInfo(info.Units[n]);
 
         Gold -= unitInfo.Cost;
         AddBench(unit);
@@ -214,21 +209,114 @@ public class Player : MonoBehaviour
         unit.layer = LayerMask.NameToLayer("Field");
         fieldList.Add(unit);
         NumOfField++;
+
+        Unit u = unit.GetComponent<Unit>();
+        if (!onFieldUnit.ContainsKey(u.No))
+        { //처음유닛 넣을때
+            onFieldUnit.Add(u.No, 1);
+            if (!traitList.ContainsKey(u.Origin))
+            { //소속유닛이 처음일때
+                traitList.Add(u.Origin, 1);
+            }
+            else
+            { //소속유닛이 이미있을때
+                traitList[u.Origin]++;
+            }
+            if (!traitList.ContainsKey(u.Class))
+            { //직업유닛이 처음일때
+                traitList.Add(u.Class, 1);
+            }
+            else
+            { //직업유닛이 이미있을때
+                traitList[u.Class]++;
+            }
+            UpdateTraitBar();
+        }
+        else
+        { //중복유닛 넣을때
+            onFieldUnit[u.No]++;
+        }
     }
     public void RemoveField(GameObject unit)
     {
         fieldList.Remove(unit);
         NumOfField--;
-    }
-    public void UpdateUnitTrait()
-    {
-        
+
+        Unit u = unit.GetComponent<Unit>();
+        onFieldUnit[u.No]--;
+        if(onFieldUnit[u.No] == 0)
+        { //완전히 유닛이 없을때 *중복은 신경x
+            onFieldUnit.Remove(u.No);
+            traitList[u.Origin]--;
+            if(traitList[u.Origin] == 0)
+            { //소속유닛이 하나도 없을때
+                traitList.Remove(u.Origin);
+            }
+            traitList[u.Class]--;
+            if (traitList[u.Class] == 0)
+            { // 직업유닛이 하나도 없을때
+                traitList.Remove(u.Class);
+            }
+        }
+        UpdateTraitBar();
     }
     #endregion
-    private void OnEnable()
+
+    #region Trait
+    public Dictionary<int, int> onFieldUnit;
+    public Dictionary<int, int> traitList;
+    [SerializeField] private TraitBar[] traitBars;
+
+    private bool CheckTraitActive(int no, int num)
     {
-        round.OnStepChange += SetFieldUnitState;
+        if(num >= int.Parse(info.Traits[no]["Rank1"]))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+    private void UpdateTraitBar()
+    {
+        List<KeyValuePair<int, int>> activeTrait = new List<KeyValuePair<int, int>>();
+        List<KeyValuePair<int, int>> nonActiveTrait = new List<KeyValuePair<int, int>>();
+        var sortedList = traitList.OrderByDescending(kvp => kvp.Value).ToList();
+        foreach(var kvp in sortedList)
+        {
+            if(CheckTraitActive(kvp.Key, kvp.Value))
+            {
+                activeTrait.Add(kvp);
+            }
+            else
+            {
+                nonActiveTrait.Add(kvp);
+            }
+        }
+        for (int i = 0; i < traitBars.Length; i++)
+        {
+            if (i < activeTrait.Count)
+            {
+                traitBars[i].gameObject.SetActive(true);
+                traitBars[i].InitInfo(activeTrait[i], true);
+            }
+            else if (i < activeTrait.Count + nonActiveTrait.Count)
+            {
+                traitBars[i].gameObject.SetActive(true);
+                traitBars[i].InitInfo(nonActiveTrait[i - activeTrait.Count], false);
+            }
+            else
+            {
+                traitBars[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    #endregion
+
+
     private void Start()
     {
         Level = 1;
@@ -237,6 +325,12 @@ public class Player : MonoBehaviour
         maxExp = maxExpList[0];
         benchList = new List<GameObject>();
         fieldList = new List<GameObject>();
+        onFieldUnit = new Dictionary<int, int>();
+        traitList = new Dictionary<int, int>();
+    }
+    private void OnEnable()
+    {
+        round.OnStepChange += SetFieldUnitState;
     }
     private void OnDisable()
     {

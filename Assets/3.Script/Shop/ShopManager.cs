@@ -24,7 +24,7 @@ public class ShopManager : MonoBehaviour
     {
         for(int i = 0; i< ratioText.Length; i++)
         {
-            ratioText[i].text = $"{info.ratioData[player.Level][$"Ratio{i + 1}"]}%";
+            ratioText[i].text = $"{info.Ratios[player.Level][$"Ratio{i + 1}"]}%";
         }
     }
     private void AddUnitPool()
@@ -34,30 +34,30 @@ public class ShopManager : MonoBehaviour
         {
             
             case 1:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio1"]); i++)
+                for (int i = 0; i < int.Parse(info.Ratios[0]["Ratio1"]); i++)
                 {
                     unitPool.Add(i, 1);
                 }
                 break;
             case 3:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio2"]); i++)
+                for (int i = 0; i < int.Parse(info.Ratios[0]["Ratio2"]); i++)
                 {
                     unitPool.Add(i + count, 1);
                 }
                 count = unitPool.GetCount();
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio3"]); i++)
+                for (int i = 0; i < int.Parse(info.Ratios[0]["Ratio3"]); i++)
                 {
                     unitPool.Add(i + count, 1);
                 }
                 break;
             case 5:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio4"]); i++)
+                for (int i = 0; i < int.Parse(info.Ratios[0]["Ratio4"]); i++)
                 {
                     unitPool.Add(i + count, 1);
                 }
                 break;
             case 7:
-                for (int i = 0; i < int.Parse(info.ratioData[0]["Ratio5"]); i++)
+                for (int i = 0; i < int.Parse(info.Ratios[0]["Ratio5"]); i++)
                 {
                     unitPool.Add(i + count, 1);
                 }
@@ -71,22 +71,22 @@ public class ShopManager : MonoBehaviour
         int unitCount = unitPool.GetCount(); 
         for (int i = 0; i < unitCount; i++)
         {
-            switch (int.Parse(info.unitData[i]["Cost"]))
+            switch (int.Parse(info.Units[i]["Cost"]))
             {
                 case 1:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei1"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.Ratios[player.Level]["Wei1"]));
                     break;
                 case 2:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei2"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.Ratios[player.Level]["Wei2"]));
                     break;
                 case 3:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei3"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.Ratios[player.Level]["Wei3"]));
                     break;
                 case 4:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei4"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.Ratios[player.Level]["Wei4"]));
                     break;
                 case 5:
-                    unitPool.ModifyWeight(i, double.Parse(info.ratioData[player.Level]["Wei5"]));
+                    unitPool.ModifyWeight(i, double.Parse(info.Ratios[player.Level]["Wei5"]));
                     break;
             }
         }

@@ -20,7 +20,7 @@ public class EnemyControl : Unit
     protected override void Start()
     {
         base.Start();
-        InitInfo(info.enemyData[No]);
+        InitInfo(info.Enemies[No]);
     }
     public void SetState()
     {
