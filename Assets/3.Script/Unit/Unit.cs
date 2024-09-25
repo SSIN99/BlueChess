@@ -441,6 +441,10 @@ public class Unit : MonoBehaviour
         CurHp = Mathf.Clamp(curHp, 0, maxHp);
         textPrinter.PrintText(steelAmount, gameObject, false, TextType.Heal);
     }
+    public void Dead()
+    {
+        gameObject.SetActive(false);
+    }
     #region Trait
     private int originRank;
     private int classRank;
@@ -494,70 +498,48 @@ public class Unit : MonoBehaviour
                 SetTrait_0(rank);
                 break;
             case 1: //게헨나
-                Debug.Log("Value is 1.");
                 break;
             case 2: //밀레니엄
-                Debug.Log("Value is 2.");
                 break;
             case 3: //트리니티
-                Debug.Log("Value is 3.");
                 break;
             case 4: //백귀야행
-                Debug.Log("Value is 4.");
                 break;
             case 5: //산해경
-                Debug.Log("Value is 5.");
                 break;
             case 6: //레드윈터
-                Debug.Log("Value is 6.");
                 break;
             case 7: //발키리
-                Debug.Log("Value is 7.");
                 break;
             case 8: //SRT
-                Debug.Log("Value is 8.");
                 break;
             case 9: //아리우스
-                Debug.Log("Value is 9.");
                 break;
             case 10: //전사
-                Debug.Log("Value is 10.");
                 break;
             case 11: //수집가
-                Debug.Log("Value is 11.");
                 break;
             case 12: //마법사
-                Debug.Log("Value is 12.");
                 break;
             case 13: //선봉대
-                Debug.Log("Value is 13.");
                 break;
             case 14: //수호자
-                Debug.Log("Value is 14.");
                 break;
             case 15: //신비술사
-                Debug.Log("Value is 15.");
                 break;
             case 16: //싸움꾼
-                Debug.Log("Value is 16.");
                 break;
             case 17: //잠입자
-                Debug.Log("Value is 17.");
                 break;
             case 18: //저격수
-                Debug.Log("Value is 18.");
                 break;
             case 19: //총잡이
-                Debug.Log("Value is 19.");
                 break;
             case 20: //폭파광 
-                Debug.Log("Value is 20.");
                 break;
             case 21: //파괴자
-                Debug.Log("Value is 21.");
                 break;
             case 22: //책사
-                Debug.Log("Value is 22.");
                 break;
         }
     }
@@ -597,9 +579,4 @@ public class Unit : MonoBehaviour
         originRank = rank;
     }
     #endregion
-
-    public void Dead()
-    {
-        gameObject.SetActive(false);
-    }
 }
