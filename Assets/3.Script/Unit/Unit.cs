@@ -298,8 +298,6 @@ public class Unit : MonoBehaviour
         isDead = false;
         isBattle = false;
 
-        originRank = 0;
-        classRank = 0;
     }
     public void ResetStat()
     {
@@ -445,107 +443,67 @@ public class Unit : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
     #region Trait
-    private int originRank;
-    private int classRank;
-    public void ResetTrait()
+  
+    public void UpdateTrait(int no, int old, int rank)
     {
-        for(int i = 0; i < info.Traits.Count; i++)
-        {
-            UpdateTrait(i, 0);
-        }
-    }
-    private int CheckTraitRank(int no, int count)
-    {
-        if (count < int.Parse(info.Traits[no]["Rank1"]))
-        {
-            return 0;
-        }
-        else if (count >= int.Parse(info.Traits[no]["Rank1"]) &&
-            count < int.Parse(info.Traits[no]["Rank2"]))
-        {
-            return 1;
-        }
-        else if (count >= int.Parse(info.Traits[no]["Rank2"]) &&
-            count < int.Parse(info.Traits[no]["Rank3"]))
-        {
-            return 2;
-        }
-        else if (count >= int.Parse(info.Traits[no]["Rank3"]) &&
-           count < int.Parse(info.Traits[no]["Rank4"]))
-        {
-            return 3;
-        }
-        else
-        {
-            return 4;
-        }
-    }
-    public void UpdateTrait(int no, int count)
-    {
-        int rank = CheckTraitRank(no, count);
-        if(no < 10)
-        {
-            if (originRank == rank) return;
-        }
-        else
-        {
-            if (classRank == rank) return;
-        }
         switch (no)
         {
-            case 0: //아비도스
-                SetTrait_0(rank);
+            case 0:
+                SetTrait_0(old, rank);
                 break;
-            case 1: //게헨나
+            case 1:
                 break;
-            case 2: //밀레니엄
+            case 2:
                 break;
-            case 3: //트리니티
+            case 3:
                 break;
-            case 4: //백귀야행
+            case 4:
                 break;
-            case 5: //산해경
+            case 5:
                 break;
-            case 6: //레드윈터
+            case 6:
                 break;
-            case 7: //발키리
+            case 7:
                 break;
-            case 8: //SRT
+            case 8:
                 break;
-            case 9: //아리우스
+            case 9:
                 break;
-            case 10: //전사
+            case 10:
                 break;
-            case 11: //수집가
+            case 11:
                 break;
-            case 12: //마법사
+            case 12:
                 break;
-            case 13: //선봉대
+            case 13:
                 break;
-            case 14: //수호자
+            case 14:
                 break;
-            case 15: //신비술사
+            case 15:
                 break;
-            case 16: //싸움꾼
+            case 16:
                 break;
-            case 17: //잠입자
+            case 17:
                 break;
-            case 18: //저격수
+            case 18:
                 break;
-            case 19: //총잡이
+            case 19:
                 break;
-            case 20: //폭파광 
+            case 20:
                 break;
-            case 21: //파괴자
+            case 21:
                 break;
-            case 22: //책사
+            case 22:
+                break;
+            default:
                 break;
         }
     }
-    public void SetTrait_0(int rank) //아비도스
+    public void SetTrait_0(int old ,int rank) //아비도스
     {
-        switch (originRank)
+        switch (old)
         {
             case 0:
                 break;
@@ -576,7 +534,6 @@ public class Unit : MonoBehaviour
             case 4:
                 break;
         }
-        originRank = rank;
     }
     #endregion
 }

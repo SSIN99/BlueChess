@@ -51,7 +51,7 @@ public class TraitInfoUIHandler : MonoBehaviour
                 Borders[index].gameObject.SetActive(true);
                 Portraits[index].gameObject.SetActive(true);
                 Portraits[index].sprite = info.portraits[i];
-                if (player.onFieldUnit.ContainsKey(i))
+                if (player.CheckUnitOnField(i))
                 {
                     Portraits[index].color = Color.white;
                 }
@@ -84,7 +84,7 @@ public class TraitInfoUIHandler : MonoBehaviour
             }
         }
 
-        int count = player.traitList[n];
+        int count = player.traitCount[n];
         if(count >= int.Parse(info.Traits[n]["Rank1"]) &&
             count < int.Parse(info.Traits[n]["Rank2"]))
         {

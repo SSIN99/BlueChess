@@ -204,89 +204,134 @@ public class Player : MonoBehaviour
         benchList.Remove(unit);
         numOfBench--;
     }
+    #endregion
+
+    #region Trait
+    [SerializeField] private TraitBar[] traitBars;
+    public Dictionary<int, int> traitCount; 
+    public Dictionary<int, int> traitRank;
     public void AddField(GameObject unit)
     {
         unit.layer = LayerMask.NameToLayer("Field");
+        Unit u = unit.GetComponent<Unit>();
+        if (!CheckDuplicateUnit(u.No))
+        {
+            traitCount[u.Origin]++;
+            traitCount[u.Class]++;
+            CheckTraitChanged(u.Origin);
+            CheckTraitChanged(u.Class);
+        }
         fieldList.Add(unit);
         NumOfField++;
-
-        Unit u = unit.GetComponent<Unit>();
-        if (!onFieldUnit.ContainsKey(u.No))
-        { //처음유닛 넣을때
-            onFieldUnit.Add(u.No, 1);
-            if (!traitList.ContainsKey(u.Origin))
-            { //소속유닛이 처음일때
-                traitList.Add(u.Origin, 1);
-            }
-            else
-            { //소속유닛이 이미있을때
-                traitList[u.Origin]++;
-            }
-            if (!traitList.ContainsKey(u.Class))
-            { //직업유닛이 처음일때
-                traitList.Add(u.Class, 1);
-            }
-            else
-            { //직업유닛이 이미있을때
-                traitList[u.Class]++;
-            }
-        }
-        else
-        { //중복유닛 넣을때
-            onFieldUnit[u.No]++;
-        }
+        UpdateNewUnitTrait(u);
         UpdateTraitBar();
     }
     public void RemoveField(GameObject unit)
     {
         fieldList.Remove(unit);
         NumOfField--;
-
         Unit u = unit.GetComponent<Unit>();
-        onFieldUnit[u.No]--;
-        if(onFieldUnit[u.No] == 0)
-        { //완전히 유닛이 없을때
-            onFieldUnit.Remove(u.No);
-            traitList[u.Origin]--;
-            if(traitList[u.Origin] == 0)
-            { //소속유닛이 하나도 없을때
-                traitList.Remove(u.Origin);
-            }
-            traitList[u.Class]--;
-            if (traitList[u.Class] == 0)
-            { // 직업유닛이 하나도 없을때
-                traitList.Remove(u.Class);
-            }
+        RemoveUnitTrait(u);
+        if (!CheckDuplicateUnit(u.No))
+        {
+            traitCount[u.Origin]--;
+            traitCount[u.Class]--;
+            CheckTraitChanged(u.Origin);
+            CheckTraitChanged(u.Class);
         }
         UpdateTraitBar();
-        u.ResetTrait();
     }
-    #endregion
-
-    #region Trait
-    public Dictionary<int, int> onFieldUnit;
-    public Dictionary<int, int> traitList;
-    [SerializeField] private TraitBar[] traitBars;
-
-    private bool CheckTraitActive(int no, int num)
+    private bool CheckDuplicateUnit(int no)
     {
-        if(num >= int.Parse(info.Traits[no]["Rank1"]))
+        foreach(var u in fieldList)
         {
-            return true;
+            if(u.GetComponent<Unit>().No == no)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private int CheckTraitRank(int no, int count)
+    {
+        if (count < int.Parse(info.Traits[no]["Rank1"]))
+        {
+            return 0;
+        }
+        else if (count >= int.Parse(info.Traits[no]["Rank1"]) &&
+            count < int.Parse(info.Traits[no]["Rank2"]))
+        {
+            return 1;
+        }
+        else if (count >= int.Parse(info.Traits[no]["Rank2"]) &&
+            count < int.Parse(info.Traits[no]["Rank3"]))
+        {
+            return 2;
+        }
+        else if (count >= int.Parse(info.Traits[no]["Rank3"]) &&
+           count < int.Parse(info.Traits[no]["Rank4"]))
+        {
+            return 3;
         }
         else
         {
-            return false;
+            return 4;
+        }
+    }
+    private void CheckTraitChanged(int no)
+    {
+        int rank = CheckTraitRank(no, traitCount[no]);
+        if (traitRank[no] != rank)
+        {
+            UpdateAllUnitTrait(no, traitRank[no], rank);
+            traitRank[no] = rank;
+        }
+    }
+    public bool CheckUnitOnField(int no)
+    {
+        foreach (var u in fieldList)
+        {
+            if (u.GetComponent<Unit>().No == no)
+                return true;
+        }
+        return false;
+    }
+    private void UpdateNewUnitTrait(Unit unit)
+    {
+        for(int i = 0; i< traitRank.Count; i++)
+        {
+            if(traitRank[i] > 0)
+            {
+                unit.UpdateTrait(i, 0, traitRank[i]);
+            }
+        }
+    }
+    private void RemoveUnitTrait(Unit unit)
+    {
+        for (int i = 0; i < traitRank.Count; i++)
+        {
+            if (traitRank[i] > 0)
+            {
+                unit.UpdateTrait(i, traitRank[i], 0);
+            }
+        }
+    }
+    private void UpdateAllUnitTrait(int no, int old, int newR)
+    {
+        foreach (var u in fieldList)
+        {
+            u.GetComponent<Unit>().UpdateTrait(no ,old, newR);
         }
     }
     private void UpdateTraitBar()
     {
         List<KeyValuePair<int, int>> activeTrait = new List<KeyValuePair<int, int>>();
         List<KeyValuePair<int, int>> nonActiveTrait = new List<KeyValuePair<int, int>>();
-        var sortedList = traitList.OrderByDescending(kvp => kvp.Value).ToList();
+        var sortedList = traitCount.OrderByDescending(kvp => kvp.Value).ToList();
         foreach(var kvp in sortedList)
         {
-            if(CheckTraitActive(kvp.Key, kvp.Value))
+            if (traitCount[kvp.Key] == 0) continue;
+            if(traitRank[kvp.Key] != 0)
             {
                 activeTrait.Add(kvp);
             }
@@ -294,7 +339,6 @@ public class Player : MonoBehaviour
             {
                 nonActiveTrait.Add(kvp);
             }
-            SetUnitTrait(kvp);
         }
         for (int i = 0; i < traitBars.Length; i++)
         {
@@ -314,14 +358,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    private void SetUnitTrait(KeyValuePair<int, int> trait)
-    {
-        for(int i = 0; i< fieldList.Count; i++)
-        {
-            Unit unit = fieldList[i].GetComponent<Unit>();
-            unit.UpdateTrait(trait.Key, trait.Value);
-        }
-    }
+ 
     #endregion
 
     private void Start()
@@ -332,8 +369,14 @@ public class Player : MonoBehaviour
         maxExp = maxExpList[0];
         benchList = new List<GameObject>();
         fieldList = new List<GameObject>();
-        onFieldUnit = new Dictionary<int, int>();
-        traitList = new Dictionary<int, int>();
+        traitCount = new Dictionary<int, int>();
+        traitRank = new Dictionary<int, int>();
+
+        for(int i =0; i< info.Traits.Count; i++)
+        {
+            traitCount.Add(i, 0);
+            traitRank.Add(i, 0);
+        }
     }
     private void OnEnable()
     {
