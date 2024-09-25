@@ -5,12 +5,10 @@ using UnityEngine.AI;
 
 public class EnemyControl : Unit
 {
-    private Info info;
     private RoundManager round;
 
     private void Awake()
     {
-        info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
         round = GameObject.FindGameObjectWithTag("Round").GetComponent<RoundManager>();
     }
     private void OnEnable()

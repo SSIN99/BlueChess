@@ -39,12 +39,12 @@ public class TraitBar : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
         if (!isActive)
         {
-            //darkPanel.SetActive(true);
+            darkPanel.SetActive(true);
             Icon.color = Color.gray;
         }
         else
         {
-            //darkPanel.SetActive(false); 
+            darkPanel.SetActive(false); 
             Icon.color = Color.white;
         }
     }

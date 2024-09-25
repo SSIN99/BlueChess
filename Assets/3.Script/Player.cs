@@ -230,12 +230,12 @@ public class Player : MonoBehaviour
             { //직업유닛이 이미있을때
                 traitList[u.Class]++;
             }
-            UpdateTraitBar();
         }
         else
         { //중복유닛 넣을때
             onFieldUnit[u.No]++;
         }
+        UpdateTraitBar();
     }
     public void RemoveField(GameObject unit)
     {
@@ -245,7 +245,7 @@ public class Player : MonoBehaviour
         Unit u = unit.GetComponent<Unit>();
         onFieldUnit[u.No]--;
         if(onFieldUnit[u.No] == 0)
-        { //완전히 유닛이 없을때 *중복은 신경x
+        { //완전히 유닛이 없을때
             onFieldUnit.Remove(u.No);
             traitList[u.Origin]--;
             if(traitList[u.Origin] == 0)
@@ -259,6 +259,7 @@ public class Player : MonoBehaviour
             }
         }
         UpdateTraitBar();
+        u.ResetTrait();
     }
     #endregion
 
@@ -278,7 +279,6 @@ public class Player : MonoBehaviour
             return false;
         }
     }
-
     private void UpdateTraitBar()
     {
         List<KeyValuePair<int, int>> activeTrait = new List<KeyValuePair<int, int>>();
@@ -294,6 +294,7 @@ public class Player : MonoBehaviour
             {
                 nonActiveTrait.Add(kvp);
             }
+            SetUnitTrait(kvp);
         }
         for (int i = 0; i < traitBars.Length; i++)
         {
@@ -313,9 +314,15 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+    private void SetUnitTrait(KeyValuePair<int, int> trait)
+    {
+        for(int i = 0; i< fieldList.Count; i++)
+        {
+            Unit unit = fieldList[i].GetComponent<Unit>();
+            unit.UpdateTrait(trait.Key, trait.Value);
+        }
+    }
     #endregion
-
 
     private void Start()
     {

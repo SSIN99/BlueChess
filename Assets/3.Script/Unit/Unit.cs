@@ -171,6 +171,103 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnResistChanged;
+    private float curShield;
+    public float CurShield
+    {
+        get { return curShield; }
+        private set
+        {
+            curShield = value;
+            OnCurShieldChanged?.Invoke();
+        }
+    }
+    public event Action OnCurShieldChanged;
+    private float maxShield;
+    public float MaxShield
+    {
+        get { return maxShield; }
+        private set
+        {
+            maxShield = value;
+            OnMaxShieldChanged?.Invoke();
+        }
+    }
+    public event Action OnMaxShieldChanged;
+    public float lifeSteelRatio;
+    #endregion
+
+    #region Etc
+    [Header("Etc")]
+    public Info info;
+    public TextPrinter textPrinter;
+    public NavMeshAgent agent;
+    public Animator anim;
+    public BoxCollider col;
+    public GameObject target;
+    public Vector3 pos;
+    public Quaternion rot;
+    public float moveSpeed;
+    public float rotSpeed;
+    private bool isDead;
+    private bool isBattle;
+    public bool IsDead
+    {
+        get { return isDead; }
+        private set
+        {
+            isDead = value;
+            if (isDead)
+            {
+                col.enabled = false;
+                agent.enabled = false;
+                anim.Play("Dead");
+                OnDead?.Invoke();
+            }
+        }
+    }
+    public bool IsBattle
+    {
+        get { return isBattle; }
+        set
+        {
+            isBattle = value;
+            if (isBattle)
+            {
+                pos = transform.position;
+                rot = transform.rotation;
+                agent.enabled = true;
+                anim.Play("Search");
+                OnBattleStart?.Invoke();
+            }
+            else
+            {
+                IsDead = false;
+                transform.position = pos;
+                transform.rotation = rot;
+                agent.enabled = false;
+                col.enabled = true;
+                ResetStat();
+                anim.Play("Idle");
+                OnIdleReturn?.Invoke();
+            }
+        }
+    }
+    public event Action OnDead;
+    public event Action OnBattleStart;
+    public event Action OnIdleReturn;
+    #endregion
+
+    protected virtual void Start()
+    {
+        info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
+        textPrinter = GameObject.FindGameObjectWithTag("Damage").GetComponent<TextPrinter>();
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
+        col = GetComponent<BoxCollider>();
+        moveSpeed = 3f;
+        rotSpeed = 10f;
+        agent.speed = moveSpeed;
+    }
     public void InitInfo(Dictionary<string, string> data)
     {
         No = int.Parse(data["No"]);
@@ -194,78 +291,21 @@ public class Unit : MonoBehaviour
         CritDamage = 150f;
         Armor = float.Parse(data["Armor"]);
         Resist = float.Parse(data["Resistance"]);
+        MaxShield = 0;
+        CurShield = maxShield;
+        lifeSteelRatio = 0;
+
         isDead = false;
         isBattle = false;
-    }
-    #endregion
 
-    [Header("Etc")]
-    public DamageTextHandler damageTextHandler;
-    public NavMeshAgent agent;
-    public Animator anim;
-    public BoxCollider col;
-    public GameObject target;
-    public Vector3 pos;
-    public Quaternion rot;
-    public float moveSpeed;
-    public float rotSpeed;
-
-    private bool isDead;
-    private bool isBattle;
-    public bool IsDead
-    {
-        get { return isDead; }
-        private set
-        {
-            isDead = value;
-            if (isDead)
-            {
-                col.enabled = false;
-                agent.enabled = false;
-                anim.Play("Dead");
-            }
-            OnIsDeadChanged?.Invoke();
-        }
+        originRank = 0;
+        classRank = 0;
     }
-    public bool IsBattle
+    public void ResetStat()
     {
-        get { return isBattle; }
-        set
-        {
-            isBattle = value;
-            if (isBattle)
-            {
-                pos = transform.position;
-                rot = transform.rotation;
-                agent.enabled = true;
-                anim.Play("Search");
-            }
-            else
-            {
-                IsDead = false;
-                transform.position = pos;
-                transform.rotation = rot;
-                agent.enabled = false;
-                col.enabled = true;
-                CurHp = MaxHp;
-                CurMp = StartMp;
-                anim.Play("Idle");
-            }
-            OnIsBattleChanged?.Invoke();
-        }
-    }
-    public event Action OnIsDeadChanged;
-    public event Action OnIsBattleChanged;
-
-    protected virtual void Start()
-    {
-        damageTextHandler = GameObject.FindGameObjectWithTag("Damage").GetComponent<DamageTextHandler>();
-        agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
-        col = GetComponent<BoxCollider>();
-        moveSpeed = 3f;
-        rotSpeed = 10f;
-        agent.speed = moveSpeed;
+        CurHp = MaxHp;
+        CurMp = StartMp;
+        CurShield = 0;
     }
     public void DetectTarget()
     {
@@ -354,27 +394,210 @@ public class Unit : MonoBehaviour
                 finalDamage = ad;
                 isCritical = false;
             }
-            target.GetComponent<Unit>().TakeDamage(finalDamage, isCritical);
+            target.GetComponent<Unit>().TakeDamage(this ,finalDamage, isCritical);
             curMp += 10;
             CurMp = Mathf.Clamp(curMp, 0, MaxMp);
         }
     }
-    public void TakeDamage(float damage, bool crit)
+    public void TakeDamage(Unit attacker ,float damage, bool crit)
     {
         if (IsDead) return;
 
         float actualDamage = damage * (1f - (armor / (armor + 100f)));
         actualDamage = Mathf.Round(actualDamage);
-        curHp -= actualDamage;
-        CurHp =  Mathf.Clamp(curHp, 0, MaxHp);
+        if(curShield > 0)
+        {
+            CurShield -= actualDamage;
+            if(curShield < 0)
+            {
+                curHp += curShield;
+                CurHp = Mathf.Clamp(curHp, 0, MaxHp);
+            }
+        }
+        else
+        {
+            curHp -= actualDamage;
+            CurHp =  Mathf.Clamp(curHp, 0, MaxHp);
+        }
+        attacker.LifeSteel(actualDamage);
         curMp += 5;
         CurMp = Mathf.Clamp(curMp, 0, MaxMp);
         if(CurHp <= 0)
         {
             IsDead = true;
         }
-        damageTextHandler.PrintDamage(actualDamage, gameObject, crit);
+        textPrinter.PrintText(actualDamage, gameObject, crit, TextType.Attack);
     }
+    public void GetShield(float amount)
+    {
+        MaxShield = amount;
+    }
+    public void LifeSteel(float damage)
+    {
+        if (lifeSteelRatio <= 0 || 
+            curHp == maxHp) return;
+        float steelAmount = Mathf.Round(damage * (lifeSteelRatio / 100f));
+        curHp += steelAmount;
+        CurHp = Mathf.Clamp(curHp, 0, maxHp);
+        textPrinter.PrintText(steelAmount, gameObject, false, TextType.Heal);
+    }
+    #region Trait
+    private int originRank;
+    private int classRank;
+    public void ResetTrait()
+    {
+        for(int i = 0; i < info.Traits.Count; i++)
+        {
+            UpdateTrait(i, 0);
+        }
+    }
+    private int CheckTraitRank(int no, int count)
+    {
+        if (count < int.Parse(info.Traits[no]["Rank1"]))
+        {
+            return 0;
+        }
+        else if (count >= int.Parse(info.Traits[no]["Rank1"]) &&
+            count < int.Parse(info.Traits[no]["Rank2"]))
+        {
+            return 1;
+        }
+        else if (count >= int.Parse(info.Traits[no]["Rank2"]) &&
+            count < int.Parse(info.Traits[no]["Rank3"]))
+        {
+            return 2;
+        }
+        else if (count >= int.Parse(info.Traits[no]["Rank3"]) &&
+           count < int.Parse(info.Traits[no]["Rank4"]))
+        {
+            return 3;
+        }
+        else
+        {
+            return 4;
+        }
+    }
+    public void UpdateTrait(int no, int count)
+    {
+        int rank = CheckTraitRank(no, count);
+        if(no < 10)
+        {
+            if (originRank == rank) return;
+        }
+        else
+        {
+            if (classRank == rank) return;
+        }
+        switch (no)
+        {
+            case 0: //아비도스
+                SetTrait_0(rank);
+                break;
+            case 1: //게헨나
+                Debug.Log("Value is 1.");
+                break;
+            case 2: //밀레니엄
+                Debug.Log("Value is 2.");
+                break;
+            case 3: //트리니티
+                Debug.Log("Value is 3.");
+                break;
+            case 4: //백귀야행
+                Debug.Log("Value is 4.");
+                break;
+            case 5: //산해경
+                Debug.Log("Value is 5.");
+                break;
+            case 6: //레드윈터
+                Debug.Log("Value is 6.");
+                break;
+            case 7: //발키리
+                Debug.Log("Value is 7.");
+                break;
+            case 8: //SRT
+                Debug.Log("Value is 8.");
+                break;
+            case 9: //아리우스
+                Debug.Log("Value is 9.");
+                break;
+            case 10: //전사
+                Debug.Log("Value is 10.");
+                break;
+            case 11: //수집가
+                Debug.Log("Value is 11.");
+                break;
+            case 12: //마법사
+                Debug.Log("Value is 12.");
+                break;
+            case 13: //선봉대
+                Debug.Log("Value is 13.");
+                break;
+            case 14: //수호자
+                Debug.Log("Value is 14.");
+                break;
+            case 15: //신비술사
+                Debug.Log("Value is 15.");
+                break;
+            case 16: //싸움꾼
+                Debug.Log("Value is 16.");
+                break;
+            case 17: //잠입자
+                Debug.Log("Value is 17.");
+                break;
+            case 18: //저격수
+                Debug.Log("Value is 18.");
+                break;
+            case 19: //총잡이
+                Debug.Log("Value is 19.");
+                break;
+            case 20: //폭파광 
+                Debug.Log("Value is 20.");
+                break;
+            case 21: //파괴자
+                Debug.Log("Value is 21.");
+                break;
+            case 22: //책사
+                Debug.Log("Value is 22.");
+                break;
+        }
+    }
+    public void SetTrait_0(int rank) //아비도스
+    {
+        switch (originRank)
+        {
+            case 0:
+                break;
+            case 1:
+                lifeSteelRatio -= 30f;
+                break;
+            case 2:
+                lifeSteelRatio -= 60f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                lifeSteelRatio += 0;
+                break;
+            case 1:
+                lifeSteelRatio += 30f;
+                break;
+            case 2:
+                lifeSteelRatio += 60f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        originRank = rank;
+    }
+    #endregion
+
     public void Dead()
     {
         gameObject.SetActive(false);

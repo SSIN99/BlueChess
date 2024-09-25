@@ -11,6 +11,7 @@ public class StatusBar : MonoBehaviour
     [SerializeField] private Image grade;
     [SerializeField] private Slider hpBar;
     [SerializeField] private Slider mpBar;
+    [SerializeField] private Slider shieldBar;
 
     private void Awake()
     {
@@ -23,7 +24,9 @@ public class StatusBar : MonoBehaviour
         unit.OnMaxHpChanged += UpdateMaxHp;
         unit.OnCurMpChanged += UpdateCurMp;
         unit.OnMaxMpChanged += UpdateMaxMp;
-        unit.OnIsDeadChanged += SetActiveStatus;
+        unit.OnCurShieldChanged += UpdateCurShield;
+        unit.OnMaxShieldChanged += UpdateMaxShield;
+        unit.OnDead += SetActiveStatus;
     }
 
     private void UpdateGrade()
@@ -46,6 +49,16 @@ public class StatusBar : MonoBehaviour
     {
         mpBar.maxValue = unit.MaxMp;
     }
+
+    private void UpdateCurShield()
+    {
+        shieldBar.value = unit.CurShield;
+    }
+    private void UpdateMaxShield()
+    {
+        shieldBar.maxValue = unit.MaxShield;
+        shieldBar.value = shieldBar.maxValue;
+    }
     private void SetActiveStatus()
     {
         if (unit.IsDead)
@@ -66,6 +79,8 @@ public class StatusBar : MonoBehaviour
         unit.OnMaxHpChanged -= UpdateMaxHp;
         unit.OnCurMpChanged -= UpdateCurMp;
         unit.OnMaxMpChanged -= UpdateMaxMp;
-        unit.OnIsDeadChanged -= SetActiveStatus;
+        unit.OnCurShieldChanged -= UpdateCurShield;
+        unit.OnMaxShieldChanged -= UpdateMaxShield;
+        unit.OnDead -= SetActiveStatus;
     }
 }

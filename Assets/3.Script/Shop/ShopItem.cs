@@ -55,6 +55,7 @@ public class ShopItem : MonoBehaviour
     public void ReturnItem()
     {
         info.unitCount[no]++;
+        info.unitPool[no].Enqueue(item);
     }
     public void OnClicked()
     {

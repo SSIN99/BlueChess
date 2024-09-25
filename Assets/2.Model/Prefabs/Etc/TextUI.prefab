@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7811226522676098763}
   - component: {fileID: 1829209868941130488}
   m_Layer: 5
-  m_Name: Crit
+  m_Name: Fx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,9 +103,8 @@ GameObject:
   - component: {fileID: 4172796651897703817}
   - component: {fileID: 2824932660914886833}
   - component: {fileID: 7083319060411670217}
-  - component: {fileID: 1946300179826397998}
   m_Layer: 5
-  m_Name: Damage
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,22 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.49803925, g: 0.25490198, b: 0, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
---- !u!114 &1946300179826397998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2381751681114221068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.7647059}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.59607846}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1 &3316777682407246613
@@ -215,7 +199,7 @@ GameObject:
   - component: {fileID: 3252529714709481437}
   - component: {fileID: 2139982714913302472}
   m_Layer: 5
-  m_Name: DamageText
+  m_Name: TextUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,8 +247,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 2139982714913302472}
-  damage: {fileID: 2824932660914886833}
-  critical: {fileID: 30902990977277643}
+  amout: {fileID: 2824932660914886833}
+  fx: {fileID: 30902990977277643}
   rect: {fileID: 3316777682407246612}
 --- !u!225 &2139982714913302472
 CanvasGroup:
