@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -359,21 +360,26 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Item
-    [SerializeField] private Vector3[] pivots;
+    [SerializeField] private RectTransform[] pivots;
     [SerializeField] private GameObject itemPrefab;
-    [SerializeField] private Transform inventory;
+    [SerializeField] private RectTransform inventory;
     private List<Item> itemList;
   
     public void AddItem(int no)
     {
         GameObject temp = Instantiate(itemPrefab);
-        temp.transform.parent = inventory;
-        temp.transform.position = pivots[itemList.Count];
+        temp.transform.SetParent(inventory);
+        temp.transform.position = pivots[itemList.Count].position;
         Item item = temp.GetComponent<Item>();
         itemList.Add(item);
         item.SetItem(no);
     }
-   
+    
+    public void GetRandomItem()
+    {
+        int rand = Random.Range(0, info.Items.Count);
+        AddItem(rand);
+    }
     #endregion
 
     private void Start()
@@ -391,6 +397,7 @@ public class Player : MonoBehaviour
             traitCount.Add(i, 0);
             traitRank.Add(i, 0);
         }
+        itemList = new List<Item>();
     }
     private void OnEnable()
     {

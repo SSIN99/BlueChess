@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler
+public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private Image Icon;
     [SerializeField] private Info info;
     [SerializeField] private Player player;
     [SerializeField] private ItemInfoUIHandler popUpUI;
+    [SerializeField] private RectTransform rect;
 
-    private RectTransform rect;
+    private Vector3 pos;
     private int No;
 
     private void Awake()
@@ -28,16 +29,25 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        popUpUI.gameObject.SetActive(true);
         popUpUI.InitInfo(No);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        popUpUI.gameObject.SetActive(false);
+        popUpUI.Off();
+    }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        pos = rect.position;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         rect.position = Input.mousePosition;
     }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        rect.position = pos;
+    }
+
 }
