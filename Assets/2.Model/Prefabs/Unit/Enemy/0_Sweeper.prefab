@@ -213,7 +213,7 @@ Transform:
   m_GameObject: {fileID: 2719198060857728312}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 250, y: 250, z: 250}
+  m_LocalScale: {x: 220, y: 220, z: 220}
   m_Children:
   - {fileID: 2451340238925918900}
   - {fileID: 6836457951164351032}
@@ -294,7 +294,10 @@ MonoBehaviour:
   Class: 0
   Range: 0
   Speed: 0
-  damageTextHandler: {fileID: 0}
+  lifeSteelRatio: 0
+  info: {fileID: 0}
+  textPrinter: {fileID: 0}
+  sfxPrinter: {fileID: 0}
   agent: {fileID: 0}
   anim: {fileID: 0}
   col: {fileID: 0}

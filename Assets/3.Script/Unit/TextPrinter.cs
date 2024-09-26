@@ -9,7 +9,6 @@ public enum TextType
     Heal
 }
 
-
 public class TextPrinter : MonoBehaviour
 {
     [SerializeField] private GameObject textPrefab;
@@ -19,7 +18,6 @@ public class TextPrinter : MonoBehaviour
     private void Start()
     {
         textPool = new Queue<GameObject>();
-
         for(int i = 0; i < 50; i++)
         {
             GameObject t = Instantiate(textPrefab, transform);
@@ -27,14 +25,14 @@ public class TextPrinter : MonoBehaviour
             textPool.Enqueue(t);
         }
     }
-    public void PrintText(float amout, GameObject target, bool fx, TextType type)
+    public void PrintText(float amout, Vector3 target, bool fx, TextType type)
     {
         GameObject temp = textPool.Dequeue();
         temp.SetActive(true);
         textPool.Enqueue(temp);
 
         offset = Random.insideUnitCircle;
-        Vector2 pos = Camera.main.WorldToScreenPoint(target.transform.position);
+        Vector2 pos = Camera.main.WorldToScreenPoint(target);
         pos.y += 50f;
         pos.x += offset.x * 15f;
         pos.y += offset.y * 15f;

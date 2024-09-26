@@ -108,7 +108,9 @@ public class UnitInfoUIHandler : MonoBehaviour
         unit.OnCurMpChanged += UpdateCurMp;
         panel.SetActive(true);
         highlight.gameObject.SetActive(true);
-        highlight.position = target.transform.position;
+        Vector3 pos = target.transform.position;
+        pos.y += 0.1f;
+        highlight.position = pos;
         highlight.parent = target.transform;
     }
     private void TurnOffUI()

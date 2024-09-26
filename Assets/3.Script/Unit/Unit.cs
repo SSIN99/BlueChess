@@ -200,6 +200,7 @@ public class Unit : MonoBehaviour
     [Header("Etc")]
     public Info info;
     public TextPrinter textPrinter;
+    public SFXPrinter sfxPrinter;
     public NavMeshAgent agent;
     public Animator anim;
     public BoxCollider col;
@@ -260,7 +261,8 @@ public class Unit : MonoBehaviour
     protected virtual void Start()
     {
         info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
-        textPrinter = GameObject.FindGameObjectWithTag("Damage").GetComponent<TextPrinter>();
+        textPrinter = GameObject.FindGameObjectWithTag("Text").GetComponent<TextPrinter>();
+        sfxPrinter = GameObject.FindGameObjectWithTag("SFX").GetComponent<SFXPrinter>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         col = GetComponent<BoxCollider>();
@@ -424,7 +426,8 @@ public class Unit : MonoBehaviour
         {
             IsDead = true;
         }
-        textPrinter.PrintText(actualDamage, gameObject, crit, TextType.Attack);
+        textPrinter.PrintText(actualDamage, transform.position, crit, TextType.Attack);
+        sfxPrinter.PrintSFXHit(transform.position);
     }
     public void GetShield(float amount)
     {
@@ -437,7 +440,7 @@ public class Unit : MonoBehaviour
         float steelAmount = Mathf.Round(damage * (lifeSteelRatio / 100f));
         curHp += steelAmount;
         CurHp = Mathf.Clamp(curHp, 0, maxHp);
-        textPrinter.PrintText(steelAmount, gameObject, false, TextType.Heal);
+        textPrinter.PrintText(steelAmount, transform.position, false, TextType.Heal);
     }
     public void Dead()
     {
