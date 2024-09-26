@@ -109,7 +109,7 @@ public class UnitInfoUIHandler : MonoBehaviour
         panel.SetActive(true);
         highlight.gameObject.SetActive(true);
         Vector3 pos = target.transform.position;
-        pos.y += 0.1f;
+        pos.y += 0.2f;
         highlight.position = pos;
         highlight.parent = target.transform;
     }

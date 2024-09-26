@@ -257,7 +257,6 @@ public class Unit : MonoBehaviour
     public event Action OnBattleStart;
     public event Action OnIdleReturn;
     #endregion
-
     protected virtual void Start()
     {
         info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();

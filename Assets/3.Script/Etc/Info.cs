@@ -16,6 +16,8 @@ public class Info : MonoBehaviour
     public  List<Dictionary<string, string>> Ratios;
     //몬스터 정보 csv 
     public List<Dictionary<string, string>> Enemies;
+    //아이템 정보 csv
+    public List<Dictionary<string, string>> Items;
     //유닛 풀 갯수 딕셔너리
     public Dictionary<int, int> unitCount;
     //유닛 프리펩 리스트
@@ -28,14 +30,16 @@ public class Info : MonoBehaviour
     public List<Sprite> skillIcon;
     //특성별 아이콘 리스트
     public List<Sprite> traitIcon;
+    //아이템 아이콘 리스트 
+    public List<Sprite> itemIcon;
 
     private void Awake()
     {
         Units = CSVReader.Read("UnitData");
         Traits = CSVReader.Read("TraitData");
         Ratios = CSVReader.Read("RatioData");
-        Enemies = CSVReader.Read("enemyData");
-
+        Enemies = CSVReader.Read("EnemyData");
+        Items = CSVReader.Read("ItemData");
         InitUnitPool();
     }
     

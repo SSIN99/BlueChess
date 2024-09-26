@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Sprite[] lockSprite;
     #endregion
 
-    #region Info
+    #region Player
     private int level;
     private int gold;
     private int curExp;
@@ -92,8 +92,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Tile[] bench;
     private List<GameObject> benchList;
     private List<GameObject> fieldList;
-    [SerializeField] private int numOfBench = 0;
-    [SerializeField] private int numOfField = 0;
+    private int numOfBench = 0;
+    private int numOfField = 0;
     public int NumOfField
     {
         get { return numOfField; }
@@ -324,7 +324,7 @@ public class Player : MonoBehaviour
     {
         List<KeyValuePair<int, int>> activeTrait = new List<KeyValuePair<int, int>>();
         List<KeyValuePair<int, int>> nonActiveTrait = new List<KeyValuePair<int, int>>();
-        var sortedList = traitCount.OrderByDescending(kvp => kvp.Value).ToList();
+        var sortedList = traitRank.OrderByDescending(kvp => kvp.Value).ToList();
         foreach(var kvp in sortedList)
         {
             if (traitCount[kvp.Key] == 0) continue;
@@ -355,7 +355,25 @@ public class Player : MonoBehaviour
             }
         }
     }
- 
+
+    #endregion
+
+    #region Item
+    [SerializeField] private Vector3[] pivots;
+    [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private Transform inventory;
+    private List<Item> itemList;
+  
+    public void AddItem(int no)
+    {
+        GameObject temp = Instantiate(itemPrefab);
+        temp.transform.parent = inventory;
+        temp.transform.position = pivots[itemList.Count];
+        Item item = temp.GetComponent<Item>();
+        itemList.Add(item);
+        item.SetItem(no);
+    }
+   
     #endregion
 
     private void Start()
@@ -368,7 +386,6 @@ public class Player : MonoBehaviour
         fieldList = new List<GameObject>();
         traitCount = new Dictionary<int, int>();
         traitRank = new Dictionary<int, int>();
-
         for(int i =0; i< info.Traits.Count; i++)
         {
             traitCount.Add(i, 0);
