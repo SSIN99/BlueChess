@@ -3075,7 +3075,6 @@ GameObject:
   - component: {fileID: 8604494091044967636}
   - component: {fileID: -1162901559120105149}
   - component: {fileID: 5025320306570336743}
-  - component: {fileID: 691429454865072324}
   - component: {fileID: -2289033752319565496}
   - component: {fileID: -8856304431302586619}
   m_Layer: 7
@@ -3094,7 +3093,7 @@ Transform:
   m_GameObject: {fileID: 6490487801384418940}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 250, y: 250, z: 250}
+  m_LocalScale: {x: 220, y: 220, z: 220}
   m_Children:
   - {fileID: 6744296910509920386}
   - {fileID: 8716689941352386028}
@@ -3155,24 +3154,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &691429454865072324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6490487801384418940}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 0, g: 0.45532417, b: 1, a: 1}
-  outlineWidth: 4
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &-2289033752319565496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3185,9 +3166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curTile: {fileID: 0}
-  targetTile: {fileID: 0}
-  isOnField: 0
 --- !u!114 &-8856304431302586619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3204,25 +3182,20 @@ MonoBehaviour:
   Name: 
   Origin: 0
   Class: 0
-  Cost: 0
-  maxHealth: 0
-  curHealth: 0
-  maxMP: 0
-  startMP: 0
-  curMP: 0
-  AD: 0
-  AP: 0
-  AS: 0
-  CritRatio: 0
-  CritDamage: 0
-  Armor: 0
-  Resistance: 0
   Range: 0
   Speed: 0
+  lifeSteelRatio: 0
+  info: {fileID: 0}
+  textPrinter: {fileID: 0}
+  sfxPrinter: {fileID: 0}
   agent: {fileID: 0}
   anim: {fileID: 0}
-  statusBar: {fileID: 2263845753105545708}
+  col: {fileID: 0}
   target: {fileID: 0}
+  pos: {x: 0, y: 0, z: 0}
+  rot: {x: 0, y: 0, z: 0, w: 0}
+  moveSpeed: 0
+  rotSpeed: 0
 --- !u!1 &6552516561883299940
 GameObject:
   m_ObjectHideFlags: 0
@@ -4626,11 +4599,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
---- !u!1 &2263845753105545708 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6222366910854973550, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}
-  m_PrefabInstance: {fileID: 5273858148271534466}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8716689941352386028 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3586947068129819758, guid: eb3f5ba95fa28a34c873ec8ce6426d91, type: 3}

@@ -16,6 +16,7 @@ public class MouseHandler : MonoBehaviour
     #endregion
 
     [SerializeField] GameObject unitInfoUI;
+    [SerializeField] GameObject outline;
     private bool isDragUnit;
     private GameObject hand;
     public GameObject Hand
@@ -67,6 +68,21 @@ public class MouseHandler : MonoBehaviour
             sellUI.SetActive(false);
             LayerMask layerMask = LayerMask.GetMask("Bench", "Field");
             raycaster.eventMask = layerMask;
+        }
+    }
+    public void SetOutline(Transform unit)
+    {
+        if(unit == null)
+        {
+            outline.transform.parent = transform;
+            outline.SetActive(false);
+
+        }
+        else
+        {
+            outline.transform.position = new Vector3(unit.position.x, 0.2f, unit.position.z);
+            outline.SetActive(true);
+            outline.transform.parent = unit;
         }
     }
 }

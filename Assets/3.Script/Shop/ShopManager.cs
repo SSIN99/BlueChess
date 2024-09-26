@@ -32,7 +32,6 @@ public class ShopManager : MonoBehaviour
         int count = unitPool.GetCount();
         switch (player.Level)
         {
-            
             case 1:
                 for (int i = 0; i < int.Parse(info.Ratios[0]["Ratio1"]); i++)
                 {

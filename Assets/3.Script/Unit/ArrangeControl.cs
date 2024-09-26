@@ -11,7 +11,6 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private Unit unit;
     private MouseHandler mouse;
     private UnitInfoUIHandler infoUI;
-    private MonoBehaviour outline;
     private Animator anim;
     public bool IsOnField => curTile.type == Type.Field;
 
@@ -22,7 +21,6 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         unit = GetComponent<Unit>();
         mouse = player.GetComponent<MouseHandler>();
         infoUI = GameObject.FindGameObjectWithTag("UnitInfoUI").GetComponent<UnitInfoUIHandler>();
-        outline = GetComponent<Outline>();
         anim = GetComponent<Animator>();
     }
     public void BeSold()
@@ -66,13 +64,13 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-       outline.enabled = true;
        infoUI.target = gameObject;
+       mouse.SetOutline(transform);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        outline.enabled = false;
         infoUI.target = null;
+        mouse.SetOutline(null);
     }
     public void OnBeginDrag(PointerEventData eventData)
     {

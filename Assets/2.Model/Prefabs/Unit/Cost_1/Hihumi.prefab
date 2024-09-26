@@ -3956,7 +3956,6 @@ GameObject:
   - component: {fileID: 6654681660643479807}
   - component: {fileID: -956685461696497887}
   - component: {fileID: 9081122665822751734}
-  - component: {fileID: 890322797427678566}
   - component: {fileID: -2384177944604738083}
   - component: {fileID: -437248855327456425}
   m_Layer: 7
@@ -4039,24 +4038,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &890322797427678566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8549509661249796200}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 0, g: 0.45532417, b: 1, a: 1}
-  outlineWidth: 4
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &-2384177944604738083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4087,7 +4068,10 @@ MonoBehaviour:
   Class: 0
   Range: 0
   Speed: 0
-  damageTextHandler: {fileID: 0}
+  lifeSteelRatio: 0
+  info: {fileID: 0}
+  textPrinter: {fileID: 0}
+  sfxPrinter: {fileID: 0}
   agent: {fileID: 0}
   anim: {fileID: 0}
   col: {fileID: 0}

@@ -16,8 +16,6 @@ public class Info : MonoBehaviour
     public  List<Dictionary<string, string>> Ratios;
     //¸ó½ºÅÍ Á¤º¸ csv 
     public List<Dictionary<string, string>> Enemies;
-    //À¯´Ö ¿ÀºêÁ§Æ® Ç®¸µ Å¥ ¸®½ºÆ®
-    public List<Queue<GameObject>> unitPool;
     //À¯´Ö Ç® °¹¼ö µñ¼Å³Ê¸®
     public Dictionary<int, int> unitCount;
     //À¯´Ö ÇÁ¸®Æé ¸®½ºÆ®
@@ -44,7 +42,6 @@ public class Info : MonoBehaviour
     private void InitUnitPool()
     {
         int count = 0;
-        unitPool = new List<Queue<GameObject>>();
         unitCount = new Dictionary<int, int>();
         for(int i = 0; i < Units.Count; i++)
         {
@@ -67,14 +64,6 @@ public class Info : MonoBehaviour
                     count = int.Parse(Ratios[0]["Wei5"]);
                     break;
             }
-            for (int j =0; j < 15; j++)
-            {
-                GameObject unit = Instantiate(prefabs[i]);
-                unit.SetActive(false);
-                unit.transform.parent = transform;
-                pool.Enqueue(unit);
-            }
-            unitPool.Add(pool);
             unitCount.Add(i, count);
         }
     }

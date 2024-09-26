@@ -119,10 +119,9 @@ public class Player : MonoBehaviour
     }
     public void PurchaseUnit(int n)
     {
-        GameObject unit = info.unitPool[n].Dequeue();
+        GameObject unit = Instantiate(info.prefabs[n]);
         ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
         UnitControl unitInfo = unit.GetComponent<UnitControl>();
-        unit.SetActive(true);
         unitInfo.InitInfo(info.Units[n]);
 
         Gold -= unitInfo.Cost;
@@ -167,9 +166,7 @@ public class Player : MonoBehaviour
             RemoveBench(unit);
         }
         arrange.BeSold();
-        info.unitPool[unitInfo.No].Enqueue(unit);
-        unit.transform.parent = info.transform;
-        unit.SetActive(false);
+        Destroy(unit);
         Debug.Log($"{unitInfo.No}¹ø À¯´Ö ÆÇ¸Å, { info.unitCount[unitInfo.No]}°³ ÀÜ¿©");
     }
     private void SetFieldUnitState()
