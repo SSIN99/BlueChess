@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StatusBar : MonoBehaviour
 {
-    private Unit unit;
+    [SerializeField] private Unit unit;
     [SerializeField] private Transform pivot;
     [SerializeField] private Sprite[] gradeImages;
     [SerializeField] private Image grade;
@@ -15,12 +15,9 @@ public class StatusBar : MonoBehaviour
     [SerializeField] private GameObject[] items;
     [SerializeField] private Image[] itemIcon;
 
-    private void Awake()
+    public void SetUnit(Unit target)
     {
-        unit = transform.parent.GetComponent<Unit>();
-    }
-    private void OnEnable()
-    {
+        unit = target;
         unit.OnGradeChanged += UpdateGrade;
         unit.OnCurHpChanged += UpdateCurHp;
         unit.OnMaxHpChanged += UpdateMaxHp;
@@ -29,9 +26,14 @@ public class StatusBar : MonoBehaviour
         unit.OnCurShieldChanged += UpdateCurShield;
         unit.OnMaxShieldChanged += UpdateMaxShield;
         unit.OnDead += SetActiveStatus;
+        unit.OnIdleReturn += SetActiveStatus;
         unit.OnItemEquiped += UpdateItemList;
+        unit.OnBeSold += Delete;
     }
-
+    private void Delete()
+    {
+        Destroy(gameObject);
+    }
     private void UpdateGrade()
     {
         grade.sprite = gradeImages[unit.Grade - 1];
@@ -78,7 +80,9 @@ public class StatusBar : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        pivot.transform.forward = Camera.main.transform.forward;
+        Vector2 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
+        pos.y += 90f;
+        transform.position = pos;
     }
     private void OnDisable()
     {
@@ -90,6 +94,8 @@ public class StatusBar : MonoBehaviour
         unit.OnCurShieldChanged -= UpdateCurShield;
         unit.OnMaxShieldChanged -= UpdateMaxShield;
         unit.OnDead -= SetActiveStatus;
+        unit.OnIdleReturn -= SetActiveStatus;
         unit.OnItemEquiped -= UpdateItemList;
+        unit.OnBeSold -= Delete;
     }
 }

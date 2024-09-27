@@ -82,7 +82,7 @@ public class UnitInfoUIHandler : MonoBehaviour
         critRatio.text = $"{unit.CritRatio}%";
         critDamage.text = $"{unit.CritDamage}%";
         attackSpeed.text = unit.AS.ToString();
-        avoid.text = $"{unit.Avoid}";
+        avoid.text = $"{unit.Avoid}%";
         range.text = unit.Range.ToString();
         for(int i = 0; i < items.Length; i++)
         {

@@ -14,7 +14,6 @@ public class Unit : MonoBehaviour
     public int Origin;
     public int Class;
     public float Range;
-    public float Speed;
     private int cost;
     public int Cost
     {
@@ -92,8 +91,8 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnCurMpChanged;
-    private int ad;
-    public int AD
+    private float ad;
+    public float AD
     {
         get { return ad; }
         private set
@@ -103,8 +102,8 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnADChanged;
-    private int ap;
-    public int AP
+    private float ap;
+    public float AP
     {
         get { return ap; }
         private set
@@ -216,7 +215,6 @@ public class Unit : MonoBehaviour
     public GameObject target;
     public Vector3 pos;
     public Quaternion rot;
-    public float moveSpeed;
     public float rotSpeed;
     private bool isDead;
     private bool isBattle;
@@ -252,19 +250,20 @@ public class Unit : MonoBehaviour
             else
             {
                 IsDead = false;
+                OnIdleReturn?.Invoke();
                 transform.position = pos;
                 transform.rotation = rot;
                 agent.enabled = false;
                 col.enabled = true;
                 ResetStat();
                 anim.Play("Idle");
-                OnIdleReturn?.Invoke();
             }
         }
     }
     public event Action OnDead;
     public event Action OnBattleStart;
     public event Action OnIdleReturn;
+    public event Action OnBeSold;
     #endregion
 
     #region Action
@@ -276,9 +275,7 @@ public class Unit : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         col = GetComponent<BoxCollider>();
-        moveSpeed = 3f;
         rotSpeed = 10f;
-        agent.speed = moveSpeed;
         itemList = new List<int>();
     }
     public void InitInfo(Dictionary<string, string> data)
@@ -288,7 +285,6 @@ public class Unit : MonoBehaviour
         Origin = int.Parse(data["Origin"]);
         Class = int.Parse(data["Class"]);
         Range = float.Parse(data["Range"]);
-        Speed = 3f;
 
         Cost = int.Parse(data["Cost"]);
         Grade = 1;
@@ -308,8 +304,10 @@ public class Unit : MonoBehaviour
         MaxShield = 0;
         CurShield = maxShield;
         lifeSteel = 0;
-        isDead = false;
-        isBattle = false;
+    }
+    public void BeSold()
+    {
+        OnBeSold?.Invoke();
     }
     public void ResetStat()
     {
@@ -577,6 +575,28 @@ public class Unit : MonoBehaviour
     private void SetItemEffect(int item)
     {
 
+    }
+    #endregion
+
+    #region Grade
+    public void GradeUp()
+    {
+        if(grade == 1)
+        {
+            Grade = 2;
+            transform.localScale += Vector3.one * 20f;
+            MaxHp += Mathf.Round(maxHp * 0.8f);
+            CurHp = maxHp;
+            AD += Mathf.Round(ad * 0.8f);
+        }
+        else
+        {
+            Grade = 3;
+            transform.localScale += Vector3.one * 20f;
+            MaxHp += Mathf.Round(maxHp * 0.8f);
+            CurHp = maxHp;
+            AD += Mathf.Round(ad * 0.8f);
+        }
     }
     #endregion
 }

@@ -23,7 +23,7 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         infoUI = GameObject.FindGameObjectWithTag("UnitInfoUI").GetComponent<UnitInfoUIHandler>();
         anim = GetComponent<Animator>();
     }
-    public void BeSold()
+    public void LeaveTile()
     {
         curTile.unit = null;
         curTile = null;

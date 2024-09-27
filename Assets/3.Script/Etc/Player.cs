@@ -92,6 +92,8 @@ public class Player : MonoBehaviour
     [SerializeField] private ShopManager shop;
     [SerializeField] private RoundManager round;
     [SerializeField] private Tile[] bench;
+    [SerializeField] private GameObject statusBar;
+    [SerializeField] private Transform canvas;
     private List<GameObject> benchList;
     private List<GameObject> fieldList;
     private int numOfBench = 0;
@@ -123,61 +125,70 @@ public class Player : MonoBehaviour
         Gold -= 2;
         shop.SetShopItem();
     }
-    public void PurchaseUnit(int n)
+    public void PurchaseUnit(int no)
     {
-        GameObject unit = Instantiate(info.prefabs[n]);
-        ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
-        UnitControl unitInfo = unit.GetComponent<UnitControl>();
-        unitInfo.InitInfo(info.Units[n]);
-
-        Gold -= unitInfo.Cost;
-        AddBench(unit);
+        GameObject newbie = Instantiate(info.prefabs[no]);
+        Unit unit = newbie.GetComponent<Unit>();
+        GameObject status = Instantiate(statusBar);
+        status.GetComponent<StatusBar>().SetUnit(unit);
+        status.transform.SetParent(canvas);
+        unit.InitInfo(info.Units[no]);
+        Gold -= unit.Cost;
+        AddBench(newbie);
         for (int i = 0; i < bench.Length; i++)
         {
             if (bench[i].unit == null)
             {
-                arrange.InitTile(bench[i]);
-                unit.transform.parent = transform;
+                newbie.GetComponent<ArrangeControl>().InitTile(bench[i]);
                 break;
             }
         }
+        if (UnitGrade1.ContainsKey(no))
+        {
+            UnitGrade1[no]++;
+        }
+        else
+        {
+            UnitGrade1.Add(no, 1);
+        }
+        CheckGradeUp(no, 1);
     }
-    public void SellUnit(GameObject unit)
+    public void SellUnit(GameObject subject)
     {
-        ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
-        UnitControl unitInfo = unit.GetComponent<UnitControl>();
-
-        switch (unitInfo.Grade)
+        ArrangeControl arrange = subject.GetComponent<ArrangeControl>();
+        UnitControl unit = subject.GetComponent<UnitControl>();
+        unit.BeSold();
+        switch (unit.Grade)
         {
             case 1:
-                Gold += unitInfo.Cost;
-                info.unitCount[unitInfo.No]++;
+                Gold += unit.Cost;
+                info.unitCount[unit.No]++;
                 break;
             case 2:
-                Gold += (unitInfo.Cost * 3) - 1;
-                info.unitCount[unitInfo.No] += 3;
+                Gold += (unit.Cost * 3) - 1;
+                info.unitCount[unit.No] += 3;
                 break;
             case 3:
-                Gold += (unitInfo.Cost * 9) - 1;
-                info.unitCount[unitInfo.No] += 9;
+                Gold += (unit.Cost * 9) - 1;
+                info.unitCount[unit.No] += 9;
                 break;
         }
-        for(int i =0; i < unitInfo.ItemCount; i++)
+        for(int i =0; i < unit.ItemCount; i++)
         {
-            AddItem(unitInfo.itemList[i]);
+            AddItem(unit.itemList[i]);
         }
 
         if (arrange.IsOnField)
         {
-            RemoveField(unit);
+            RemoveField(subject);
         }
         else
         {
-            RemoveBench(unit);
+            RemoveBench(subject);
         }
-        arrange.BeSold();
-        Destroy(unit);
-        Debug.Log($"{unitInfo.No}¹ø À¯´Ö ÆÇ¸Å, { info.unitCount[unitInfo.No]}°³ ÀÜ¿©");
+        arrange.LeaveTile();
+        Destroy(subject);
+        Debug.Log($"{unit.No}¹ø À¯´Ö ÆÇ¸Å, { info.unitCount[unit.No]}°³ ÀÜ¿©");
     }
     private void SetFieldUnitState()
     {
@@ -210,6 +221,27 @@ public class Player : MonoBehaviour
     {
         benchList.Remove(unit);
         numOfBench--;
+    }
+    private void Offering(GameObject subject)
+    {
+        ArrangeControl arrange = subject.GetComponent<ArrangeControl>();
+        Unit unit = subject.GetComponent<Unit>();
+        unit.BeSold();
+        for (int i = 0; i < unit.ItemCount; i++)
+        {
+            AddItem(unit.itemList[i]);
+        }
+
+        if (arrange.IsOnField)
+        {
+            RemoveField(subject);
+        }
+        else
+        {
+            RemoveBench(subject);
+        }
+        arrange.LeaveTile();
+        Destroy(subject);
     }
     #endregion
 
@@ -424,6 +456,87 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region Grade
+    private Dictionary<int, int> UnitGrade1;
+    private Dictionary<int, int> UnitGrade2;
+    private void CheckGradeUp(int no, int grade)
+    {
+        Unit unit;
+        if(grade == 1)
+        {
+            if (UnitGrade1[no] >= 3)
+            {
+                for (int i = 0; i < fieldList.Count; i++)
+                {
+                    unit = fieldList[i].GetComponent<Unit>();
+                    if (unit.No == no && unit.Grade == 1)
+                    {
+                        unit.GradeUp();
+                        UnitGrade1[no] -= 3;
+                        if (UnitGrade2.ContainsKey(no))
+                        {
+                            UnitGrade2[no]++;
+                        }
+                        else
+                        {
+                            UnitGrade2.Add(no, 1);
+                        }
+                        CheckGradeUp(no, 2);
+                        return;
+                    }
+                }
+                for (int i = 0; i < benchList.Count; i++)
+                {
+                    unit = benchList[i].GetComponent<Unit>();
+                    if (unit.No == no && unit.Grade == 1)
+                    {
+                        unit.GradeUp();
+                        UnitGrade1[no] -= 3;
+                        if (UnitGrade2.ContainsKey(no))
+                        {
+                            UnitGrade2[no]++;
+                        }
+                        else
+                        {
+                            UnitGrade2.Add(no, 1);
+                        }
+                        CheckGradeUp(no, 2);
+                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (UnitGrade2[no] >= 3)
+            {
+                for (int i = 0; i < fieldList.Count; i++)
+                {
+                    unit = fieldList[i].GetComponent<Unit>();
+                    if (unit.No == no && unit.Grade == 2)
+                    {
+                        unit.GradeUp();
+                        UnitGrade2[no] -= 3;
+                        
+                        return;
+                    }
+                }
+                for (int i = 0; i < benchList.Count; i++)
+                {
+                    unit = benchList[i].GetComponent<Unit>();
+                    if (unit.No == no && unit.Grade == 2)
+                    {
+                        unit.GradeUp();
+                        UnitGrade2[no] -= 3;
+                      
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    #endregion
+
     private void Start()
     {
         Level = 1;
@@ -440,6 +553,8 @@ public class Player : MonoBehaviour
             traitRank.Add(i, 0);
         }
         itemList = new List<Item>();
+        UnitGrade1 = new Dictionary<int, int>();
+        UnitGrade2 = new Dictionary<int, int>();
     }
     private void OnEnable()
     {
