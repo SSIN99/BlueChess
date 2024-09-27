@@ -15,8 +15,6 @@ public class Unit : MonoBehaviour
     public int Class;
     public float Range;
     public float Speed;
-    
-    [Header("Not Static")]
     private int cost;
     public int Cost
     {
@@ -171,6 +169,17 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnResistChanged;
+    private float avoid;
+    public float Avoid
+    {
+        get { return avoid; }
+        private set
+        {
+            avoid = value;
+            OnAvoidChanged?.Invoke();
+        }
+    }
+    public event Action OnAvoidChanged;
     private float curShield;
     public float CurShield
     {
@@ -193,7 +202,7 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnMaxShieldChanged;
-    public float lifeSteelRatio;
+    public float lifeSteel;
     #endregion
 
     #region Etc
@@ -257,6 +266,8 @@ public class Unit : MonoBehaviour
     public event Action OnBattleStart;
     public event Action OnIdleReturn;
     #endregion
+
+    #region Action
     protected virtual void Start()
     {
         info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
@@ -268,6 +279,7 @@ public class Unit : MonoBehaviour
         moveSpeed = 3f;
         rotSpeed = 10f;
         agent.speed = moveSpeed;
+        itemList = new List<int>();
     }
     public void InitInfo(Dictionary<string, string> data)
     {
@@ -292,13 +304,12 @@ public class Unit : MonoBehaviour
         CritDamage = 150f;
         Armor = float.Parse(data["Armor"]);
         Resist = float.Parse(data["Resistance"]);
+        avoid = 0;
         MaxShield = 0;
         CurShield = maxShield;
-        lifeSteelRatio = 0;
-
+        lifeSteel = 0;
         isDead = false;
         isBattle = false;
-
     }
     public void ResetStat()
     {
@@ -381,8 +392,8 @@ public class Unit : MonoBehaviour
         if (target.activeSelf == true && !target.GetComponent<Unit>().IsDead)
         {
             float finalDamage;
-            float rand = Random.Range(0f, 100f);
             bool isCritical;
+            float rand = Random.Range(0f, 100f);
             if (rand < critRatio)
             {
                 finalDamage = ad * (critDamage / 100f);
@@ -402,6 +413,12 @@ public class Unit : MonoBehaviour
     {
         if (IsDead) return;
 
+        float rand = Random.Range(0f, 100f);
+        if (rand < avoid)
+        {
+            textPrinter.PrintText(string.Empty, transform.position, TextType.Avoid);
+            return;
+        }
         float actualDamage = damage * (1f - (armor / (armor + 100f)));
         actualDamage = Mathf.Round(actualDamage);
         if(curShield > 0)
@@ -425,7 +442,14 @@ public class Unit : MonoBehaviour
         {
             IsDead = true;
         }
-        textPrinter.PrintText(actualDamage, transform.position, crit, TextType.Attack);
+        if (crit)
+        {
+            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Crit);
+        }
+        else
+        {
+            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Attack);
+        }
         sfxPrinter.PrintSFXHit(transform.position);
     }
     public void GetShield(float amount)
@@ -434,20 +458,20 @@ public class Unit : MonoBehaviour
     }
     public void LifeSteel(float damage)
     {
-        if (lifeSteelRatio <= 0 || 
+        if (lifeSteel <= 0 || 
             curHp == maxHp) return;
-        float steelAmount = Mathf.Round(damage * (lifeSteelRatio / 100f));
+        float steelAmount = Mathf.Round(damage * (lifeSteel / 100f));
         curHp += steelAmount;
         CurHp = Mathf.Clamp(curHp, 0, maxHp);
-        textPrinter.PrintText(steelAmount, transform.position, false, TextType.Heal);
+        textPrinter.PrintText(steelAmount.ToString(), transform.position, TextType.Heal);
     }
     public void Dead()
     {
         gameObject.SetActive(false);
     }
+    #endregion
 
     #region Trait
-  
     public void UpdateTrait(int no, int old, int rank)
     {
         switch (no)
@@ -510,10 +534,10 @@ public class Unit : MonoBehaviour
             case 0:
                 break;
             case 1:
-                lifeSteelRatio -= 30f;
+                lifeSteel -= 30f;
                 break;
             case 2:
-                lifeSteelRatio -= 60f;
+                lifeSteel -= 60f;
                 break;
             case 3:
                 break;
@@ -523,19 +547,36 @@ public class Unit : MonoBehaviour
         switch (rank)
         {
             case 0:
-                lifeSteelRatio += 0;
+                lifeSteel += 0;
                 break;
             case 1:
-                lifeSteelRatio += 30f;
+                lifeSteel += 30f;
                 break;
             case 2:
-                lifeSteelRatio += 60f;
+                lifeSteel += 60f;
                 break;
             case 3:
                 break;
             case 4:
                 break;
         }
+    }
+    #endregion
+
+    #region Item
+    public List<int> itemList;
+    public bool IsItemFull => itemList.Count == 3;
+    public int ItemCount => itemList.Count;
+    public void EquipItem(int item)
+    {
+        itemList.Add(item);
+        SetItemEffect(item);
+        OnItemEquiped?.Invoke();
+    }
+    public event Action OnItemEquiped;
+    private void SetItemEffect(int item)
+    {
+
     }
     #endregion
 }

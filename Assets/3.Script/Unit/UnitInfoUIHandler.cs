@@ -36,7 +36,9 @@ public class UnitInfoUIHandler : MonoBehaviour
     [SerializeField] Text critRatio;
     [SerializeField] Text critDamage;
     [SerializeField] Text attackSpeed;
+    [SerializeField] Text avoid;
     [SerializeField] Text range;
+    [SerializeField] Image[] items;
     #endregion
 
     [SerializeField] private Info info;
@@ -80,7 +82,15 @@ public class UnitInfoUIHandler : MonoBehaviour
         critRatio.text = $"{unit.CritRatio}%";
         critDamage.text = $"{unit.CritDamage}%";
         attackSpeed.text = unit.AS.ToString();
+        avoid.text = $"{unit.Avoid}";
         range.text = unit.Range.ToString();
+        for(int i = 0; i < items.Length; i++)
+        {
+            if (i < unit.ItemCount)
+                items[i].sprite = info.itemIcon[unit.itemList[i]];
+            else
+                items[i].sprite = null;
+        }
     }
 
     private void Update()
@@ -104,14 +114,15 @@ public class UnitInfoUIHandler : MonoBehaviour
     {
         unit = target.GetComponent<Unit>();
         InitUI();
-        unit.OnCurHpChanged += UpdateCurHp;
-        unit.OnCurMpChanged += UpdateCurMp;
         panel.SetActive(true);
         highlight.gameObject.SetActive(true);
         Vector3 pos = target.transform.position;
         pos.y += 0.2f;
         highlight.position = pos;
         highlight.parent = target.transform;
+
+        unit.OnCurHpChanged += UpdateCurHp;
+        unit.OnCurMpChanged += UpdateCurMp;
     }
     private void TurnOffUI()
     {

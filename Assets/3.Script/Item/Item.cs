@@ -11,7 +11,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     [SerializeField] private Player player;
     [SerializeField] private ItemInfoUIHandler popUpUI;
     [SerializeField] private RectTransform rect;
-
+    [SerializeField] private Unit targetUnit;
+    [SerializeField] private CanvasGroup canvas;
     private Vector3 pos;
     private int No;
 
@@ -37,17 +38,39 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        canvas.blocksRaycasts = false;
         pos = rect.position;
+        rect.localScale *= 0.5f;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         rect.position = Input.mousePosition;
+        if (eventData.pointerEnter == null)
+        {
+            targetUnit = null;
+        }
+        else
+        {
+            targetUnit = eventData.pointerEnter.GetComponent<Unit>();
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        rect.position = pos;
+        if(targetUnit == null || 
+            targetUnit.IsItemFull)
+        {
+            canvas.blocksRaycasts = true;
+            rect.position = pos;
+            rect.localScale = Vector3.one;
+        }
+        else
+        {
+            targetUnit.EquipItem(No);
+            player.RemoveItem(this);
+            Destroy(gameObject);
+        }
     }
 
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 using System.Linq;
 using Random = UnityEngine.Random;
 
@@ -114,6 +115,10 @@ public class Player : MonoBehaviour
     }
     public void RecruitUnit()
     {
+        if (isLocked)
+        {
+            ToggleLock();
+        }
         if (Gold < 2) return;
         Gold -= 2;
         shop.SetShopItem();
@@ -156,6 +161,10 @@ public class Player : MonoBehaviour
                 Gold += (unitInfo.Cost * 9) - 1;
                 info.unitCount[unitInfo.No] += 9;
                 break;
+        }
+        for(int i =0; i < unitInfo.ItemCount; i++)
+        {
+            AddItem(unitInfo.itemList[i]);
         }
 
         if (arrange.IsOnField)
@@ -360,21 +369,54 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Item
+    [Header("Item")]
     [SerializeField] private RectTransform[] pivots;
     [SerializeField] private GameObject itemPrefab;
     [SerializeField] private RectTransform inventory;
+    [SerializeField] private Text itemCount;
+    [SerializeField] private Image bagIcon;
+    [SerializeField] private Sprite[] bagImage;
+    private bool isOpend = false;
     private List<Item> itemList;
   
+    public void OpenInventory()
+    {
+        if (isOpend)
+        {
+            isOpend = false;
+            inventory.DOAnchorPosX(-375f, 0.2f);
+            bagIcon.sprite = bagImage[0];
+        }
+        else
+        {
+            isOpend = true;
+            inventory.DOAnchorPosX(20f, 0.2f);
+            bagIcon.sprite = bagImage[1];
+        }
+    }
     public void AddItem(int no)
     {
+        if (itemList.Count >= 12) return;
         GameObject temp = Instantiate(itemPrefab);
         temp.transform.SetParent(inventory);
         temp.transform.position = pivots[itemList.Count].position;
         Item item = temp.GetComponent<Item>();
         itemList.Add(item);
         item.SetItem(no);
+        itemCount.text = itemList.Count.ToString();
     }
-    
+    public void RemoveItem(Item item)
+    {
+        itemList.Remove(item);
+        itemCount.text = itemList.Count.ToString();
+        SortInventory();
+    }
+    public void SortInventory()
+    {
+        for(int i = 0; i < itemList.Count; i++)
+        {
+            itemList[i].transform.position = pivots[i].position;       }
+    }
     public void GetRandomItem()
     {
         int rand = Random.Range(0, info.Items.Count);

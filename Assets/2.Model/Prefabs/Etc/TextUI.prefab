@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 1614785419166984766}
   - component: {fileID: 8052037054976559856}
   - component: {fileID: 7811226522676098763}
-  - component: {fileID: 1829209868941130488}
   m_Layer: 5
-  m_Name: Fx
+  m_Name: Sfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,14 +58,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.69411767, g: 0, b: 0.08235294, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6f8589477a663ec40aee3396beb6f24e, type: 3}
+  m_Sprite: {fileID: 7975751620810441187, guid: 3bada395e42a8e94e8ed29aaa490d5b5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76,21 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1829209868941130488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 30902990977277643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.4039216, g: 0.08235294, b: 0.08627451, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!1 &2381751681114221068
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +232,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 2139982714913302472}
   amout: {fileID: 2824932660914886833}
-  fx: {fileID: 30902990977277643}
+  sfx: {fileID: 7811226522676098763}
+  sfxImage:
+  - {fileID: 5286297366636288419, guid: ff15c288d55507a4cb411b9a908aa839, type: 3}
+  - {fileID: 3156661835362825836, guid: ff15c288d55507a4cb411b9a908aa839, type: 3}
+  - {fileID: -7030883468202739539, guid: ff15c288d55507a4cb411b9a908aa839, type: 3}
   rect: {fileID: 3316777682407246612}
 --- !u!225 &2139982714913302472
 CanvasGroup:

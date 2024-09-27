@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6695040835557443218}
   - component: {fileID: 6695040835557443221}
   - component: {fileID: -745183522993790541}
+  - component: {fileID: -771907227690430647}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -67,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4021517024167986461, guid: 2c230476015f45649894dcce2c1b387e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8fbeb49b70ae36a4283ba838570305a6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -94,6 +95,20 @@ MonoBehaviour:
   player: {fileID: 0}
   popUpUI: {fileID: 0}
   rect: {fileID: 6695040835557443220}
+  targetUnit: {fileID: 0}
+  canvas: {fileID: -771907227690430647}
+--- !u!225 &-771907227690430647
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6695040835557443223}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6695040836666036901
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +174,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6eacc7ae3c37e9e4db463df5fe1420bf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee23eecb7f0ef45419ceb3443f2a9a0c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

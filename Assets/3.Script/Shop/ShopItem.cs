@@ -48,8 +48,6 @@ public class ShopItem : MonoBehaviour
         costText.text = cost.ToString(); 
         originText.text = info.Traits[int.Parse(data["Origin"])]["Name"];
         classText.text = info.Traits[int.Parse(data["Class"])]["Name"];
-        Debug.Log($"{no}¹ø À¯´Ö Áø¿­, { info.unitCount[no]}°³ ÀÜ¿©");
-
     }
     public void ReturnItem()
     {

@@ -8,14 +8,17 @@ public class TextUI : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvas;
     [SerializeField] private Text amout;
-    [SerializeField] private GameObject fx;
+    [SerializeField] private Image sfx;
+    [SerializeField] private Sprite[] sfxImage;
     [SerializeField] private RectTransform rect;
     private Vector3 anchor;
     private Vector2 offset = new Vector2(15f, 20f);
     private Color[] colors =
     {
         new Color(1, 0.84f, 0.15f),
-        new Color(0.66f,0.89f,0.11f)
+        new Color(1, 0.84f, 0.15f),
+        new Color(0.66f,0.89f,0.11f),
+        Color.gray
     };
 
     private void Awake()
@@ -23,30 +26,26 @@ public class TextUI : MonoBehaviour
         anchor = rect.anchoredPosition;
     }
 
-    public void InitText(float d, Vector2 pos, bool fx, TextType type)
+    public void InitText(string value, Vector2 pos, TextType type)
     {
-        amout.text = d.ToString();
+        amout.text = value;
         rect.anchoredPosition = anchor;
         rect.position = pos;
 
-        if (fx)
-        {
-            this.fx.SetActive(true);
-        }
-        else
-        {
-            this.fx.SetActive(false);
-        }
-        amout.color = colors[(int)type];
-
         switch (type)
         {
-            case TextType.Attack:
+            case TextType.Crit:
+                sfx.sprite = sfxImage[1];
                 break;
+            case TextType.Avoid:
+                sfx.sprite = sfxImage[2];
+                break;
+            case TextType.Attack:
             case TextType.Heal:
+                sfx.sprite = sfxImage[0];
                 break;
         }
-
+        amout.color = colors[(int)type];
         rect.DOAnchorPos(rect.anchoredPosition + offset, 0.4f)
             .OnComplete(() =>
             {

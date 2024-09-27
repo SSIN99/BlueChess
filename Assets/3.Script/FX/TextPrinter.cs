@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public enum TextType
 {
     Attack,
-    Heal
+    Crit,
+    Heal,
+    Avoid
 }
 
 public class TextPrinter : MonoBehaviour
@@ -25,7 +27,7 @@ public class TextPrinter : MonoBehaviour
             textPool.Enqueue(t);
         }
     }
-    public void PrintText(float amout, Vector3 target, bool fx, TextType type)
+    public void PrintText(string value, Vector3 target, TextType type)
     {
         GameObject temp = textPool.Dequeue();
         temp.SetActive(true);
@@ -37,6 +39,6 @@ public class TextPrinter : MonoBehaviour
         pos.x += offset.x * 15f;
         pos.y += offset.y * 15f;
 
-        temp.GetComponent<TextUI>().InitText(amout, pos, fx, type);
+        temp.GetComponent<TextUI>().InitText(value, pos, type);
     }
 }
