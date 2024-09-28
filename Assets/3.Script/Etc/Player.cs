@@ -110,6 +110,8 @@ public class Player : MonoBehaviour
     }
     public bool isFullField => numOfField >= level;
     public bool isFullBench => numOfBench >= 8;
+    public event Action OnPurchaseUnit;
+    public event Action OnSellUnit;
     public void ToggleLock()
     {
         isLocked = !isLocked;
@@ -152,6 +154,7 @@ public class Player : MonoBehaviour
             UnitGrade1.Add(no, 1);
         }
         CheckGradePossible(no, 1);
+        OnPurchaseUnit?.Invoke();
     }
     public void SellUnit(GameObject subject)
     {
@@ -191,6 +194,7 @@ public class Player : MonoBehaviour
         arrange.LeaveTile();
         Destroy(subject);
         Debug.Log($"{unit.No}¹ø À¯´Ö ÆÇ¸Å, { info.unitCount[unit.No]}°³ ÀÜ¿©");
+        OnSellUnit?.Invoke();
     }
     private void SetFieldUnitState()
     {
@@ -579,8 +583,8 @@ public class Player : MonoBehaviour
                 }
             }
         }
-        Offering(offer1);
-        Offering(offer2);
+        Offering(offer1, target);
+        Offering(offer2, target);
         target.GradeUp();
 
         if (grade == 1)
@@ -601,25 +605,64 @@ public class Player : MonoBehaviour
             UnitGrade2[no] -= 3;
         }
     }
-    private void Offering(Unit unit)
+    private void Offering(Unit offer, Unit target)
     {
-        ArrangeControl arrange = unit.GetComponent<ArrangeControl>();
-        unit.BeSold();
-        for (int i = 0; i < unit.ItemCount; i++)
+        ArrangeControl arrange = offer.GetComponent<ArrangeControl>();
+        offer.BeSold();
+        for (int i = 0; i < offer.ItemCount; i++)
         {
-            AddItem(unit.itemList[i]);
+            if (!target.IsItemFull)
+            {
+                target.EquipItem(offer.itemList[i]);
+            }
+            else
+            {
+                AddItem(offer.itemList[i]);
+            }
         }
 
         if (arrange.IsOnField)
         {
-            RemoveField(unit);
+            RemoveField(offer);
         }
         else
         {
-            RemoveBench(unit);
+            RemoveBench(offer);
         }
         arrange.LeaveTile();
-        Destroy(unit.gameObject);
+        Destroy(offer.gameObject);
+    }
+    public bool CheckHaveUnit(int no)
+    {
+        for(int i = 0; i < benchList.Count; i++)
+        {
+            if (benchList[i].No == no) return true;
+        }
+        for (int i = 0; i < fieldList.Count; i++)
+        {
+            if (fieldList[i].No == no) return true;
+        }
+        return false;
+    }
+    public int CheckUnitGrade(int no)
+    {
+        if(UnitGrade2.ContainsKey(no) && 
+            UnitGrade2[no] == 2 &&
+            UnitGrade1.ContainsKey(no) && 
+            UnitGrade1[no] == 2)
+
+        {
+            return 2;
+        }
+        else
+        {
+            if(UnitGrade1.ContainsKey(no) && 
+                UnitGrade1[no] == 2)
+            {
+                return 1;
+            }
+        }
+        return 0;
     }
 
     #endregion

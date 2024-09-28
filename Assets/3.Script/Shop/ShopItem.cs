@@ -14,6 +14,9 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Text costText;
     [SerializeField] private Text originText;
     [SerializeField] private Text classText;
+    [SerializeField] private Material fx;
+    [SerializeField] private Image grade;
+    [SerializeField] private Sprite[] gradeImage;
     private Color[] colorList =
     {
         new Color(1f, 1f, 1f),
@@ -47,6 +50,8 @@ public class ShopItem : MonoBehaviour
         costText.text = cost.ToString(); 
         originText.text = info.Traits[int.Parse(data["Origin"])]["Name"];
         classText.text = info.Traits[int.Parse(data["Class"])]["Name"];
+        SetFx();
+        SetGrade();
     }
     public void ReturnItem()
     {
@@ -61,5 +66,40 @@ public class ShopItem : MonoBehaviour
         }
         player.PurchaseUnit(no);
         gameObject.SetActive(false);
+    }
+    public void SetFx()
+    {
+        memorial.material = player.CheckHaveUnit(no) ? fx : null;
+    }
+    public void SetGrade()
+    {
+        grade.gameObject.SetActive(true);
+        switch (player.CheckUnitGrade(no))
+        {
+            case 0:
+                grade.gameObject.SetActive(false);
+                break;
+            case 1:
+                grade.sprite = gradeImage[0];
+                break;
+            case 2:
+                grade.sprite = gradeImage[1];
+                break;
+
+        }
+    }
+    private void OnEnable()
+    {
+        player.OnPurchaseUnit += SetFx; 
+        player.OnSellUnit += SetFx;
+        player.OnPurchaseUnit += SetGrade;
+        player.OnSellUnit += SetGrade;
+    }
+    private void OnDisable()
+    {
+        player.OnPurchaseUnit -= SetFx;
+        player.OnSellUnit -= SetFx;
+        player.OnPurchaseUnit -= SetGrade;
+        player.OnSellUnit -= SetGrade;
     }
 }
