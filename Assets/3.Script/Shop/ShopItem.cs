@@ -29,7 +29,6 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Player player;
     public int no;
     private int cost;
-    private GameObject item;
     private Dictionary<string, string> data;
     #endregion
 

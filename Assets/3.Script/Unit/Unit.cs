@@ -448,7 +448,7 @@ public class Unit : MonoBehaviour
         {
             textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Attack);
         }
-        sfxPrinter.PrintSFXHit(transform.position);
+        sfxPrinter.PrintHitFx(transform.position);
     }
     public void GetShield(float amount)
     {
@@ -581,22 +581,12 @@ public class Unit : MonoBehaviour
     #region Grade
     public void GradeUp()
     {
-        if(grade == 1)
-        {
-            Grade = 2;
-            transform.localScale += Vector3.one * 20f;
-            MaxHp += Mathf.Round(maxHp * 0.8f);
-            CurHp = maxHp;
-            AD += Mathf.Round(ad * 0.8f);
-        }
-        else
-        {
-            Grade = 3;
-            transform.localScale += Vector3.one * 20f;
-            MaxHp += Mathf.Round(maxHp * 0.8f);
-            CurHp = maxHp;
-            AD += Mathf.Round(ad * 0.8f);
-        }
+        Grade += 1;
+        transform.localScale += Vector3.one * 20f;
+        MaxHp += Mathf.Round(maxHp * 0.8f);
+        CurHp = maxHp;
+        AD += Mathf.Round(ad * 0.8f);
+        sfxPrinter.PrintGradeFx(transform, grade);
     }
     #endregion
 }

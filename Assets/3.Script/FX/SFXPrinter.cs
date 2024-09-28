@@ -5,6 +5,8 @@ using UnityEngine;
 public class SFXPrinter : MonoBehaviour
 {
     [SerializeField] private GameObject hitPrefab;
+    [SerializeField] private GameObject grade2Prefab;
+    [SerializeField] private GameObject grade3Prefab;
     private Queue<GameObject> hit;
     private Vector3 offset;
 
@@ -18,7 +20,7 @@ public class SFXPrinter : MonoBehaviour
             hit.Enqueue(h);
         }
     }
-    public void PrintSFXHit(Vector3 target)
+    public void PrintHitFx(Vector3 target)
     {
         GameObject temp = hit.Dequeue();
 
@@ -31,5 +33,21 @@ public class SFXPrinter : MonoBehaviour
         
         temp.SetActive(true);
         hit.Enqueue(temp);
+    }
+    public void PrintGradeFx(Transform target, int grade)
+    {
+        GameObject temp;
+        if(grade == 2)
+        {
+            temp = Instantiate(grade2Prefab);
+        }
+        else
+        {
+            temp = Instantiate(grade3Prefab);
+        }
+        temp.transform.parent = target;
+        Vector3 pos = target.position;
+        pos.y += 0.1f;
+        temp.transform.position = pos;
     }
 }

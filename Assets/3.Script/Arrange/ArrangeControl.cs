@@ -49,13 +49,13 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             if(curTile.type == Type.Bench)
             {
-                player.RemoveBench(gameObject);
-                player.AddField(gameObject);
+                player.RemoveBench(unit);
+                player.AddField(unit);
             }
             else
             {
-                player.RemoveField(gameObject);
-                player.AddBench(gameObject);
+                player.RemoveField(unit);
+                player.AddBench(unit);
             }
         }
         curTile = target;

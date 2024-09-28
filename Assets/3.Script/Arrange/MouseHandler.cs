@@ -10,14 +10,13 @@ public class MouseHandler : MonoBehaviour
     [SerializeField] private RoundManager round;
     [SerializeField] private GameObject bench;
     [SerializeField] private GameObject field;
-    [SerializeField] private GameObject sellUI;
+    [SerializeField] private SellUI[] sellUI;
     [SerializeField] private PhysicsRaycaster raycaster;
-    [SerializeField] private Text[] costText;
     #endregion
 
     [SerializeField] GameObject unitInfoUI;
     [SerializeField] GameObject outline;
-    private bool isDragUnit;
+    private Unit unit;
     private GameObject hand;
     public GameObject Hand
     {
@@ -38,37 +37,28 @@ public class MouseHandler : MonoBehaviour
     
     public void SetHand(GameObject target)
     {
-        if(target != null)
-        {
-            isDragUnit = target.CompareTag("Unit") ? true : false;
-        }
         Hand = target;
     }
     private void OnDrag()
     {
-        if (isDragUnit)
-        {
-            if(!round.IsBattleStep)
-                field.SetActive(true);
+        hand.TryGetComponent<Unit>(out unit);
+        if (!round.IsBattleStep)
+            field.SetActive(true);
 
-            bench.SetActive(true);
-            sellUI.SetActive(true);
-            LayerMask layerMask = LayerMask.GetMask("Tile");
-            raycaster.eventMask = layerMask;
-            costText[0].text = $"+{hand.GetComponent<UnitControl>().Cost}";
-            costText[1].text = $"+{hand.GetComponent<UnitControl>().Cost}";
-        }
+        bench.SetActive(true);
+        sellUI[0].Active(unit.Grade, unit.Cost);
+        sellUI[1].Active(unit.Grade, unit.Cost);
+        LayerMask layerMask = LayerMask.GetMask("Tile");
+        raycaster.eventMask = layerMask;
     }
     private void EndDrag()
     {
-        if (isDragUnit)
-        {
-            field.SetActive(false);
-            bench.SetActive(false);
-            sellUI.SetActive(false);
-            LayerMask layerMask = LayerMask.GetMask("Bench", "Field");
-            raycaster.eventMask = layerMask;
-        }
+        field.SetActive(false);
+        bench.SetActive(false);
+        sellUI[0].NonActive();
+        sellUI[1].NonActive();
+        LayerMask layerMask = LayerMask.GetMask("Bench", "Field");
+        raycaster.eventMask = layerMask;
     }
     public void SetOutline(Transform unit)
     {
