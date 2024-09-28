@@ -243,8 +243,10 @@ public class Player : MonoBehaviour
         {
             traitCount[unit.Origin]++;
             traitCount[unit.Class]++;
-            CheckTraitChanged(unit.Origin);
-            CheckTraitChanged(unit.Class);
+            if (CheckTraitChanged(unit.Origin))
+                ActiveTraitEffect(unit.Origin, unit);
+            if (CheckTraitChanged(unit.Class))
+                ActiveTraitEffect(unit.Class, unit);
         }
         fieldList.Add(unit);
         NumOfField++;
@@ -302,14 +304,16 @@ public class Player : MonoBehaviour
             return 4;
         }
     }
-    private void CheckTraitChanged(int no)
+    private bool CheckTraitChanged(int no)
     {
         int rank = CheckTraitRank(no, traitCount[no]);
         if (traitRank[no] != rank)
         {
             UpdateAllUnitTrait(no, traitRank[no], rank);
             traitRank[no] = rank;
+            return true;
         }
+        return false;
     }
     public bool CheckUnitOnField(int no)
     {
@@ -320,16 +324,6 @@ public class Player : MonoBehaviour
         }
         return false;
     }
-    private void UpdateNewUnitTrait(Unit unit)
-    {
-        for(int i = 0; i< traitRank.Count; i++)
-        {
-            if(traitRank[i] > 0)
-            {
-                unit.UpdateTrait(i, 0, traitRank[i]);
-            }
-        }
-    }
     private void RemoveUnitTrait(Unit unit)
     {
         for (int i = 0; i < traitRank.Count; i++)
@@ -337,6 +331,16 @@ public class Player : MonoBehaviour
             if (traitRank[i] > 0)
             {
                 unit.UpdateTrait(i, traitRank[i], 0);
+            }
+        }
+    }
+    private void UpdateNewUnitTrait(Unit unit)
+    {
+        for(int i = 0; i< traitRank.Count; i++)
+        {
+            if(traitRank[i] > 0)
+            {
+                unit.UpdateTrait(i, 0, traitRank[i]);
             }
         }
     }
@@ -351,11 +355,11 @@ public class Player : MonoBehaviour
     {
         List<KeyValuePair<int, int>> activeTrait = new List<KeyValuePair<int, int>>();
         List<KeyValuePair<int, int>> nonActiveTrait = new List<KeyValuePair<int, int>>();
-        var sortedList = traitRank.OrderByDescending(kvp => kvp.Value).ToList();
+        var sortedList = traitCount.OrderByDescending(kvp => kvp.Value).ToList();
         foreach(var kvp in sortedList)
         {
             if (traitCount[kvp.Key] == 0) continue;
-            if(traitRank[kvp.Key] != 0)
+            if(traitCount[kvp.Key] >= int.Parse(info.Traits[kvp.Key]["Rank1"]))
             {
                 activeTrait.Add(kvp);
             }
@@ -381,6 +385,18 @@ public class Player : MonoBehaviour
                 traitBars[i].gameObject.SetActive(false);
             }
         }
+    }
+    private void ActiveTraitEffect(int no, Unit newbie)
+    {
+        for(int i = 0; i < fieldList.Count; i++)
+        {
+            if(fieldList[i].Origin == no ||
+                fieldList[i].Class == no)
+            {
+                fieldList[i].PrintTraitEffect();
+            }
+        }
+        newbie.PrintTraitEffect();
     }
 
     #endregion

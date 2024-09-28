@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : StateMachineBehaviour
+public class SkillState : StateMachineBehaviour
 {
     private Unit unit;
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -11,8 +11,11 @@ public class AttackState : StateMachineBehaviour
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        unit.CheckAttackRange();
+        unit.CheckTargetDead();
         unit.LookAtTarget();
-        unit.CheckSkillUsable();
+        if(stateInfo.normalizedTime >= 1)
+        {
+            animator.Play("Attack");
+        }
     }
 }

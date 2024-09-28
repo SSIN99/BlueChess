@@ -470,6 +470,10 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Trait
+    public void PrintTraitEffect()
+    {
+        sfxPrinter.PrintTraitFx(transform);
+    }
     public void UpdateTrait(int no, int old, int rank)
     {
         switch (no)
@@ -587,6 +591,24 @@ public class Unit : MonoBehaviour
         CurHp = maxHp;
         AD += Mathf.Round(ad * 0.8f);
         sfxPrinter.PrintGradeFx(transform, grade);
+    }
+    #endregion
+
+    #region Skill
+    public void CheckSkillUsable()
+    {
+        if (curMp == maxMp &&
+            maxMp != 0)
+        {
+            CurMp = 0;
+            anim.Play("Skill");
+            OnSkillUsed?.Invoke();
+        }
+    }
+    public event Action OnSkillUsed;
+    public void SkillEffect()
+    {
+
     }
     #endregion
 }

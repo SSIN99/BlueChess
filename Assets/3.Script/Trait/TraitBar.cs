@@ -22,11 +22,10 @@ public class TraitBar : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         for(int i = 0; i < Amount.Length; i++)
         {
+            Amount[i].gameObject.SetActive(true);
             if(i >= int.Parse(info.Traits[n.Key]["Amount"]))
             {
-                Color color = Amount[i].color;
-                color.a = 0f;
-                Amount[i].color = color;
+                Amount[i].gameObject.SetActive(false);
             }
             else
             {

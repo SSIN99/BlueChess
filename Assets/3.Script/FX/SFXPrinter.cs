@@ -7,6 +7,7 @@ public class SFXPrinter : MonoBehaviour
     [SerializeField] private GameObject hitPrefab;
     [SerializeField] private GameObject grade2Prefab;
     [SerializeField] private GameObject grade3Prefab;
+    [SerializeField] private GameObject traitPrefab;
     private Queue<GameObject> hit;
     private Vector3 offset;
 
@@ -45,6 +46,15 @@ public class SFXPrinter : MonoBehaviour
         {
             temp = Instantiate(grade3Prefab);
         }
+        temp.transform.parent = target;
+        Vector3 pos = target.position;
+        pos.y += 0.1f;
+        temp.transform.position = pos;
+    }
+    public void PrintTraitFx(Transform target)
+    {
+        GameObject temp;
+        temp = Instantiate(traitPrefab);
         temp.transform.parent = target;
         Vector3 pos = target.position;
         pos.y += 0.1f;
