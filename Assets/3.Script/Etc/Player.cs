@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject statusBar;
     [SerializeField] private Transform canvas;
     private List<Unit> benchList;
-    private List<Unit> fieldList;
+    public List<Unit> fieldList;
     private int numOfBench = 0;
     private int numOfField = 0;
     public int NumOfField

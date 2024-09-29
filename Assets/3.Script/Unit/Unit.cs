@@ -208,6 +208,7 @@ public class Unit : MonoBehaviour
     }
     public event Action OnMaxShieldChanged;
     public float lifeSteel;
+    public float increasedDamage;
 
     private float InitHP;
     private float InitAD;
@@ -220,8 +221,12 @@ public class Unit : MonoBehaviour
     private float tempCD;
     private float tempArmor;
     private float tempResist;
-    private float tempLS;
     private float tempAvoid;
+    private float tempLS;
+    private float tempID;
+
+    public float AllDealAmount;
+    public event Action OnDealAmountChanged;
     #endregion
 
     #region Etc
@@ -325,6 +330,7 @@ public class Unit : MonoBehaviour
         MaxShield = 0;
         CurShield = maxShield;
         lifeSteel = 0;
+        increasedDamage = 0;
 
         InitAD = ad;
         InitHP = maxHp;
@@ -343,8 +349,11 @@ public class Unit : MonoBehaviour
         tempArmor = armor;
         tempResist = resist;
         tempAS = attackSpeed;
-        tempLS = lifeSteel;
         tempAvoid = avoid;
+        tempLS = lifeSteel;
+        tempID = increasedDamage;
+
+        AllDealAmount = 0;
     }
     public void ResetStat()
     {
@@ -358,8 +367,9 @@ public class Unit : MonoBehaviour
         Armor = tempArmor;
         Resist = tempResist;
         AS = tempAS;
-        lifeSteel = tempLS;
         Avoid = tempAvoid;
+        lifeSteel = tempLS;
+        increasedDamage = tempID;
     }
     public void DetectTarget()
     {
@@ -433,24 +443,29 @@ public class Unit : MonoBehaviour
     }
     public void AutoAttack()
     {
-        if (target.activeSelf == true && !target.GetComponent<Unit>().IsDead)
+        if (!target.GetComponent<Unit>().IsDead)
         {
             float finalDamage;
             bool isCritical;
             float rand = Random.Range(0f, 100f);
             if (rand < critRatio)
             {
-                finalDamage = ad * (critDamage / 100f);
+                finalDamage = (ad * (critDamage / 100f)) * (1f + increasedDamage / 100f);
                 isCritical = true;
             }
             else
             {
-                finalDamage = ad;
+                finalDamage = ad * (1f + increasedDamage / 100f);
                 isCritical = false;
             }
             target.GetComponent<Unit>().TakeDamage(this ,finalDamage, isCritical);
             CurMp += 10;
         }
+    }
+    public void RecordDealAmount(float deal)
+    {
+        AllDealAmount += deal;
+        OnDealAmountChanged?.Invoke();
     }
     public void TakeDamage(Unit attacker ,float damage, bool crit)
     {
@@ -477,6 +492,7 @@ public class Unit : MonoBehaviour
             CurHp -= actualDamage;
         }
         attacker.LifeSteel(actualDamage);
+        attacker.RecordDealAmount(actualDamage);
         CurMp += 5;
         if(CurHp <= 0)
         {
