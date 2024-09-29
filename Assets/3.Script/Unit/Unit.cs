@@ -42,8 +42,10 @@ public class Unit : MonoBehaviour
         get { return maxHp; }
         private set
         {
+            float differ = value - maxHp;
             maxHp = value;
             OnMaxHpChanged?.Invoke();
+            CurHp += differ;
         }
     }
     public event Action OnMaxHpChanged;
@@ -53,7 +55,8 @@ public class Unit : MonoBehaviour
         get { return curHp; }
         private set
         {
-            curHp = value;
+            float hp = Mathf.Clamp(value, 0, maxHp);
+            curHp = hp;
             OnCurHpChanged?.Invoke();
         }
     }
@@ -75,8 +78,10 @@ public class Unit : MonoBehaviour
         get { return startMp; }
         private set
         {
+            int differ = value - startMp;
             startMp = value;
             OnStartMpChanged?.Invoke();
+            CurMp = differ;
         }
     }
     public event Action OnStartMpChanged;
@@ -86,7 +91,8 @@ public class Unit : MonoBehaviour
         get { return curMp; }
         private set
         {
-            curMp = value;
+            int mp = Mathf.Clamp(value, 0, maxMp);
+            curMp = mp;
             OnCurMpChanged?.Invoke();
         }
     }
@@ -202,6 +208,20 @@ public class Unit : MonoBehaviour
     }
     public event Action OnMaxShieldChanged;
     public float lifeSteel;
+
+    private float InitHP;
+    private float InitAD;
+
+    private float tempHP;
+    private float tempAD;
+    private float tempAP;
+    private float tempAS;
+    private float tempCR;
+    private float tempCD;
+    private float tempArmor;
+    private float tempResist;
+    private float tempLS;
+    private float tempAvoid;
     #endregion
 
     #region Etc
@@ -241,6 +261,7 @@ public class Unit : MonoBehaviour
             isBattle = value;
             if (isBattle)
             {
+                RecordStat();
                 pos = transform.position;
                 rot = transform.rotation;
                 agent.enabled = true;
@@ -304,16 +325,41 @@ public class Unit : MonoBehaviour
         MaxShield = 0;
         CurShield = maxShield;
         lifeSteel = 0;
+
+        InitAD = ad;
+        InitHP = maxHp;
     }
     public void BeSold()
     {
         OnBeSold?.Invoke();
     }
+    public void RecordStat()
+    {
+        tempHP = maxHp;
+        tempAD = ad;
+        tempAP = ap;
+        tempCR = critRatio;
+        tempCD = critDamage;
+        tempArmor = armor;
+        tempResist = resist;
+        tempAS = attackSpeed;
+        tempLS = lifeSteel;
+        tempAvoid = avoid;
+    }
     public void ResetStat()
     {
-        CurHp = MaxHp;
+        CurHp = tempHP;
         CurMp = StartMp;
         CurShield = 0;
+        AD = tempAD;
+        AP = tempAP;
+        CritRatio = tempCR;
+        CritDamage = tempCD;
+        Armor = tempArmor;
+        Resist = tempResist;
+        AS = tempAS;
+        lifeSteel = tempLS;
+        Avoid = tempAvoid;
     }
     public void DetectTarget()
     {
@@ -403,8 +449,7 @@ public class Unit : MonoBehaviour
                 isCritical = false;
             }
             target.GetComponent<Unit>().TakeDamage(this ,finalDamage, isCritical);
-            curMp += 10;
-            CurMp = Mathf.Clamp(curMp, 0, MaxMp);
+            CurMp += 10;
         }
     }
     public void TakeDamage(Unit attacker ,float damage, bool crit)
@@ -424,18 +469,15 @@ public class Unit : MonoBehaviour
             CurShield -= actualDamage;
             if(curShield < 0)
             {
-                curHp += curShield;
-                CurHp = Mathf.Clamp(curHp, 0, MaxHp);
+                CurHp += curShield;
             }
         }
         else
         {
-            curHp -= actualDamage;
-            CurHp =  Mathf.Clamp(curHp, 0, MaxHp);
+            CurHp -= actualDamage;
         }
         attacker.LifeSteel(actualDamage);
-        curMp += 5;
-        CurMp = Mathf.Clamp(curMp, 0, MaxMp);
+        CurMp += 5;
         if(CurHp <= 0)
         {
             IsDead = true;
@@ -578,7 +620,36 @@ public class Unit : MonoBehaviour
     public event Action OnItemEquiped;
     private void SetItemEffect(int item)
     {
-
+        switch (item)
+        {
+            case 0:
+                AD += 20f;
+                break;
+            case 1:
+                AS += Mathf.Round(attackSpeed * 0.15f * 100f) / 100f;
+                break;
+            case 2:
+                Avoid += 15f;
+                break;
+            case 3:
+                MaxHp += 200f;
+                break;
+            case 4:
+                Armor += 20f;
+                break;
+            case 5:
+                Resist += 20f;
+                break;
+            case 6:
+                StartMp += 15;
+                break;
+            case 7:
+                AP += 20f;
+                break;
+            case 8:
+                CritRatio += 20f;
+                break;
+        }
     }
     #endregion
 
@@ -587,9 +658,12 @@ public class Unit : MonoBehaviour
     {
         Grade += 1;
         transform.localScale += Vector3.one * 20f;
-        MaxHp += Mathf.Round(maxHp * 0.8f);
-        CurHp = maxHp;
-        AD += Mathf.Round(ad * 0.8f);
+        float hp = Mathf.Round(InitHP * 0.8f);
+        MaxHp += hp;
+        InitHP += hp;
+        float ad = Mathf.Round(InitAD * 0.8f);
+        AD += ad;
+        InitAD += ad;
         sfxPrinter.PrintGradeFx(transform, grade);
     }
     #endregion

@@ -10,7 +10,6 @@ public class ItemInfoUIHandler : MonoBehaviour
     [SerializeField] private Image Icon;
     [SerializeField] private Text Name;
     [SerializeField] private Text Script;
-    [SerializeField] private Text Effect;
 
     public void InitInfo(int no)
     {
@@ -18,7 +17,6 @@ public class ItemInfoUIHandler : MonoBehaviour
         Icon.sprite = info.itemIcon[no];
         Name.text = info.Items[no]["Name"];
         Script.text = info.Items[no]["Script"];
-        Effect.text = info.Items[no]["Effect"];
     }
     public void Off()
     {

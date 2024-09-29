@@ -59,7 +59,8 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     public void OnEndDrag(PointerEventData eventData)
     {
         if(targetUnit == null || 
-            targetUnit.IsItemFull)
+            targetUnit.IsItemFull ||
+            targetUnit.IsBattle)
         {
             canvas.blocksRaycasts = true;
             rect.position = pos;
