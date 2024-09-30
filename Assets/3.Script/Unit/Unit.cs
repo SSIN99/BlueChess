@@ -258,10 +258,11 @@ public class Unit : MonoBehaviour
             isDead = value;
             if (isDead)
             {
+                anim.Play("Dead");
                 col.enabled = false;
                 agent.enabled = false;
-                anim.Play("Dead");
                 OnDead?.Invoke();
+                CancelInvoke("IncreaseAsTrait2");
             }
         }
     }
@@ -281,7 +282,7 @@ public class Unit : MonoBehaviour
                 OnBattleStart?.Invoke();
 
                 if(trait2Rank != 0)
-                    InvokeRepeating("IncreaseAsTrait2", 1f, 4f);
+                    InvokeRepeating("IncreaseAsTrait2", 0f, 4f);
             }
             else
             {
@@ -764,7 +765,6 @@ public class Unit : MonoBehaviour
                 AS += Mathf.Round(attackSpeed * 0.90f * 100f) / 100f;
                 break;
         }
-        Debug.Log($"{name}{AS}");
     }
     public void SetTrait_3(int old, int rank) //트리니티
     {
