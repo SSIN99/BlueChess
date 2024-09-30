@@ -280,7 +280,8 @@ public class Unit : MonoBehaviour
                 anim.Play("Search");
                 OnBattleStart?.Invoke();
 
-                InvokeRepeating("IncreaseAsTrait2", 0f, 4f);
+                if(trait2Rank != 0)
+                    InvokeRepeating("IncreaseAsTrait2", 1f, 4f);
             }
             else
             {
@@ -347,7 +348,7 @@ public class Unit : MonoBehaviour
 
         InitAD = ad;
         InitHP = maxHp;
-        InitAS = attackSpeed;
+        InitAS = AS;
     }
     public void BeSold()
     {
@@ -751,20 +752,19 @@ public class Unit : MonoBehaviour
         switch (trait2Rank)
         {
             case 1:
-                AS += Mathf.Round(attackSpeed * 0.15f);
+                AS += Mathf.Round(attackSpeed * 0.15f * 100f) / 100f;
                 break;
             case 2:
-                AS += Mathf.Round(attackSpeed * 0.35f);
+                AS += Mathf.Round(attackSpeed * 0.35f * 100f) / 100f;
                 break;
             case 3:
-                AS += Mathf.Round(attackSpeed * 0.65f);
+                AS += Mathf.Round(attackSpeed * 0.65f * 100f) / 100f;
                 break;
             case 4:
-                AS += Mathf.Round(attackSpeed * 0.90f);
+                AS += Mathf.Round(attackSpeed * 0.90f * 100f) / 100f;
                 break;
-            default:
-                return;
         }
+        Debug.Log($"{name}{AS}");
     }
     public void SetTrait_3(int old, int rank) //트리니티
     {
@@ -1281,10 +1281,10 @@ public class Unit : MonoBehaviour
             case 0:
                 break;
             case 1:
-                AS -= Mathf.Round(InitAS * 0.2f);
+                AS -= Mathf.Round(InitAS * 0.2f * 100f) / 100f;
                 break;
             case 2:
-                AS -= Mathf.Round(InitAS * 0.5f);
+                AS -= Mathf.Round(InitAS * 0.5f * 100f) / 100f;
                 break;
             case 3:
                 break;
@@ -1296,10 +1296,10 @@ public class Unit : MonoBehaviour
             case 0:
                 break;
             case 1:
-                AS += Mathf.Round(InitAS * 0.2f);
+                AS += Mathf.Round(InitAS * 0.2f * 100f) / 100f;
                 break;
             case 2:
-                AS += Mathf.Round(InitAS * 0.5f);
+                AS += Mathf.Round(InitAS * 0.5f * 100f) / 100f;
                 break;
             case 3:
                 break;
