@@ -12,7 +12,7 @@ public class TextUI : MonoBehaviour
     [SerializeField] private Sprite[] sfxImage;
     [SerializeField] private RectTransform rect;
     private Vector3 anchor;
-    private Vector2 offset = new Vector2(15f, 20f);
+    private Vector2 offset = new Vector2(10f, 15f);
     private Color[] colors =
     {
         new Color(1, 0.84f, 0.15f),
@@ -53,7 +53,7 @@ public class TextUI : MonoBehaviour
                 canvas.DOFade(0f, 0.4f)
                 .OnComplete(() =>
                 {
-                    gameObject.SetActive(false);
+                    Destroy(gameObject);
                 });
             });
     }

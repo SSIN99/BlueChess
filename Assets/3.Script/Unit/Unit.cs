@@ -207,6 +207,7 @@ public class Unit : MonoBehaviour
         private set
         {
             maxShield = value;
+            CurShield = maxShield;
             OnMaxShieldChanged?.Invoke();
         }
     }

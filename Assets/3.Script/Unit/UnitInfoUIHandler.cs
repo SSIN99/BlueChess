@@ -121,16 +121,36 @@ public class UnitInfoUIHandler : MonoBehaviour
         highlight.position = pos;
         highlight.parent = target.transform;
 
+        unit.OnMaxHpChanged += UpdateMaxHp;
         unit.OnCurHpChanged += UpdateCurHp;
         unit.OnCurMpChanged += UpdateCurMp;
+        unit.OnADChanged += UpdateAD;
+        unit.OnAPChanged += UpdateAP;
+        unit.OnArmorChanged += UpdateArmor;
+        unit.OnResistChanged += UpdateResist;
+        unit.OnASChanged += UpdateAS;
+        unit.OnAvoidChanged += UpdateAvoid;
     }
     private void TurnOffUI()
     {
+        unit.OnMaxHpChanged -= UpdateMaxHp;
         unit.OnCurHpChanged -= UpdateCurHp;
         unit.OnCurMpChanged -= UpdateCurMp;
+        unit.OnADChanged -= UpdateAD;
+        unit.OnAPChanged -= UpdateAP;
+        unit.OnArmorChanged -= UpdateArmor;
+        unit.OnResistChanged -= UpdateResist;
+        unit.OnASChanged -= UpdateAS;
+        unit.OnAvoidChanged -= UpdateAvoid;
+
         panel.SetActive(false);
         highlight.gameObject.SetActive(false);
         highlight.parent = transform;
+    }
+    private void UpdateMaxHp()
+    {
+        hpBar.maxValue = unit.MaxHp;
+        hpText.text = $"{hpBar.value}/{hpBar.maxValue}";
     }
     private void UpdateCurHp()
     {
@@ -142,5 +162,28 @@ public class UnitInfoUIHandler : MonoBehaviour
         mpBar.value = unit.CurMp;
         mpText.text = $"{mpBar.value}/{mpBar.maxValue}";
     }
-   
+    private void UpdateAD()
+    {
+        ad.text = $"{unit.AD}";
+    }
+    private void UpdateAP()
+    {
+        ap.text = $"{unit.AP}";
+    }
+    private void UpdateAS()
+    {
+        attackSpeed.text = $"{unit.AS}";
+    }
+    private void UpdateArmor()
+    {
+        armor.text = $"{unit.Armor}";
+    }
+    private void UpdateResist()
+    {
+        resist.text = $"{unit.Resist}";
+    }
+    private void UpdateAvoid()
+    {
+        avoid.text = $"{unit.Avoid}";
+    }
 }
