@@ -4,6 +4,15 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/1.Scene/Login.unity
+    guid: ec8c6969e399bf04694007a85cd8b2f3
+  - enabled: 1
+    path: Assets/1.Scene/Lobby.unity
+    guid: 2c7343d28d32a3b438fbe1e2017a176e
+  - enabled: 1
+    path: Assets/1.Scene/Chess.unity
+    guid: 09b6e86cf55fe1a4987aa6dd02f85c18
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: eff548f8e2de7e84eb5e86da0d999046, type: 2}
