@@ -36,6 +36,8 @@ public class Info : MonoBehaviour
     public List<Sprite> traitIcon;
     //아이템 아이콘 리스트 
     public List<Sprite> itemIcon;
+    //유닛 등급 아이콘 리스트
+    public List<Sprite> gradeIcon;
 
     private void Awake()
     {

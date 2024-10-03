@@ -18,7 +18,8 @@ public class TextUI : MonoBehaviour
         new Color(1, 0.84f, 0.15f),
         new Color(1, 0.84f, 0.15f),
         new Color(0.66f,0.89f,0.11f),
-        Color.gray
+        Color.gray,
+        new Color(0, 0.8f, 1f)
     };
 
     private void Awake()
@@ -42,6 +43,7 @@ public class TextUI : MonoBehaviour
                 break;
             case TextType.Attack:
             case TextType.Heal:
+            case TextType.Skill:
                 sfx.sprite = sfxImage[0];
                 break;
         }

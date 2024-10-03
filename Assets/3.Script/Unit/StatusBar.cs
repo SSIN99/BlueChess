@@ -75,11 +75,18 @@ public class StatusBar : MonoBehaviour
     }
     private void SetActiveStatus()
     {
-        if (unit.IsDead)
-            pivot.gameObject.SetActive(false);
+        if (unit.isEnemy)
+        {
+            Destroy(gameObject);
+        }
         else
         {
-            pivot.gameObject.SetActive(true);
+            if (unit.IsDead)
+                pivot.gameObject.SetActive(false);
+            else
+            {
+                pivot.gameObject.SetActive(true);
+            }
         }
     }
     private void FixedUpdate()

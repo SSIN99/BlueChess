@@ -8,7 +8,8 @@ public enum TextType
     Attack,
     Crit,
     Heal,
-    Avoid
+    Avoid,
+    Skill
 }
 
 public class TextPrinter : MonoBehaviour

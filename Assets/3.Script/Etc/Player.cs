@@ -268,6 +268,7 @@ public class Player : MonoBehaviour
     public void AddBench(Unit unit)
     {
         unit.gameObject.layer = LayerMask.NameToLayer("Bench");
+        unit.transform.rotation = Quaternion.Euler(0, 125f, 0);
         benchList.Add(unit);
         numOfBench++;
     }
@@ -285,6 +286,7 @@ public class Player : MonoBehaviour
     public void AddField(Unit unit)
     {
         unit.gameObject.layer = LayerMask.NameToLayer("Field");
+        unit.transform.rotation = Quaternion.identity;
         if (!CheckDuplicateUnit(unit.No))
         {
             traitCount[unit.Origin]++;

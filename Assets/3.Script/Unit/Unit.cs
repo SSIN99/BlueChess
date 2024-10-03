@@ -387,6 +387,7 @@ public class Unit : MonoBehaviour
         Avoid = tempAvoid;
         lifeSteel = tempLS;
         increasedDamage = tempID;
+        isManaBan = false;
     }
     public void DetectTarget()
     {
@@ -405,6 +406,7 @@ public class Unit : MonoBehaviour
 
         if (objs.Length == 0)
         {
+            transform.rotation = Quaternion.Euler(0f, 125f, 0f);
             anim.Play("Win");
             return;
         }
@@ -476,7 +478,7 @@ public class Unit : MonoBehaviour
                 isCritical = false;
             }
             target.GetComponent<Unit>().TakeDamage(this, finalDamage, isCritical);
-            CurMp += manaRegeneration;
+            IncreaseMana(manaRegeneration);
 
             OnAttackOccurred?.Invoke();
         }
@@ -533,7 +535,7 @@ public class Unit : MonoBehaviour
         }
         attacker.LifeSteel(actualDamage);
         attacker.RecordDealAmount(actualDamage);
-        CurMp += 5;
+        IncreaseMana(5);
         if (crit)
         {
             textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Crit);
@@ -565,7 +567,14 @@ public class Unit : MonoBehaviour
     }
     public void Dead()
     {
-        gameObject.SetActive(false);
+        if (isEnemy)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
     #endregion
 
@@ -1040,6 +1049,11 @@ public class Unit : MonoBehaviour
     {
         enemy.DecreaseMana(5);
     }
+    public void IncreaseMana(int amout)
+    {
+        if (isManaBan) return;
+        CurMp += amout;
+    }
     public void DecreaseMana(int amout)
     {
         CurMp -= amout;
@@ -1436,6 +1450,10 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Skill
+    [SerializeField] private GameObject defaultBody;
+    [SerializeField] private GameObject tranformationBody;
+    private bool isManaBan;
+    private float skillRatio;
     public void CheckSkillUsable()
     {
         if (curMp == maxMp &&
@@ -1447,9 +1465,249 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnSkillUsed;
-    public void SkillEffect()
-    {
 
+    public void SkillAttack(float ratio, bool ap)
+    {
+        if (!target.GetComponent<Unit>().IsDead)
+        {
+            float finalDamage;
+            float rand = Random.Range(0f, 100f);
+            if (ap)
+            {
+                finalDamage = (AP * ratio / 100f) * (1f + increasedDamage / 100f);
+            }
+            else
+            {
+                finalDamage = (ad * ratio / 100f) * (1f + increasedDamage / 100f);
+
+            }
+
+            target.GetComponent<Unit>().TakeSkillDamage(this, finalDamage, ap);
+        }
+    }
+    public void TakeSkillDamage(Unit attacker, float damage, bool ap)
+    {
+        if (IsDead) return;
+
+        float actualDamage;
+        if (ap)
+        {
+            actualDamage = damage * (1f - (resist / (resist + 100f)));
+        }
+        else
+        {
+            actualDamage = damage * (1f - (armor / (armor + 100f)));
+        }
+
+        actualDamage = Mathf.Round(actualDamage);
+        if (curShield > 0)
+        {
+            CurShield -= actualDamage;
+            if (curShield < 0)
+            {
+                CurHp += curShield;
+            }
+        }
+        else
+        {
+            CurHp -= actualDamage;
+        }
+        attacker.LifeSteel(actualDamage);
+        attacker.RecordDealAmount(actualDamage);
+        if (ap)
+        {
+            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Skill);
+        }
+        else
+        {
+            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Attack);
+        }
+        sfxPrinter.PrintHitFx(transform.position);
+        if (CurHp <= 0)
+        {
+            IsDead = true;
+            return;
+        }
+    }
+    public void ActivSkill()
+    {
+        switch (No)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                switch (grade)
+                {
+                    case 1:
+                        skillRatio = 300f;
+                        break;
+                    case 2:
+                        skillRatio = 400f;
+                        break;
+                    case 3:
+                        skillRatio = 500f;
+                        break;
+                }
+                break;
+            case 11:
+                SkillEffect11();
+                break;
+            case 12:
+                SkillEffect12();
+                break;
+            case 13:
+                break;
+            case 14:
+                break;
+            case 15:
+                break;
+            case 16:
+                break;
+            case 17:
+                break;
+            case 18:
+                break;
+            case 19:
+                break;
+            case 20:
+                break;
+            case 21:
+                break;
+            case 22:
+                break;
+            case 23:
+                break;
+            case 24:
+                break;
+            case 25:
+                break;
+            case 26:
+                break;
+            case 27:
+                break;
+            case 28:
+                break;
+            case 29:
+                break;
+            case 30:
+                break;
+            case 31:
+                break;
+            case 32:
+                break;
+            case 33:
+                break;
+            case 34:
+                break;
+            case 35:
+                break;
+            case 36:
+                break;
+            case 37:
+                break;
+            case 38:
+                break;
+            case 39:
+                break;
+            case 40:
+                break;
+            case 41:
+                break;
+            case 42:
+                break;
+            case 43:
+                break;
+            case 44:
+                break;
+            case 45:
+                break;
+            case 46:
+                break;
+            case 47:
+                break;
+            case 48:
+                break;
+            case 49:
+                break;
+            case 50:
+                break;
+            case 51:
+                break;
+            case 52:
+                break;
+            case 53:
+                break;
+            case 54:
+                break;
+            case 55:
+                break;
+            case 56:
+                break;
+        }
+    }
+    private void SkillEffect10() //¼¼¸®Ä«
+    {
+        SkillAttack(skillRatio/6f, false);
+    }
+    private void SkillEffect11() //½´¿¡¸°
+    {
+        switch (grade)
+        {
+            case 1:
+                skillRatio = 110f;
+                break;
+            case 2:
+                skillRatio = 210f;
+                break;
+            case 3:
+                skillRatio = 310f;
+                break;
+        }
+        SkillAttack(skillRatio, true);
+    }
+    private void SkillEffect12() //Ã÷Äí¿ä
+    {
+        isManaBan = true;
+        switch (grade)
+        {
+            case 1:
+                Avoid += 10f;
+                break;
+            case 2:
+                Avoid += 15f;
+                break;
+            case 3:
+                Avoid += 20f;
+                break;
+        }
+    }
+    public void Transformation()
+    {
+        defaultBody.SetActive(false);
+        tranformationBody.SetActive(true);
+    }
+    public void ReturnDefaultBody()
+    {
+        tranformationBody.SetActive(false);
+        defaultBody.SetActive(true);
     }
     #endregion
 }
