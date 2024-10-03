@@ -3639,7 +3639,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7931778464515067714}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 988eeedfc091dd44896dd423adc0874b, type: 3}
+  m_Script: {fileID: 11500000, guid: ded5d7ab39573bc409d34fcaf67be65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   No: 0
@@ -3648,7 +3648,10 @@ MonoBehaviour:
   Class: 0
   Range: 0
   lifeSteel: 0
+  increasedDamage: 0
+  AllDealAmount: 0
   info: {fileID: 0}
+  player: {fileID: 0}
   textPrinter: {fileID: 0}
   sfxPrinter: {fileID: 0}
   agent: {fileID: 0}
@@ -3658,6 +3661,7 @@ MonoBehaviour:
   pos: {x: 0, y: 0, z: 0}
   rot: {x: 0, y: 0, z: 0, w: 0}
   rotSpeed: 0
+  isEnemy: 0
   itemList: 
 --- !u!1 &7950103092074638184
 GameObject:

@@ -74,13 +74,13 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (unit.IsBattle) return;
+        if (unit.IsBattle || unit.isEnemy) return;
         mouse.SetHand(eventData.pointerDrag);
         anim.Play("PickUp");
     }
     public void OnDrag(PointerEventData eventData)
     {
-        if (unit.IsBattle) return;
+        if (unit.IsBattle || unit.isEnemy) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         plane.Raycast(ray, out float distnace);
@@ -99,7 +99,7 @@ public class ArrangeControl : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (unit.IsBattle) return;
+        if (unit.IsBattle || unit.isEnemy) return;
         if (targetTile == null)
         {
             transform.position = curTile.transform.position;

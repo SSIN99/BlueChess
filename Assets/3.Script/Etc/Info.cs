@@ -18,6 +18,8 @@ public class Info : MonoBehaviour
     public List<Dictionary<string, string>> Enemies;
     //아이템 정보 csv
     public List<Dictionary<string, string>> Items;
+    //라운드 정보 csv
+    public List<Dictionary<string, string>> Rounds;
     //유닛 풀 갯수 딕셔너리
     public Dictionary<int, int> unitCount;
     //유닛 프리펩 리스트
@@ -26,6 +28,8 @@ public class Info : MonoBehaviour
     public List<Sprite> memorials;
     //유닛 아이콘 리스트
     public List<Sprite> portraits;
+    //에너미 아이콘 리스트
+    public List<Sprite> enemyPortraits;
     //유닛 스킬 아이콘 리스트
     public List<Sprite> skillIcon;
     //특성별 아이콘 리스트
@@ -40,6 +44,7 @@ public class Info : MonoBehaviour
         Ratios = CSVReader.Read("RatioData");
         Enemies = CSVReader.Read("EnemyData");
         Items = CSVReader.Read("ItemData");
+        Rounds = CSVReader.Read("RoundData");
         InitUnitPool();
     }
     

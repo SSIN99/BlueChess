@@ -15,36 +15,29 @@ public class MouseHandler : MonoBehaviour
     #endregion
 
     [SerializeField] GameObject unitInfoUI;
-    [SerializeField] GameObject outline;
+    [SerializeField] GameObject outlineFriend;
+    [SerializeField] GameObject outlineEnemy;
+    private bool isOutlineEnemy;
     private Unit unit;
     private GameObject hand;
-    public GameObject Hand
-    {
-        get { return Hand; }
-        private set
-        {
-            hand = value;
-            if (hand == null)
-            {
-                EndDrag();
-            }
-            else
-            {
-                OnDrag();
-            }
-        }
-    }
     
     public void SetHand(GameObject target)
     {
-        Hand = target;
+        hand = target;
+        if (hand == null)
+        {
+            EndDrag();
+        }
+        else
+        {
+            OnDrag();
+        }
     }
     private void OnDrag()
     {
         hand.TryGetComponent<Unit>(out unit);
         if (!round.IsBattleStep)
             field.SetActive(true);
-
         bench.SetActive(true);
         sellUI[0].Active(unit.Grade, unit.Cost);
         sellUI[1].Active(unit.Grade, unit.Cost);
@@ -57,22 +50,41 @@ public class MouseHandler : MonoBehaviour
         bench.SetActive(false);
         sellUI[0].NonActive();
         sellUI[1].NonActive();
-        LayerMask layerMask = LayerMask.GetMask("Bench", "Field");
+        LayerMask layerMask = LayerMask.GetMask("Bench", "Field", "Enemy");
         raycaster.eventMask = layerMask;
     }
     public void SetOutline(Transform unit)
     {
+
         if(unit == null)
         {
-            outline.transform.parent = transform;
-            outline.SetActive(false);
-
+            if (isOutlineEnemy)
+            {
+                outlineEnemy.transform.parent = transform;
+                outlineEnemy.SetActive(false);
+            }
+            else
+            {
+                outlineFriend.transform.parent = transform;
+                outlineFriend.SetActive(false);
+            }
         }
         else
         {
-            outline.transform.position = new Vector3(unit.position.x, 0.2f, unit.position.z);
-            outline.SetActive(true);
-            outline.transform.parent = unit;
+            if (unit.CompareTag("Enemy"))
+            {
+                isOutlineEnemy = true;
+                outlineEnemy.transform.position = new Vector3(unit.position.x, 0.2f, unit.position.z);
+                outlineEnemy.SetActive(true);
+                outlineEnemy.transform.parent = unit;
+            }
+            else
+            {
+                isOutlineEnemy = false;
+                outlineFriend.transform.position = new Vector3(unit.position.x, 0.2f, unit.position.z);
+                outlineFriend.SetActive(true);
+                outlineFriend.transform.parent = unit;
+            }
         }
     }
 }

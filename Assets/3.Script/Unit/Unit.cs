@@ -248,6 +248,7 @@ public class Unit : MonoBehaviour
     public Vector3 pos;
     public Quaternion rot;
     public float rotSpeed;
+    public bool isEnemy;
     private bool isDead;
     private bool isBattle;
     public bool IsDead
@@ -306,12 +307,12 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Action
-    protected virtual void Start()
+    private void Awake()
     {
         info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
+        sfxPrinter = GameObject.FindGameObjectWithTag("SFX").GetComponent<SFXPrinter>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         textPrinter = GameObject.FindGameObjectWithTag("Text").GetComponent<TextPrinter>();
-        sfxPrinter = GameObject.FindGameObjectWithTag("SFX").GetComponent<SFXPrinter>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         col = GetComponent<BoxCollider>();
@@ -426,7 +427,7 @@ public class Unit : MonoBehaviour
     {
         CheckTargetDead();
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        float radius = 2 * Range;
+        float radius = 2 * Range + 0.5f;
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (distance <= radius)
         {

@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 using DG.Tweening;
 
 public class DealChartUIHandler : MonoBehaviour
 {
+    [SerializeField] private Image btnImage;
+    [SerializeField] private Sprite[] btnSprite;
     [SerializeField] private RectTransform rect;
     [SerializeField] private RoundManager round;
     [SerializeField] private Player player;
     [SerializeField] private DealChart[] chart;
+    private bool isOpen = false;
     private int count;
     private void OnEnable()
     {
@@ -49,10 +53,17 @@ public class DealChartUIHandler : MonoBehaviour
     }
     public void OpenChart()
     {
-        rect.DOAnchorPosX(-150f, 0.1f);
-    }
-    public void CloseChart()
-    {
-        rect.DOAnchorPosX(150f, 0.1f);
+        if (isOpen)
+        {
+            isOpen = false;
+            btnImage.sprite = btnSprite[0];
+            rect.DOAnchorPosX(-50f, 0.1f);
+        }
+        else
+        {
+            isOpen = true;
+            btnImage.sprite = btnSprite[1];
+            rect.DOAnchorPosX(-350f, 0.1f);
+        }
     }
 }

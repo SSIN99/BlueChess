@@ -48,11 +48,26 @@ public class UnitInfoUIHandler : MonoBehaviour
     private Unit unit;
     private void InitUI()
     {
-        portrait.sprite = info.portraits[unit.No];
+        if (unit.isEnemy)
+        {
+            portrait.sprite = info.enemyPortraits[unit.No];
+        }
+        else
+        {
+            portrait.sprite = info.portraits[unit.No];
+        }
         grade.sprite = gradeIcons[unit.Grade - 1];
         costColor.color = colorList[unit.Cost - 1];
-        origin.sprite = info.traitIcon[unit.Origin];
-        jobClass.sprite = info.traitIcon[unit.Class];
+        if(unit.Origin == -1)
+        {
+            origin.sprite = null;
+            jobClass.sprite = null;
+        }
+        else
+        {
+            origin.sprite = info.traitIcon[unit.Origin];
+            jobClass.sprite = info.traitIcon[unit.Class];
+        }
         charName.text = unit.Name;
         switch (unit.Grade)
         {

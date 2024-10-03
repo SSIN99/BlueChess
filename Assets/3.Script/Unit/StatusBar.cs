@@ -18,7 +18,6 @@ public class StatusBar : MonoBehaviour
     public void SetUnit(Unit target)
     {
         unit = target;
-        unit.OnGradeChanged += UpdateGrade;
         unit.OnCurHpChanged += UpdateCurHp;
         unit.OnMaxHpChanged += UpdateMaxHp;
         unit.OnCurMpChanged += UpdateCurMp;
@@ -26,9 +25,14 @@ public class StatusBar : MonoBehaviour
         unit.OnCurShieldChanged += UpdateCurShield;
         unit.OnMaxShieldChanged += UpdateMaxShield;
         unit.OnDead += SetActiveStatus;
-        unit.OnIdleReturn += SetActiveStatus;
-        unit.OnItemEquiped += UpdateItemList;
-        unit.OnBeSold += Delete;
+        unit.OnGradeChanged += UpdateGrade;
+
+        if (!unit.isEnemy)
+        {
+            unit.OnIdleReturn += SetActiveStatus;
+            unit.OnItemEquiped += UpdateItemList;
+            unit.OnBeSold += Delete;
+        }
     }
     private void Delete()
     {
@@ -81,7 +85,7 @@ public class StatusBar : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
-        pos.y += 90f;
+        pos.y += 130f;
         transform.position = pos;
     }
     private void OnDisable()

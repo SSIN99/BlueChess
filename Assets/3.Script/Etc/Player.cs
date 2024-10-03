@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     private int curExp;
     private int maxExp;
     private int[] maxExpList = { 2, 4, 6, 10, 20, 36, 48, 76 };
-    private bool isLocked;
+    public bool isLocked;
     public event Action OnLevelUp;
     public int Level
     {
@@ -84,6 +84,24 @@ public class Player : MonoBehaviour
                 expText.text = $"{curExp}/{maxExp}";
             }
         }
+    }
+    public void GetExp(int exp)
+    {
+        curExp += exp;
+        if (curExp >= maxExp)
+        {
+            curExp -= maxExp;
+            Level++;
+        }
+        else
+        {
+            expSlider.value = curExp;
+            expText.text = $"{curExp}/{maxExp}";
+        }
+    }
+    public void GetGold(int gold)
+    {
+        Gold += gold;
     }
     #endregion
 
@@ -156,10 +174,38 @@ public class Player : MonoBehaviour
         CheckGradePossible(no, 1);
         OnPurchaseUnit?.Invoke();
     }
+    public void GetUnit(int no)
+    {
+        info.unitCount[no]--;
+        GameObject newbie = Instantiate(info.prefabs[no]);
+        Unit unit = newbie.GetComponent<Unit>();
+        GameObject status = Instantiate(statusBar);
+        status.GetComponent<StatusBar>().SetUnit(unit);
+        status.transform.SetParent(canvas);
+        unit.InitInfo(info.Units[no]);
+        AddBench(unit);
+        for (int i = 0; i < bench.Length; i++)
+        {
+            if (bench[i].unit == null)
+            {
+                newbie.GetComponent<ArrangeControl>().InitTile(bench[i]);
+                break;
+            }
+        }
+        if (UnitGrade1.ContainsKey(no))
+        {
+            UnitGrade1[no]++;
+        }
+        else
+        {
+            UnitGrade1.Add(no, 1);
+        }
+        CheckGradePossible(no, 1);
+    }
     public void SellUnit(GameObject subject)
     {
         ArrangeControl arrange = subject.GetComponent<ArrangeControl>();
-        UnitControl unit = subject.GetComponent<UnitControl>();
+        Unit unit = subject.GetComponent<Unit>();
         unit.BeSold();
         switch (unit.Grade)
         {
@@ -202,7 +248,7 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < fieldList.Count; i++)
             {
-                fieldList[i].GetComponent<UnitControl>().IsBattle = true;
+                fieldList[i].GetComponent<Unit>().IsBattle = true;
             }
         }
         else
@@ -213,7 +259,7 @@ public class Player : MonoBehaviour
                 {
                     fieldList[i].gameObject.SetActive(true);
                 }
-                fieldList[i].GetComponent<UnitControl>().IsBattle = false;
+                fieldList[i].GetComponent<Unit>().IsBattle = false;
                 
             }
             CheckAllGradeUp();
@@ -686,7 +732,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         Level = 1;
-        Gold = 999;
+        Gold = 0;
         curExp = 0;
         maxExp = maxExpList[0];
         benchList = new List<Unit>();
