@@ -44,6 +44,7 @@ public class LoginManager : MonoBehaviour
             }
             Debug.Log("User signed in successfully");
             FirebaseManager.user = task.Result.User;
+            FirebaseManager.LoadUserData(FirebaseManager.user.UserId);
             log.color = Color.blue;
             log.text = "로그인 성공";
             loading.SetActive(true);
@@ -73,6 +74,8 @@ public class LoginManager : MonoBehaviour
             Debug.Log("User signed up successfully");
             log.color = Color.blue;
             log.text = "회원가입 성공";
+            FirebaseUser user =  task.Result.User;
+            FirebaseManager.SaveUserData(user);
         });
     }
     public void LoginPage()

@@ -14,7 +14,7 @@ public class StatusBar : MonoBehaviour
     [SerializeField] private Slider shieldBar;
     [SerializeField] private GameObject[] items;
     [SerializeField] private Image[] itemIcon;
-
+    [SerializeField] private Text skillName;
     public void SetUnit(Unit target)
     {
         unit = target;
@@ -26,7 +26,6 @@ public class StatusBar : MonoBehaviour
         unit.OnMaxShieldChanged += UpdateMaxShield;
         unit.OnDead += SetActiveStatus;
         unit.OnGradeChanged += UpdateGrade;
-
         if (!unit.isEnemy)
         {
             unit.OnIdleReturn += SetActiveStatus;

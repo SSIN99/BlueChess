@@ -278,6 +278,7 @@ public class Unit : MonoBehaviour
                 RecordStat();
                 pos = transform.position;
                 rot = transform.rotation;
+                transform.rotation = Quaternion.identity;
                 agent.enabled = true;
                 anim.Play("Search");
                 OnBattleStart?.Invoke();
@@ -351,6 +352,11 @@ public class Unit : MonoBehaviour
         InitAD = ad;
         InitHP = maxHp;
         InitAS = AS;
+
+        if (isPassive)
+        {
+            ActiveSkill();
+        }
     }
     public void BeSold()
     {
@@ -490,17 +496,20 @@ public class Unit : MonoBehaviour
     private float elaspedTime;
     public void StartStun(float duration)
     {
-        if (duration == 0) return;
+        if (duration == 0 || 
+            IsDead) return;
         PanicDuration = duration;
         elaspedTime = 0f;
         agent.isStopped = true;
         anim.Play("Panic");
+        StartCoroutine(Stun_Co());
     }
-    public void Stuned()
+    private IEnumerator Stun_Co()
     {
-        while(elaspedTime < PanicDuration)
+        while (elaspedTime < PanicDuration)
         {
             elaspedTime += Time.deltaTime;
+            yield return null;
         }
         anim.Play("Search");
     }
@@ -1452,8 +1461,12 @@ public class Unit : MonoBehaviour
     #region Skill
     [SerializeField] private GameObject defaultBody;
     [SerializeField] private GameObject tranformationBody;
+    public bool isPassive;
     private bool isManaBan;
     private float skillRatio;
+    float adRatio = 0;
+    float apRatio = 0;
+    int attackCount = 1;
     public void CheckSkillUsable()
     {
         if (curMp == maxMp &&
@@ -1465,13 +1478,23 @@ public class Unit : MonoBehaviour
         }
     }
     public event Action OnSkillUsed;
-
+    public void HybridAttack()
+    {
+        if (!target.GetComponent<Unit>().IsDead)
+        {
+            float adFinalDamage;
+            float apFinalDamage;
+            apFinalDamage = ((AP * apRatio / 100f) * (1f + increasedDamage / 100f)) / attackCount;
+            adFinalDamage = (ad * adRatio / 100f) * (1f + increasedDamage / 100f) / attackCount;
+            target.GetComponent<Unit>().TakeSkillDamage(this, apFinalDamage, true);
+            target.GetComponent<Unit>().TakeSkillDamage(this, adFinalDamage, false);
+        }
+    }
     public void SkillAttack(float ratio, bool ap)
     {
         if (!target.GetComponent<Unit>().IsDead)
         {
             float finalDamage;
-            float rand = Random.Range(0f, 100f);
             if (ap)
             {
                 finalDamage = (AP * ratio / 100f) * (1f + increasedDamage / 100f);
@@ -1529,43 +1552,75 @@ public class Unit : MonoBehaviour
             return;
         }
     }
-    public void ActivSkill()
+    public void SplashAttack(GameObject target, float radius, float ratio, bool ap)
+    {
+        LayerMask layer;
+        if (transform.CompareTag("Unit"))
+        {
+            layer = LayerMask.GetMask("Enemy");
+        }
+        else
+        {
+            layer = LayerMask.GetMask("Field");
+        }
+
+        Collider[] enemy = Physics.OverlapSphere(target.transform.position, radius, layer);
+
+        if (enemy.Length == 0)
+        {
+            return;
+        }
+        float finalDamage = 0;
+        if (ap)
+        {
+            finalDamage = (AP * ratio / 100f) * (1f + increasedDamage / 100f);
+        }
+        else
+        {
+            finalDamage = (ad * ratio / 100f) * (1f + increasedDamage / 100f);
+
+        }
+        foreach (var col in enemy)
+        {
+            col.GetComponent<Unit>().TakeSkillDamage(this, finalDamage, ap);
+        }
+    }
+    public void ActiveSkill()
     {
         switch (No)
         {
             case 0:
+                OnBattleStart += SkillEffect0;
                 break;
             case 1:
+                SkillEffect1();
                 break;
             case 2:
+                SkillEffect2();
                 break;
             case 3:
+                SkillEffect3();
                 break;
             case 4:
+                SkillEffect4();
                 break;
             case 5:
+                SkillEffect5();
                 break;
             case 6:
+                SkillEffect6();
                 break;
             case 7:
+                SkillEffect7();
                 break;
             case 8:
+                SkillEffect8();
                 break;
             case 9:
+                SkillEffect9();
                 break;
             case 10:
-                switch (grade)
-                {
-                    case 1:
-                        skillRatio = 300f;
-                        break;
-                    case 2:
-                        skillRatio = 400f;
-                        break;
-                    case 3:
-                        skillRatio = 500f;
-                        break;
-                }
+                SkillEffect10();
                 break;
             case 11:
                 SkillEffect11();
@@ -1663,9 +1718,186 @@ public class Unit : MonoBehaviour
                 break;
         }
     }
+    private void SkillEffect0() //하루카
+    {
+        switch (grade)
+        {
+            case 1:
+                GetShield(Mathf.Round(maxHp * 0.2f));
+                break;
+            case 2:
+                GetShield(Mathf.Round(maxHp * 0.3f));
+                break;
+            case 3:
+                GetShield(Mathf.Round(maxHp * 0.4f));
+                break;
+        }
+    }
+    private void SkillEffect1() //히후미
+    {
+        switch (grade)
+        {
+            case 1:
+                skillRatio = 200f;
+                break;
+            case 2:
+                skillRatio = 300f;
+                break;
+            case 3:
+                skillRatio = 400f;
+                break;
+        }
+        SplashAttack(target, 2f, skillRatio, false);
+        sfxPrinter.PrintExplosionFx(target.transform);
+    }
+    private void SkillEffect2() //카즈사
+    {
+        switch (grade)
+        {
+            case 1:
+                CurHp += ap * 150f / 100f;
+                break;
+            case 2:
+                CurHp += ap * 250f / 100f;
+                break;
+            case 3:
+                CurHp += ap * 400f / 100f;
+                break;
+        }
+        AD += ad * 0.15f;
+    }
+    private void SkillEffect3() //마리나
+    {
+        switch (grade)
+        {
+            case 1:
+                Armor += 20f;
+                break;
+            case 2:
+                Armor += 35f;
+                break;
+            case 3:
+                Armor += 60f;
+                break;
+        }
+    }
+    private void SkillEffect4() //미치루
+    {
+        switch (grade)
+        {
+            case 1:
+                skillRatio = 110f;
+                break;
+            case 2:
+                skillRatio = 210f;
+                break;
+            case 3:
+                skillRatio = 310f;
+                break;
+        }
+        SkillAttack(skillRatio, true);
+    }
+    private void SkillEffect5() //미도리
+    {
+        attackCount = 5;
+        switch (grade)
+        {
+            case 1:
+                adRatio = 110f;
+                apRatio = 70f;
+                break;
+            case 2:
+                adRatio = 160f;
+                apRatio = 90f;
+                break;
+            case 3:
+                adRatio = 210f;
+                apRatio = 110f;
+                break;
+        }
+    }
+    private void SkillEffect6() //모모이
+    {
+        switch (grade)
+        {
+            case 1:
+                AD += ad * 0.2f;
+                break;
+            case 2:
+                AD += ad * 0.3f;
+                break;
+            case 3:
+                AD += ad * 0.4f;
+                break;
+        }
+    }
+    private void SkillEffect7() //무츠키
+    {
+        switch (grade)
+        {
+            case 1:
+                skillRatio = 100f;
+                break;
+            case 2:
+                skillRatio = 160f;
+                break;
+            case 3:
+                skillRatio = 240f;
+                break;
+        }
+        SplashAttack(target, 2f, skillRatio, true);
+        sfxPrinter.PrintExplosionFx(target.transform);
+    }
+    private void SkillEffect8() //노도카
+    {
+        if (target == null) return; 
+        switch (grade)
+        {
+            case 1:
+                skillRatio = 100f;
+                target.GetComponent<Unit>().StartStun(2f);
+                break;
+            case 2:
+                skillRatio = 160f;
+                target.GetComponent<Unit>().StartStun(3f);
+                break;
+            case 3:
+                skillRatio = 240f;
+                target.GetComponent<Unit>().StartStun(4f);
+                break;
+        }
+        SkillAttack(skillRatio, true);
+    }
+    private void SkillEffect9() //사오리
+    {
+        switch (grade)
+        {
+            case 1:
+                skillRatio = 300f;
+                break;
+            case 2:
+                skillRatio = 400f;
+                break;
+            case 3:
+                skillRatio = 500f;
+                break;
+        }
+        SkillAttack(skillRatio, false);
+    }
     private void SkillEffect10() //세리카
     {
-        SkillAttack(skillRatio/6f, false);
+        switch (grade)
+        {
+            case 1:
+                AS += Mathf.Round(AS * 0.2f * 100f) / 100f;
+                break;
+            case 2:
+                AS += Mathf.Round(AS * 0.3f * 100f) / 100f;
+                break;
+            case 3:
+                AS += Mathf.Round(AS * 0.4f * 100f) / 100f;
+                break;
+        }
     }
     private void SkillEffect11() //슈에린
     {

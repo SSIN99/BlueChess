@@ -8,6 +8,7 @@ public class SFXPrinter : MonoBehaviour
     [SerializeField] private GameObject grade2Prefab;
     [SerializeField] private GameObject grade3Prefab;
     [SerializeField] private GameObject traitPrefab;
+    [SerializeField] private GameObject explosionPrefab;
     private Queue<GameObject> hit;
     private Vector3 offset;
 
@@ -58,6 +59,14 @@ public class SFXPrinter : MonoBehaviour
         temp.transform.parent = target;
         Vector3 pos = target.position;
         pos.y += 0.1f;
+        temp.transform.position = pos;
+    }
+    public void PrintExplosionFx(Transform target)
+    {
+        GameObject temp;
+        temp = Instantiate(explosionPrefab);
+        Vector3 pos = target.position;
+        pos.y += 0.5f;
         temp.transform.position = pos;
     }
 }

@@ -1570,7 +1570,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3355397671902216674}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.92387956, z: 0, w: 0.38268343}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 220, y: 220, z: 220}
   m_Children:
@@ -1581,7 +1581,7 @@ Transform:
   - {fileID: 4611404065356433463}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 135, z: 0}
 --- !u!95 &5108489289971533608
 Animator:
   serializedVersion: 3
@@ -1681,6 +1681,9 @@ MonoBehaviour:
   rotSpeed: 0
   isEnemy: 0
   itemList: 
+  defaultBody: {fileID: 0}
+  tranformationBody: {fileID: 0}
+  isPassive: 0
 --- !u!1 &3375415753920734664
 GameObject:
   m_ObjectHideFlags: 0

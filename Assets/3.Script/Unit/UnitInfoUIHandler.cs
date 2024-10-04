@@ -28,7 +28,7 @@ public class UnitInfoUIHandler : MonoBehaviour
     [SerializeField] Text mpText;
     [SerializeField] Image skillIcon;
     [SerializeField] Text skillName;
-    [SerializeField] Text skillScript;
+    [SerializeField] Text skillEffect;
     [SerializeField] Text ad;
     [SerializeField] Text ap;
     [SerializeField] Text armor;
@@ -48,13 +48,14 @@ public class UnitInfoUIHandler : MonoBehaviour
     private Unit unit;
     private void InitUI()
     {
+        int no = unit.No;
         if (unit.isEnemy)
         {
-            portrait.sprite = info.enemyPortraits[unit.No];
+            portrait.sprite = info.enemyPortraits[no];
         }
         else
         {
-            portrait.sprite = info.portraits[unit.No];
+            portrait.sprite = info.portraits[no];
         }
         grade.sprite = gradeIcons[unit.Grade - 1];
         costColor.color = colorList[unit.Cost - 1];
@@ -88,8 +89,8 @@ public class UnitInfoUIHandler : MonoBehaviour
         mpBar.value = unit.CurMp;
         mpText.text = $"{mpBar.value}/{mpBar.maxValue}";
         skillIcon.sprite = info.skillIcon[unit.No];
-        //스킬이름
-        //스킬설명 추가
+        skillName.text = info.Skills[no]["Name"];
+        skillEffect.text = info.Skills[no]["Effect"];
         ad.text = unit.AD.ToString();
         ap.text = unit.AP.ToString();
         armor.text = unit.Armor.ToString();

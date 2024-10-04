@@ -11,6 +11,6 @@ public class PanicState : StateMachineBehaviour
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        unit.Stuned();
+        Debug.Log("panic");
     }
 }

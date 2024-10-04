@@ -48,7 +48,7 @@ public class RoundManager : MonoBehaviour
     public void OpenItemShop()
     {
         itemShopPanel.SetActive(true);
-        rerollCount = 2;
+        rerollCount = 3;
         rerollBtnText.text = "2";
         rerollBtn.interactable = true;
         SetRandomItem();
@@ -91,7 +91,7 @@ public class RoundManager : MonoBehaviour
             victoryText.SetActive(true);
         else
             defeatText.SetActive(true);
-        bestRoundText.text = $"최고 라운드 : 0";
+        bestRoundText.text = $"최고 라운드 : {FirebaseManager.userData.record}";
         curRoundText.text = $"이번 라운드 : {round - 1}";
         for (int i = 0; i < player.fieldList.Count; i++)
         {
@@ -101,6 +101,7 @@ public class RoundManager : MonoBehaviour
     }
     public void BackLobby()
     {
+        FirebaseManager.UpdateUserRecord(FirebaseManager.user.UserId, round - 1);
         SceneManager.LoadScene("Lobby");
     }
 

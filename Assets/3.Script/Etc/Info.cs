@@ -20,6 +20,8 @@ public class Info : MonoBehaviour
     public List<Dictionary<string, string>> Items;
     //¶ó¿îµå Á¤º¸ csv
     public List<Dictionary<string, string>> Rounds;
+    //½ºÅ³ Á¤º¸ csv
+    public List<Dictionary<string, string>> Skills;
     //À¯´Ö Ç® °¹¼ö µñ¼Å³Ê¸®
     public Dictionary<int, int> unitCount;
     //À¯´Ö ÇÁ¸®Æé ¸®½ºÆ®
@@ -47,6 +49,7 @@ public class Info : MonoBehaviour
         Enemies = CSVReader.Read("EnemyData");
         Items = CSVReader.Read("ItemData");
         Rounds = CSVReader.Read("RoundData");
+        Skills = CSVReader.Read("SkillData");
         InitUnitPool();
     }
     
