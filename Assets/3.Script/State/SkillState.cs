@@ -11,11 +11,10 @@ public class SkillState : StateMachineBehaviour
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        unit.CheckTargetDead();
         unit.LookAtTarget();
         if(stateInfo.normalizedTime >= 1)
         {
-            animator.Play("Attack");
+            animator.Play("Search");
         }
     }
 }

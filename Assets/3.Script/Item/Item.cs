@@ -6,41 +6,49 @@ using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    [SerializeField] private GameObject popUpUI;
     [SerializeField] private Image Icon;
-    [SerializeField] private Info info;
-    [SerializeField] private Player player;
-    [SerializeField] private ItemInfoUIHandler popUpUI;
+    [SerializeField] private Image InfoIcon;
+    [SerializeField] private Text Name;
+    [SerializeField] private Text Effect;
     [SerializeField] private RectTransform rect;
-    [SerializeField] private Unit targetUnit;
-    [SerializeField] private CanvasGroup canvas;
-    private Vector3 pos;
-    private int No;
+    [SerializeField] private CanvasGroup itemUI;
+    
+    
+    private Info info;
+    private Player player;
+    private Unit unit;
+    private Vector3 defaultPos;
+    private int no;
 
     private void Awake()
     {
         info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        popUpUI = GameObject.FindGameObjectWithTag("ItemInfoUI").GetComponent<ItemInfoUIHandler>();
     }
 
-    public void SetItem(int no)
+    public void InitInfo(int no)
     {
-        No = no;
+        this.no = no;
         Icon.sprite = info.itemIcon[no];
+        InfoIcon.sprite = info.itemIcon[no];
+        Name.text = info.Items[no]["Name"];
+        Effect.text = info.Items[no]["Script"];
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        popUpUI.InitInfo(No);
+        popUpUI.SetActive(true);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        popUpUI.Off();
+        popUpUI.SetActive(false);
     }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        canvas.blocksRaycasts = false;
-        pos = rect.position;
-        rect.localScale *= 0.5f;
+        itemUI.blocksRaycasts = false;
+        defaultPos = rect.position;
+        rect.localScale *= 0.6f;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -48,27 +56,26 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
         rect.position = Input.mousePosition;
         if (eventData.pointerEnter == null)
         {
-            targetUnit = null;
+            unit = null;
         }
         else
         {
-            targetUnit = eventData.pointerEnter.GetComponent<Unit>();
+            unit = eventData.pointerEnter.GetComponent<Unit>();
         }
     }
-
     public void OnEndDrag(PointerEventData eventData)
     {
-        if(targetUnit == null || 
-            targetUnit.IsItemFull ||
-            targetUnit.IsBattle)
+        if(unit == null || 
+            unit.IsItemFull ||
+            unit.IsBattle)
         {
-            canvas.blocksRaycasts = true;
-            rect.position = pos;
+            itemUI.blocksRaycasts = true;
+            rect.position = defaultPos;
             rect.localScale = Vector3.one;
         }
         else
         {
-            targetUnit.EquipItem(No);
+            unit.EquipItem(no);
             player.RemoveItem(this);
             Destroy(gameObject);
         }

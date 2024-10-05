@@ -239,8 +239,7 @@ public class Unit : MonoBehaviour
     [Header("Etc")]
     public Info info;
     public Player player;
-    public TextPrinter textPrinter;
-    public SFXPrinter sfxPrinter;
+    public VFXPrinter sfxPrinter;
     public NavMeshAgent agent;
     public Animator anim;
     public BoxCollider col;
@@ -311,9 +310,8 @@ public class Unit : MonoBehaviour
     private void Awake()
     {
         info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
-        sfxPrinter = GameObject.FindGameObjectWithTag("SFX").GetComponent<SFXPrinter>();
+        sfxPrinter = GameObject.FindGameObjectWithTag("SFX").GetComponent<VFXPrinter>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        textPrinter = GameObject.FindGameObjectWithTag("Text").GetComponent<TextPrinter>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         col = GetComponent<BoxCollider>();
@@ -525,7 +523,7 @@ public class Unit : MonoBehaviour
         float rand = Random.Range(0f, 100f);
         if (rand < avoid)
         {
-            textPrinter.PrintText(string.Empty, transform.position, TextType.Avoid);
+            sfxPrinter.PrintTextFX(string.Empty, transform.position, TextType.Avoid);
             return;
         }
         float actualDamage = damage * (1f - (armor / (armor + 100f)));
@@ -547,13 +545,13 @@ public class Unit : MonoBehaviour
         IncreaseMana(5);
         if (crit)
         {
-            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Crit);
+            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Crit);
         }
         else
         {
-            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Attack);
+            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
         }
-        sfxPrinter.PrintHitFx(transform.position);
+        sfxPrinter.PrintHitFX(transform.position);
         if (CurHp <= 0)
         {
             IsDead = true;
@@ -572,7 +570,7 @@ public class Unit : MonoBehaviour
         float steelAmount = Mathf.Round(damage * (lifeSteel / 100f));
         curHp += steelAmount;
         CurHp = Mathf.Clamp(curHp, 0, maxHp);
-        textPrinter.PrintText(steelAmount.ToString(), transform.position, TextType.Heal);
+        sfxPrinter.PrintTextFX(steelAmount.ToString(), transform.position, TextType.Heal);
     }
     public void Dead()
     {
@@ -595,7 +593,7 @@ public class Unit : MonoBehaviour
     private int manaRegeneration;
     public void PrintTraitEffect()
     {
-        sfxPrinter.PrintTraitFx(transform);
+        sfxPrinter.PrintTraitFX(transform);
     }
     public void UpdateTrait(int no, int old, int rank)
     {
@@ -1454,7 +1452,7 @@ public class Unit : MonoBehaviour
         float ad = Mathf.Round(InitAD * 0.8f);
         AD += ad;
         InitAD += ad;
-        sfxPrinter.PrintGradeFx(transform, grade);
+        sfxPrinter.PrintGradeFX(transform, grade);
     }
     #endregion
 
@@ -1539,13 +1537,13 @@ public class Unit : MonoBehaviour
         attacker.RecordDealAmount(actualDamage);
         if (ap)
         {
-            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Skill);
+            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Skill);
         }
         else
         {
-            textPrinter.PrintText(actualDamage.ToString(), transform.position, TextType.Attack);
+            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
         }
-        sfxPrinter.PrintHitFx(transform.position);
+        sfxPrinter.PrintHitFX(transform.position);
         if (CurHp <= 0)
         {
             IsDead = true;
@@ -1748,7 +1746,7 @@ public class Unit : MonoBehaviour
                 break;
         }
         SplashAttack(target, 2f, skillRatio, false);
-        sfxPrinter.PrintExplosionFx(target.transform);
+        sfxPrinter.PrintExplosionFX(target.transform);
     }
     private void SkillEffect2() //카즈사
     {
@@ -1846,7 +1844,7 @@ public class Unit : MonoBehaviour
                 break;
         }
         SplashAttack(target, 2f, skillRatio, true);
-        sfxPrinter.PrintExplosionFx(target.transform);
+        sfxPrinter.PrintExplosionFX(target.transform);
     }
     private void SkillEffect8() //노도카
     {

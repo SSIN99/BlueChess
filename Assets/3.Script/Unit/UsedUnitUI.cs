@@ -11,7 +11,7 @@ public class UsedUnitUI : MonoBehaviour
     [SerializeField] private GameObject[] itemList;
     [SerializeField] private Image[] item;
 
-    public void SetUI(Unit unit)
+    public void InitInfo(Unit unit)
     {
         portrait.sprite = info.portraits[unit.No];
         grade.sprite = info.gradeIcon[unit.Grade - 1];

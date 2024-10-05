@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,6 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Info info;
     [SerializeField] private Player player;
     [SerializeField] private ShopItem[] itemList;
-
     [SerializeField] private Text[] ratioText;
 
     private WeightedRandomPicker<int> unitPool;
@@ -19,13 +19,6 @@ public class ShopManager : MonoBehaviour
         player.OnLevelUp += AddUnitPool;
         player.OnLevelUp += UpdateWeightPool;
         player.OnLevelUp += SetRatio;
-    }
-    private void SetRatio() 
-    {
-        for(int i = 0; i< ratioText.Length; i++)
-        {
-            ratioText[i].text = $"{info.Ratios[player.Level][$"Ratio{i + 1}"]}%";
-        }
     }
     private void AddUnitPool()
     {
@@ -90,6 +83,13 @@ public class ShopManager : MonoBehaviour
             }
         }
     }
+    private void SetRatio() 
+    {
+        for(int i = 0; i< ratioText.Length; i++)
+        {
+            ratioText[i].text = $"{info.Ratios[player.Level][$"Ratio{i + 1}"]}%";
+        }
+    }
     public void SetShopItem()
     {
         foreach(var item in itemList)
@@ -100,10 +100,11 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
-                item.ReturnItem(); 
+                //item.ReturnItem(); 
+                
             }
             int no = GetRandomUnit();
-            item.SetItem(no);
+            item.InitInfo(no);
         }
     }
     private int GetRandomUnit()

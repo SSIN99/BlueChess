@@ -11,8 +11,8 @@ public class AttackState : StateMachineBehaviour
     }
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        unit.CheckAttackRange();
         unit.LookAtTarget();
+        unit.CheckAttackRange();
         unit.CheckSkillUsable();
     }
 }

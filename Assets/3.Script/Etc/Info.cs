@@ -25,21 +25,21 @@ public class Info : MonoBehaviour
     //유닛 풀 갯수 딕셔너리
     public Dictionary<int, int> unitCount;
     //유닛 프리펩 리스트
-    public List<GameObject> prefabs;
+    public GameObject[] prefabs;
     //유닛 메모리얼 리스트
-    public List<Sprite> memorials;
+    public Sprite[] memorials;
     //유닛 아이콘 리스트
-    public List<Sprite> portraits;
+    public Sprite[] portraits;
     //에너미 아이콘 리스트
-    public List<Sprite> enemyPortraits;
+    public Sprite[] enemyPortraits;
     //유닛 스킬 아이콘 리스트
-    public List<Sprite> skillIcon;
+    public Sprite[] skillIcon;
     //특성별 아이콘 리스트
-    public List<Sprite> traitIcon;
+    public Sprite[] traitIcon;
     //아이템 아이콘 리스트 
-    public List<Sprite> itemIcon;
+    public Sprite[] itemIcon;
     //유닛 등급 아이콘 리스트
-    public List<Sprite> gradeIcon;
+    public Sprite[] gradeIcon;
 
     private void Awake()
     {

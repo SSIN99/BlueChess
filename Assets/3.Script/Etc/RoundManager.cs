@@ -96,7 +96,7 @@ public class RoundManager : MonoBehaviour
         for (int i = 0; i < player.fieldList.Count; i++)
         {
             usedList[i].gameObject.SetActive(true);
-            usedList[i].SetUI(player.fieldList[i]);
+            usedList[i].InitInfo(player.fieldList[i]);
         }
     }
     public void BackLobby()

@@ -11,7 +11,7 @@ public class UnitInfoUIHandler : MonoBehaviour
     [SerializeField] Sprite[] gradeIcons;
     [SerializeField] Image costColor;
     private Color[] colorList =
-   {
+    {
         new Color(1f, 1f, 1f),
         new Color(0.35f, 1f, 0.7f),
         new Color(0.45f, 1f, 1f),
@@ -46,7 +46,24 @@ public class UnitInfoUIHandler : MonoBehaviour
     [SerializeField] private GameObject panel;
     public GameObject target;
     private Unit unit;
-    private void InitUI()
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (panel.activeSelf == true)
+            {
+                TurnOffUI();
+            }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if(target != null)
+            {
+                TurnOnUI();
+            }
+        }
+    }
+    private void InitInfo()
     {
         int no = unit.No;
         if (unit.isEnemy)
@@ -108,28 +125,10 @@ public class UnitInfoUIHandler : MonoBehaviour
                 items[i].sprite = null;
         }
     }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (panel.activeSelf == true)
-            {
-                TurnOffUI();
-            }
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            if(target != null)
-            {
-                TurnOnUI();
-            }
-        }
-    }
     private void TurnOnUI()
     {
         unit = target.GetComponent<Unit>();
-        InitUI();
+        InitInfo();
         panel.SetActive(true);
         highlight.gameObject.SetActive(true);
         Vector3 pos = target.transform.position;

@@ -4,15 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening;
-public class SellUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
+public class SellUI : MonoBehaviour, IDropHandler
 {
     [SerializeField] private Player player;
-    [SerializeField] private Image image;
-    [SerializeField] private Text text;
+    [SerializeField] private Text cost;
     [SerializeField] private RectTransform rect;
     [SerializeField] private bool isLeft;
 
-    public void Active(int grade, int cost)
+    public void Open(int grade, int cost)
     {
         if (isLeft)
         {
@@ -25,17 +24,17 @@ public class SellUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
         switch (grade)
         {
             case 1:
-                text.text = $"{cost}";
+                this.cost.text = $"+{cost}";
                 break;
             case 2:
-                text.text = $"{cost * 3 - 1}";
+                this.cost.text = $"+{cost * 3 - 1}";
                 break;
             case 3:
-                text.text = $"{cost * 9 - 1}";
+                this.cost.text = $"+{cost * 9 - 1}";
                 break;
         }
     }
-    public void NonActive()
+    public void Close()
     {
         if (isLeft)
         {
@@ -50,15 +49,5 @@ public class SellUI : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     public void OnDrop(PointerEventData eventData)
     {
         player.SellUnit(eventData.pointerDrag);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        image.color = new Color(0.8f, 0.8f, 0.8f);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        image.color = new Color(1, 1, 1);
     }
 }

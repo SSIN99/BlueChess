@@ -57,13 +57,13 @@ public class DealChartUIHandler : MonoBehaviour
         {
             isOpen = false;
             btnImage.sprite = btnSprite[0];
-            rect.DOAnchorPosX(-50f, 0.1f);
+            rect.DOAnchorPosX(150f, 0.1f);
         }
         else
         {
             isOpen = true;
             btnImage.sprite = btnSprite[1];
-            rect.DOAnchorPosX(-350f, 0.1f);
+            rect.DOAnchorPosX(-150f, 0.1f);
         }
     }
 }

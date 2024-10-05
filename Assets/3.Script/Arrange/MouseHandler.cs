@@ -39,8 +39,8 @@ public class MouseHandler : MonoBehaviour
         if (!round.IsBattleStep)
             field.SetActive(true);
         bench.SetActive(true);
-        sellUI[0].Active(unit.Grade, unit.Cost);
-        sellUI[1].Active(unit.Grade, unit.Cost);
+        sellUI[0].Open(unit.Grade, unit.Cost);
+        sellUI[1].Open(unit.Grade, unit.Cost);
         LayerMask layerMask = LayerMask.GetMask("Tile");
         raycaster.eventMask = layerMask;
     }
@@ -48,8 +48,8 @@ public class MouseHandler : MonoBehaviour
     {
         field.SetActive(false);
         bench.SetActive(false);
-        sellUI[0].NonActive();
-        sellUI[1].NonActive();
+        sellUI[0].Close();
+        sellUI[1].Close();
         LayerMask layerMask = LayerMask.GetMask("Bench", "Field", "Enemy");
         raycaster.eventMask = layerMask;
     }
