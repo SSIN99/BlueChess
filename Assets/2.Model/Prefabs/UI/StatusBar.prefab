@@ -1297,13 +1297,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434faf01472b9b241b0a6af3cd3c84f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unit: {fileID: 0}
   pivot: {fileID: 1304654103475525490}
-  gradeImages:
+  grade: {fileID: 8283172709231259241}
+  gradeSprite:
   - {fileID: 21300000, guid: 2e5a323d85cae3f42b79f98e5b49fc25, type: 3}
   - {fileID: 21300000, guid: dea2c66329c093646a6ba329873ac450, type: 3}
   - {fileID: 21300000, guid: 7b045d4f6efa08a4da4169081c81c2bb, type: 3}
-  grade: {fileID: 8283172709231259241}
   hpBar: {fileID: 3529199687800021019}
   mpBar: {fileID: 1860371594710452192}
   shieldBar: {fileID: 8966910718159635569}
@@ -1315,7 +1314,6 @@ MonoBehaviour:
   - {fileID: 1528282419053578027}
   - {fileID: 5739410852293879258}
   - {fileID: 378835526693051669}
-  skillName: {fileID: 0}
 --- !u!1 &7887845866550262196
 GameObject:
   m_ObjectHideFlags: 0

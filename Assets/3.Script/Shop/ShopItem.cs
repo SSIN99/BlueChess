@@ -28,16 +28,17 @@ public class ShopItem : MonoBehaviour
 
     [SerializeField] private Info info;
     [SerializeField] private Player player;
+    [SerializeField] private UnitManager unitManager;
     private Dictionary<string, string> data;
     public int no;
     public int cost;
 
     private void Start()
     {
-        player.OnPurchaseUnit += SetVFX;
-        player.OnSellUnit += SetVFX;
+        unitManager.OnGetUnit += SetVFX;
+        unitManager.OnSellUnit += SetVFX;
+        unitManager.OnBenchChanged += SetBtnState;
         player.OnGoldChanged += SetBtnState;
-        player.OnBenchChanged += SetBtnState;
     }
     public void InitInfo(int n)
     {
@@ -58,8 +59,8 @@ public class ShopItem : MonoBehaviour
     }
     public void SetVFX()
     {
-        memorial.material = player.CheckHaveUnit(no) ? fx : null;
-        switch (player.CheckUnitGrade(no))
+        memorial.material = unitManager.CheckHaveUnit(no) ? fx : null;
+        switch (unitManager.CheckShopItemVFX(no))
         {
             case 0:
                 grade.gameObject.SetActive(false);
@@ -76,11 +77,12 @@ public class ShopItem : MonoBehaviour
     }
     public void SetBtnState()
     {
-        btn.interactable = player.Gold < cost || player.isFullBench ? false : true;
+        btn.interactable = player.Gold < cost || unitManager.isFullBench ? false : true;
     }
     public void OnClicked()
     {
-        player.PurchaseUnit(no);
+        player.UpdateGold(-cost);
+        unitManager.GetUnit(no);
         gameObject.SetActive(false);
     }
 }

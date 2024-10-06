@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class TraitInfoUI : MonoBehaviour
 {
     [SerializeField] private Info info;
-    [SerializeField] private Player player;
-    [SerializeField] private Image Icon;
-    [SerializeField] private Text Name;
+    [SerializeField] private UnitManager unitManager;
+    [SerializeField] private Image traitIcon;
+    [SerializeField] private Text traitName;
     [SerializeField] private Image[] Borders;
     [SerializeField] private Image[] Portraits;
     [SerializeField] private Text script;
@@ -24,8 +24,8 @@ public class TraitInfoUI : MonoBehaviour
 
     public void InitInfo(int no)
     {
-        Icon.sprite = info.traitIcon[no];
-        Name.text = info.Traits[no]["Name"];
+        traitIcon.sprite = info.traitIcon[no];
+        traitName.text = info.Traits[no]["Name"];
 
         int unitNo = 0;
         for (int i = 0; i < Portraits.Length; i++)
@@ -35,8 +35,8 @@ public class TraitInfoUI : MonoBehaviour
                 unitNo = int.Parse(info.Traits[no][$"Unit{i + 1}"]);
 
                 Portraits[i].gameObject.SetActive(true);
-                Icon.sprite = info.portraits[unitNo];
-                Portraits[i].color = player.CheckUnitOnField(unitNo) ? Color.white : Color.gray;
+                Portraits[i].sprite = info.portraits[unitNo];
+                Portraits[i].color = unitManager.CheckUnitOnField(unitNo) ? Color.white : Color.gray;
 
                 Borders[i].gameObject.SetActive(true);
                 Borders[i].color = colors[int.Parse(info.Units[unitNo]["Cost"]) - 1];
@@ -49,7 +49,7 @@ public class TraitInfoUI : MonoBehaviour
         }
 
         script.text = info.Traits[no]["Script"];
-        int rank = player.CheckTraitRank(no);
+        int rank = unitManager.CheckTraitRank(no);
         for (int i = 0; i < effects.Length; i++)
         {
             if ( i < int.Parse(info.Traits[no]["Count"]))

@@ -16,7 +16,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     
     
     private Info info;
-    private Player player;
+    private Inventory inventory;
     private Unit unit;
     private Vector3 defaultPos;
     private int no;
@@ -24,7 +24,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     private void Awake()
     {
         info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
     }
 
     public void InitInfo(int no)
@@ -76,7 +76,7 @@ public class Item : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
         else
         {
             unit.EquipItem(no);
-            player.RemoveItem(this);
+            inventory.RemoveItem(this);
             Destroy(gameObject);
         }
     }

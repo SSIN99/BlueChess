@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 public class SellUI : MonoBehaviour, IDropHandler
 {
-    [SerializeField] private Player player;
+    [SerializeField] private UnitManager unitManager;
     [SerializeField] private Text cost;
     [SerializeField] private RectTransform rect;
     [SerializeField] private bool isLeft;
@@ -48,6 +48,6 @@ public class SellUI : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        player.SellUnit(eventData.pointerDrag);
+        unitManager.SellUnit(eventData.pointerDrag);
     }
 }

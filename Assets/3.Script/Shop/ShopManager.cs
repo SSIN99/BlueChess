@@ -10,16 +10,13 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private ShopItem[] itemList;
     [SerializeField] private Text[] ratioText;
-
+    [SerializeField] private Button expBtn;
+    [SerializeField] private Button rerollBtn;
+    [SerializeField] private Image lockBtn;
+    [SerializeField] private Sprite[] lockSprite;
+    public bool isLocked;
     private WeightedRandomPicker<int> unitPool;
 
-    private void OnEnable()
-    {
-        unitPool = new WeightedRandomPicker<int>();
-        player.OnLevelUp += AddUnitPool;
-        player.OnLevelUp += UpdateWeightPool;
-        player.OnLevelUp += SetRatio;
-    }
     private void AddUnitPool()
     {
         int count = unitPool.GetCount();
@@ -90,8 +87,18 @@ public class ShopManager : MonoBehaviour
             ratioText[i].text = $"{info.Ratios[player.Level][$"Ratio{i + 1}"]}%";
         }
     }
-    public void SetShopItem()
+    public void PurchaseExp()
     {
+        player.UpdateGold(-4);
+        player.GetExp(4);
+    }
+    public void RerollShop()
+    {
+        player.UpdateGold(-2);
+        if (isLocked)
+        {
+            SetLockState();
+        }
         foreach(var item in itemList)
         {
             if (item.gameObject.activeSelf.Equals(false))
@@ -101,11 +108,33 @@ public class ShopManager : MonoBehaviour
             else
             {
                 //item.ReturnItem(); 
-                
             }
             int no = GetRandomUnit();
             item.InitInfo(no);
         }
+    }
+    public void RoundReroll()
+    {
+        if (isLocked) return;
+ 
+        foreach (var item in itemList)
+        {
+            if (item.gameObject.activeSelf.Equals(false))
+            {
+                item.gameObject.SetActive(true);
+            }
+            else
+            {
+                //item.ReturnItem(); 
+            }
+            int no = GetRandomUnit();
+            item.InitInfo(no);
+        }
+    }
+    public void SetLockState()
+    {
+        isLocked = !isLocked;
+        lockBtn.sprite = isLocked ? lockSprite[0] : lockSprite[1];
     }
     private int GetRandomUnit()
     {
@@ -117,10 +146,41 @@ public class ShopManager : MonoBehaviour
         }
         return rand;
     }
+    private void SetButtonState()
+    {
+        if(player.Gold < 2)
+        {
+            expBtn.interactable = false;
+            rerollBtn.interactable = false;
+        }
+        else if(player.Gold < 4)
+        {
+            expBtn.interactable = false;
+            rerollBtn.interactable = true;
+        }
+        else
+        {
+            expBtn.interactable = true;
+            rerollBtn.interactable = true;
+        }
+        if(player.Level == 9)
+        {
+            expBtn.interactable = false;
+        }
+    }
+    private void OnEnable()
+    {
+        unitPool = new WeightedRandomPicker<int>();
+        player.OnLevelChanged += AddUnitPool;
+        player.OnLevelChanged += UpdateWeightPool;
+        player.OnLevelChanged += SetRatio;
+        player.OnGoldChanged += SetButtonState;
+    }
     private void OnDisable()
     {
-        player.OnLevelUp -= AddUnitPool;
-        player.OnLevelUp -= UpdateWeightPool;
-        player.OnLevelUp -= SetRatio;
+        player.OnLevelChanged -= AddUnitPool;
+        player.OnLevelChanged -= UpdateWeightPool;
+        player.OnLevelChanged -= SetRatio;
+        player.OnGoldChanged -= SetButtonState;
     }
 }

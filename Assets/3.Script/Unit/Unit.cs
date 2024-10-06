@@ -7,217 +7,50 @@ using Random = UnityEngine.Random;
 
 public class Unit : MonoBehaviour
 {
-    #region Info
-    [Header("Static")]
+    #region status
     public int No;
     public string Name;
+    public int Cost;
     public int Origin;
     public int Class;
-    public float Range;
-    private int cost;
-    public int Cost
-    {
-        get { return cost; }
-        private set
-        {
-            cost = value;
-            OnCostChanged?.Invoke();
-        }
-    }
-    public event Action OnCostChanged;
-    private int grade;
-    public int Grade
-    {
-        get { return grade; }
-        private set
-        {
-            grade = value;
-            OnGradeChanged?.Invoke();
-        }
-    }
-    public event Action OnGradeChanged;
-    private float maxHp;
-    public float MaxHp
-    {
-        get { return maxHp; }
-        private set
-        {
-            float differ = value - maxHp;
-            maxHp = value;
-            OnMaxHpChanged?.Invoke();
-            CurHp += differ;
-        }
-    }
-    public event Action OnMaxHpChanged;
-    private float curHp;
-    public float CurHp
-    {
-        get { return curHp; }
-        private set
-        {
-            float hp = Mathf.Clamp(value, 0, maxHp);
-            curHp = hp;
-            OnCurHpChanged?.Invoke();
-        }
-    }
-    public event Action OnCurHpChanged;
-    private int maxMp;
-    public int MaxMp
-    {
-        get { return maxMp; }
-        private set
-        {
-            maxMp = value;
-            if(startMp > maxMp)
-            {
-                StartMp = maxMp;
-            }
-            OnMaxMpChanged?.Invoke();
-        }
-    }
-    public event Action OnMaxMpChanged;
-    private int startMp;
-    public int StartMp
-    {
-        get { return startMp; }
-        private set
-        {
-            int differ = value - startMp;
-            startMp = value;
-            OnStartMpChanged?.Invoke();
-            CurMp = differ;
-        }
-    }
-    public event Action OnStartMpChanged;
-    private int curMp;
-    public int CurMp
-    {
-        get { return curMp; }
-        private set
-        {
-            int mp = Mathf.Clamp(value, 0, maxMp);
-            curMp = mp;
-            OnCurMpChanged?.Invoke();
-        }
-    }
-    public event Action OnCurMpChanged;
-    private float ad;
-    public float AD
-    {
-        get { return ad; }
-        private set
-        {
-            ad = value;
-            OnADChanged?.Invoke();
-        }
-    }
-    public event Action OnADChanged;
-    private float ap;
-    public float AP
-    {
-        get { return ap; }
-        private set
-        {
-            ap = value;
-            OnAPChanged?.Invoke();
-        }
-    }
-    public event Action OnAPChanged;
-    private float attackSpeed;
-    public float AS
-    {
-        get { return attackSpeed; }
-        private set
-        {
-            attackSpeed = value;
-            OnASChanged?.Invoke();
-        }
-    }
-    public event Action OnASChanged;
-    private float critRatio;
-    public float CritRatio
-    {
-        get { return critRatio; }
-        private set
-        {
-            critRatio = value;
-            OnCRChanged?.Invoke();
-        }
-    }
-    public event Action OnCRChanged;
-    private float critDamage;
-    public float CritDamage
-    {
-        get { return critDamage; }
-        private set
-        {
-            critDamage = value;
-            OnCDChanged?.Invoke();
-        }
-    }
-    public event Action OnCDChanged;
-    private float armor;
-    public float Armor
-    {
-        get { return armor; }
-        private set
-        {
-            armor = value;
-            OnArmorChanged?.Invoke();
-        }
-    }
-    public event Action OnArmorChanged;
-    private float resist;
-    public float Resist
-    {
-        get { return resist; }
-        private set
-        {
-            resist = value;
-            OnResistChanged?.Invoke();
-        }
-    }
-    public event Action OnResistChanged;
-    private float avoid;
-    public float Avoid
-    {
-        get { return avoid; }
-        private set
-        {
-            avoid = value;
-            OnAvoidChanged?.Invoke();
-        }
-    }
-    public event Action OnAvoidChanged;
-    private float curShield;
-    public float CurShield
-    {
-        get { return curShield; }
-        private set
-        {
-            curShield = value;
-            OnCurShieldChanged?.Invoke();
-        }
-    }
-    public event Action OnCurShieldChanged;
-    private float maxShield;
-    public float MaxShield
-    {
-        get { return maxShield; }
-        private set
-        {
-            maxShield = value;
-            CurShield = maxShield;
-            OnMaxShieldChanged?.Invoke();
-        }
-    }
-    public event Action OnMaxShieldChanged;
-    public float lifeSteel;
-    public float increasedDamage;
+    public int Grade;
 
-    private float InitHP;
-    private float InitAD;
-    private float InitAS;
+    private float maxHealth; //최대 체력
+    private float curHealth; //현재 체력
+    private int maxMana; //최대 마나
+    private int startMana; //시작 마나
+    private int curMana; //현재 마나
+    private int manaRegeneration; //마나 회복량
+    private bool isManaBan; //마나 획득?
+    private float attackDamage; //공격력
+    private float abilityPower; //주문력
+    private float attackSpeed; //공격속도
+    private float critRatio; //치명확률 
+    private float critDamage; //치명피해
+    private float armor; //방어력
+    private float resist;//마법저항
+    private float avoid; //회피율 
+    private float maxShield; //최대 쉴드
+    private float curShield; //남은 쉴드
+    public float range; //사거리
+    public float lifeSteel; //생명력 흡수
+    public float increasedDeal; //피해량 증가
+    public float dealAmount; //전투 딜량
+    public bool isPassive; //패시브 스킬?
+    private float adRatio = 0; //ad 계수
+    private float apRatio = 0; //ap 계수
+    private int skillAttackCount = 1; //스킬 공격 횟수
+    private float stunDuration; //스턴 지속시간
+    private float curStunTime; //현재 스턴시간
+    private bool isOnField; //필드배치?
+    private bool isBattle; //전투중?
+    private bool isDead; //죽음?
+    public bool isEnemy; //적?
+    public GameObject target; //공격대상
+
+    private float InitHP; //초기 체력 
+    private float InitAD; //초기 공격력
+    private float InitAS; //초기 공격속도
 
     private float tempHP;
     private float tempAD;
@@ -228,28 +61,28 @@ public class Unit : MonoBehaviour
     private float tempArmor;
     private float tempResist;
     private float tempAvoid;
-    private float tempLS;
-    private float tempID;
+    private Vector3 tempPosition;
 
-    public float AllDealAmount;
-    public event Action OnDealAmountChanged;
-    #endregion
+    private int trait2Rank;
+    private int trait6Rank;
+    private int trait10Rank;
+    private int trait14Rank;
 
-    #region Etc
-    [Header("Etc")]
-    public Info info;
-    public Player player;
-    public VFXPrinter sfxPrinter;
-    public NavMeshAgent agent;
+    //변신 유닛 전용 
+    [SerializeField] private GameObject defaultBody;
+    [SerializeField] private GameObject tranformationBody;
+
+    public UnitManager unitManager;
+    public VFXPrinter vfxPrinter;
     public Animator anim;
     public BoxCollider col;
-    public GameObject target;
-    public Vector3 pos;
-    public Quaternion rot;
-    public float rotSpeed;
-    public bool isEnemy;
-    private bool isDead;
-    private bool isBattle;
+    public NavMeshAgent agent;
+    public List<int> itemList;
+    public bool IsItemFull => itemList.Count == 3;
+    public int ItemCount => itemList.Count;
+    #endregion
+
+    #region property
     public bool IsDead
     {
         get { return isDead; }
@@ -275,8 +108,7 @@ public class Unit : MonoBehaviour
             if (isBattle)
             {
                 RecordStat();
-                pos = transform.position;
-                rot = transform.rotation;
+                tempPosition = transform.position;
                 transform.rotation = Quaternion.identity;
                 agent.enabled = true;
                 anim.Play("Search");
@@ -289,8 +121,7 @@ public class Unit : MonoBehaviour
             {
                 IsDead = false;
                 OnIdleReturn?.Invoke();
-                transform.position = pos;
-                transform.rotation = rot;
+                transform.position = tempPosition;
                 agent.enabled = false;
                 col.enabled = true;
                 ResetStat();
@@ -300,22 +131,190 @@ public class Unit : MonoBehaviour
             }
         }
     }
+    public float MaxHp
+    {
+        get { return maxHealth; }
+        private set
+        {
+            float differ = value - maxHealth;
+            maxHealth = value;
+            OnMaxHpChanged?.Invoke();
+            CurHp += differ;
+        }
+    }
+    public float CurHp
+    {
+        get { return curHealth; }
+        private set
+        {
+            float hp = Mathf.Clamp(value, 0, maxHealth);
+            curHealth = hp;
+            OnCurHpChanged?.Invoke();
+        }
+    }
+    public int MaxMp
+    {
+        get { return maxMana; }
+        private set
+        {
+            maxMana = value;
+            if (startMana > maxMana)
+            {
+                StartMp = maxMana;
+            }
+            OnMaxMpChanged?.Invoke();
+        }
+    }
+    public int StartMp
+    {
+        get { return startMana; }
+        private set
+        {
+            int differ = value - startMana;
+            startMana = value;
+            OnStartMpChanged?.Invoke();
+            CurMp = differ;
+        }
+    }
+    public int CurMp
+    {
+        get { return curMana; }
+        private set
+        {
+            int mp = Mathf.Clamp(value, 0, maxMana);
+            curMana = mp;
+            OnCurMpChanged?.Invoke();
+        }
+    }
+    public float AD
+    {
+        get { return attackDamage; }
+        private set
+        {
+            attackDamage = value;
+            OnADChanged?.Invoke();
+        }
+    }
+    public float AP
+    {
+        get { return abilityPower; }
+        private set
+        {
+            abilityPower = value;
+            OnAPChanged?.Invoke();
+        }
+    }
+    public float AS
+    {
+        get { return attackSpeed; }
+        private set
+        {
+            attackSpeed = value;
+            OnASChanged?.Invoke();
+        }
+    }
+    public float CritRatio
+    {
+        get { return critRatio; }
+        private set
+        {
+            critRatio = value;
+            OnCRChanged?.Invoke();
+        }
+    }
+    public float CritDamage
+    {
+        get { return critDamage; }
+        private set
+        {
+            critDamage = value;
+            OnCDChanged?.Invoke();
+        }
+    }
+    public float Armor
+    {
+        get { return armor; }
+        private set
+        {
+            armor = value;
+            OnArmorChanged?.Invoke();
+        }
+    }
+    public float Resist
+    {
+        get { return resist; }
+        private set
+        {
+            resist = value;
+            OnResistChanged?.Invoke();
+        }
+    }
+    public float Avoid
+    {
+        get { return avoid; }
+        private set
+        {
+            avoid = value;
+            OnAvoidChanged?.Invoke();
+        }
+    }
+    public float CurShield
+    {
+        get { return curShield; }
+        private set
+        {
+            curShield = value;
+            OnCurShieldChanged?.Invoke();
+        }
+    }
+    public float MaxShield
+    {
+        get { return maxShield; }
+        private set
+        {
+            maxShield = value;
+            CurShield = maxShield;
+            OnMaxShieldChanged?.Invoke();
+        }
+    }
+    #endregion
+
+    #region event
+    public event Action OnGradeUp;
+    public event Action OnStartMpChanged;
+    public event Action OnCurMpChanged;
+    public event Action OnADChanged;
+    public event Action OnAPChanged;
+    public event Action OnASChanged;
+    public event Action OnCRChanged;
+    public event Action OnCDChanged;
+    public event Action OnArmorChanged;
+    public event Action OnResistChanged;
+    public event Action OnAvoidChanged;
+    public event Action OnCurShieldChanged;
+    public event Action OnMaxShieldChanged;
+    public event Action OnMaxHpChanged;
+    public event Action OnCurHpChanged;
+    public event Action OnMaxMpChanged;
     public event Action OnDead;
     public event Action OnBattleStart;
     public event Action OnIdleReturn;
     public event Action OnBeSold;
+    public event Action OnItemEquiped;
+    public event Action OnSkillUsed;
+    public event Action OnAttackOccurred;
+    public event Action OnDealAmountChanged;
+    public delegate void AttackSuccessHandler(Unit enemy);
+    AttackSuccessHandler OnAttackSuccess;
     #endregion
 
-    #region Action
     private void Awake()
     {
-        info = GameObject.FindGameObjectWithTag("Info").GetComponent<Info>();
-        sfxPrinter = GameObject.FindGameObjectWithTag("SFX").GetComponent<VFXPrinter>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        agent = GetComponent<NavMeshAgent>();
+        unitManager = GameObject.FindGameObjectWithTag("Player").GetComponent<UnitManager>();
+        vfxPrinter = GameObject.FindGameObjectWithTag("VFX").GetComponent<VFXPrinter>();
         anim = GetComponent<Animator>();
         col = GetComponent<BoxCollider>();
-        rotSpeed = 10f;
+        agent = GetComponent<NavMeshAgent>();
         itemList = new List<int>();
     }
     public void InitInfo(Dictionary<string, string> data)
@@ -324,10 +323,9 @@ public class Unit : MonoBehaviour
         Name = data["Name"];
         Origin = int.Parse(data["Origin"]);
         Class = int.Parse(data["Class"]);
-        Range = float.Parse(data["Range"]);
-
         Cost = int.Parse(data["Cost"]);
         Grade = 1;
+        
         MaxHp = float.Parse(data["Health"]);
         CurHp = MaxHp;
         MaxMp = int.Parse(data["MaxMP"]);
@@ -341,40 +339,58 @@ public class Unit : MonoBehaviour
         Armor = float.Parse(data["Armor"]);
         Resist = float.Parse(data["Resistance"]);
         avoid = 0;
+        range = float.Parse(data["Range"]);
         MaxShield = 0;
         CurShield = maxShield;
         lifeSteel = 0;
-        increasedDamage = 0;
+        increasedDeal = 0;
         manaRegeneration = 10;
 
-        InitAD = ad;
-        InitHP = maxHp;
-        InitAS = AS;
+        InitAD = attackDamage;
+        InitHP = maxHealth;
+        InitAS = attackSpeed;
 
         if (isPassive)
-        {
             ActiveSkill();
-        }
+    }
+    public void GradeUp()
+    {
+        Grade += 1;
+        transform.localScale += Vector3.one * 20f;
+        float hp = Mathf.Round(InitHP * 0.8f);
+        MaxHp += hp;
+        InitHP += hp;
+        float ad = Mathf.Round(InitAD * 0.8f);
+        AD += ad;
+        InitAD += ad;
+        vfxPrinter.PrintGradeFX(transform, Grade);
+        OnGradeUp?.Invoke();
     }
     public void BeSold()
     {
+        if (isOnField)
+        {
+            unitManager.RemoveField(this);
+        }
+        else
+        {
+            unitManager.RemoveBench(this);
+        }
+        GetComponent<Arrangement>().LeaveTile();
         OnBeSold?.Invoke();
     }
     public void RecordStat()
     {
-        tempHP = maxHp;
-        tempAD = ad;
-        tempAP = ap;
+        tempHP = maxHealth;
+        tempAD = attackDamage;
+        tempAP = abilityPower;
         tempCR = critRatio;
         tempCD = critDamage;
         tempArmor = armor;
         tempResist = resist;
         tempAS = attackSpeed;
         tempAvoid = avoid;
-        tempLS = lifeSteel;
-        tempID = increasedDamage;
-
-        AllDealAmount = 0;
+        dealAmount = 0;
     }
     public void ResetStat()
     {
@@ -389,8 +405,6 @@ public class Unit : MonoBehaviour
         Resist = tempResist;
         AS = tempAS;
         Avoid = tempAvoid;
-        lifeSteel = tempLS;
-        increasedDamage = tempID;
         isManaBan = false;
     }
     public void DetectTarget()
@@ -433,7 +447,7 @@ public class Unit : MonoBehaviour
     {
         CheckTargetDead();
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        float radius = 2 * Range + 0.5f;
+        float radius = 2 * range + 0.5f;
         float distance = Vector3.Distance(transform.position, target.transform.position);
         if (distance <= radius)
         {
@@ -461,7 +475,7 @@ public class Unit : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
         }
     }
     public void AutoAttack()
@@ -473,12 +487,12 @@ public class Unit : MonoBehaviour
             float rand = Random.Range(0f, 100f);
             if (rand < critRatio)
             {
-                finalDamage = (ad * (critDamage / 100f)) * (1f + increasedDamage / 100f);
+                finalDamage = (attackDamage * (critDamage / 100f)) * (1f + increasedDeal / 100f);
                 isCritical = true;
             }
             else
             {
-                finalDamage = ad * (1f + increasedDamage / 100f);
+                finalDamage = attackDamage * (1f + increasedDeal / 100f);
                 isCritical = false;
             }
             target.GetComponent<Unit>().TakeDamage(this, finalDamage, isCritical);
@@ -487,33 +501,28 @@ public class Unit : MonoBehaviour
             OnAttackOccurred?.Invoke();
         }
     }
-    public event Action OnAttackOccurred;
-    public delegate void AttackSuccessHandler(Unit enemy);
-    AttackSuccessHandler OnAttackSuccess;
-    private float PanicDuration;
-    private float elaspedTime;
     public void StartStun(float duration)
     {
         if (duration == 0 || 
             IsDead) return;
-        PanicDuration = duration;
-        elaspedTime = 0f;
+        stunDuration = duration;
+        curStunTime = 0f;
         agent.isStopped = true;
         anim.Play("Panic");
         StartCoroutine(Stun_Co());
     }
     private IEnumerator Stun_Co()
     {
-        while (elaspedTime < PanicDuration)
+        while (curStunTime < stunDuration)
         {
-            elaspedTime += Time.deltaTime;
+            curStunTime += Time.deltaTime;
             yield return null;
         }
         anim.Play("Search");
     }
     public void RecordDealAmount(float deal)
     {
-        AllDealAmount += deal;
+        dealAmount += deal;
         OnDealAmountChanged?.Invoke();
     }
     public void TakeDamage(Unit attacker, float damage, bool crit)
@@ -523,7 +532,7 @@ public class Unit : MonoBehaviour
         float rand = Random.Range(0f, 100f);
         if (rand < avoid)
         {
-            sfxPrinter.PrintTextFX(string.Empty, transform.position, TextType.Avoid);
+            vfxPrinter.PrintTextFX(string.Empty, transform.position, TextType.Avoid);
             return;
         }
         float actualDamage = damage * (1f - (armor / (armor + 100f)));
@@ -545,13 +554,13 @@ public class Unit : MonoBehaviour
         IncreaseMana(5);
         if (crit)
         {
-            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Crit);
+            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Crit);
         }
         else
         {
-            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
+            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
         }
-        sfxPrinter.PrintHitFX(transform.position);
+        vfxPrinter.PrintHitFX(transform.position);
         if (CurHp <= 0)
         {
             IsDead = true;
@@ -566,11 +575,11 @@ public class Unit : MonoBehaviour
     public void LifeSteel(float damage)
     {
         if (lifeSteel <= 0 ||
-            curHp == maxHp) return;
+            curHealth == maxHealth) return;
         float steelAmount = Mathf.Round(damage * (lifeSteel / 100f));
-        curHp += steelAmount;
-        CurHp = Mathf.Clamp(curHp, 0, maxHp);
-        sfxPrinter.PrintTextFX(steelAmount.ToString(), transform.position, TextType.Heal);
+        curHealth += steelAmount;
+        CurHp = Mathf.Clamp(curHealth, 0, maxHealth);
+        vfxPrinter.PrintTextFX(steelAmount.ToString(), transform.position, TextType.Heal);
     }
     public void Dead()
     {
@@ -583,17 +592,59 @@ public class Unit : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-    #endregion
+    public void IncreaseMana(int amout)
+    {
+        if (isManaBan) return;
+        CurMp += amout;
+    }
+    public void DecreaseMana(int amout)
+    {
+        CurMp -= amout;
+    }
+    public void EquipItem(int item)
+    {
+        itemList.Add(item);
+        SetItemEffect(item);
+        OnItemEquiped?.Invoke();
+    }
+    private void SetItemEffect(int item)
+    {
+        switch (item)
+        {
+            case 0:
+                AD += 20f;
+                break;
+            case 1:
+                AS += Mathf.Round(InitAS * 0.15f * 100f) / 100f;
+                break;
+            case 2:
+                Avoid += 15f;
+                break;
+            case 3:
+                MaxHp += 200f;
+                break;
+            case 4:
+                Armor += 20f;
+                break;
+            case 5:
+                Resist += 20f;
+                break;
+            case 6:
+                StartMp += 15;
+                break;
+            case 7:
+                AP += 20f;
+                break;
+            case 8:
+                CritRatio += 20f;
+                break;
+        }
+    }
 
-    #region Trait
-    private int trait2Rank;
-    private int trait6Rank;
-    private int trait10Rank;
-    private int trait14Rank;
-    private int manaRegeneration;
+    #region trait
     public void PrintTraitEffect()
     {
-        sfxPrinter.PrintTraitFX(transform);
+        vfxPrinter.PrintTraitFX(transform);
     }
     public void UpdateTrait(int no, int old, int rank)
     {
@@ -907,12 +958,12 @@ public class Unit : MonoBehaviour
     }
     public void deadEventTrait6()
     {
-        for (int i = 0; i < player.fieldList.Count; i++)
+        for (int i = 0; i < unitManager.fieldList.Count; i++)
         {
-            if (!player.fieldList[i].IsDead &&
-                player.fieldList[i].Origin == 6)
+            if (!unitManager.fieldList[i].IsDead &&
+                unitManager.fieldList[i].Origin == 6)
             {
-                player.fieldList[i].IncreaseAdApTrait6();
+                unitManager.fieldList[i].IncreaseAdApTrait6();
             }
         }
     }
@@ -971,10 +1022,10 @@ public class Unit : MonoBehaviour
             case 0:
                 break;
             case 1:
-                increasedDamage -= 20f;
+                increasedDeal -= 20f;
                 break;
             case 2:
-                increasedDamage -= 35f;
+                increasedDeal -= 35f;
                 break;
             case 3:
        
@@ -987,10 +1038,10 @@ public class Unit : MonoBehaviour
             case 0:
                 break;
             case 1:
-                increasedDamage += 20f;
+                increasedDeal += 20f;
                 break;
             case 2:
-                increasedDamage += 35f;
+                increasedDeal += 35f;
                 break;
             case 3:
                 break;
@@ -1032,12 +1083,12 @@ public class Unit : MonoBehaviour
                 rand = Random.Range(0f, 100f);
                 if (rand < critRatio)
                 {
-                    finalDamage = (ad * (critDamage / 100f)) * (1f + increasedDamage / 100f);
+                    finalDamage = (attackDamage * (critDamage / 100f)) * (1f + increasedDeal / 100f);
                     isCritical = true;
                 }
                 else
                 {
-                    finalDamage = ad * (1f + increasedDamage / 100f);
+                    finalDamage = attackDamage * (1f + increasedDeal / 100f);
                     isCritical = false;
                 }
                 target.GetComponent<Unit>().TakeDamage(this, finalDamage, isCritical);
@@ -1055,15 +1106,6 @@ public class Unit : MonoBehaviour
     public void BurnOutManaTrait11(Unit enemy) 
     {
         enemy.DecreaseMana(5);
-    }
-    public void IncreaseMana(int amout)
-    {
-        if (isManaBan) return;
-        CurMp += amout;
-    }
-    public void DecreaseMana(int amout)
-    {
-        CurMp -= amout;
     }
     public void SetTrait_12(int old, int rank) //마법사
     {
@@ -1149,10 +1191,10 @@ public class Unit : MonoBehaviour
         switch (trait14Rank)
         {
             case 1:
-                GetShield(Mathf.Round(maxHp * 0.3f));
+                GetShield(Mathf.Round(maxHealth * 0.3f));
                 break;
             case 2:
-                GetShield(Mathf.Round(maxHp * 0.5f));
+                GetShield(Mathf.Round(maxHealth * 0.5f));
                 break;
         }
     }
@@ -1267,11 +1309,11 @@ public class Unit : MonoBehaviour
                 break;
             case 1:
                 CritRatio -= 15f;
-                Range -= 1;
+                range -= 1;
                 break;
             case 2:
                 CritRatio -= 30f;
-                Range -= 2;
+                range -= 2;
                 break;
             case 3:
                 break;
@@ -1284,11 +1326,11 @@ public class Unit : MonoBehaviour
                 break;
             case 1:
                 CritRatio += 15f;
-                Range += 1;
+                range += 1;
                 break;
             case 2:
                 CritRatio += 30f;
-                Range += 2;
+                range += 2;
                 break;
             case 3:
                 break;
@@ -1336,7 +1378,7 @@ public class Unit : MonoBehaviour
             case 0:
                 break;
             case 1:
-                increasedDamage -= 15;
+                increasedDeal -= 15;
                 CritDamage -= 50;
                 break;
             case 2:
@@ -1351,7 +1393,7 @@ public class Unit : MonoBehaviour
             case 0:
                 break;
             case 1:
-                increasedDamage += 15;
+                increasedDeal += 15;
                 CritDamage += 50;
                 break;
             case 2:
@@ -1395,95 +1437,25 @@ public class Unit : MonoBehaviour
     }
     #endregion
 
-    #region Item
-    public List<int> itemList;
-    public bool IsItemFull => itemList.Count == 3;
-    public int ItemCount => itemList.Count;
-    public void EquipItem(int item)
-    {
-        itemList.Add(item);
-        SetItemEffect(item);
-        OnItemEquiped?.Invoke();
-    }
-    public event Action OnItemEquiped;
-    private void SetItemEffect(int item)
-    {
-        switch (item)
-        {
-            case 0:
-                AD += 20f;
-                break;
-            case 1:
-                AS += Mathf.Round(InitAS * 0.15f * 100f) / 100f;
-                break;
-            case 2:
-                Avoid += 15f;
-                break;
-            case 3:
-                MaxHp += 200f;
-                break;
-            case 4:
-                Armor += 20f;
-                break;
-            case 5:
-                Resist += 20f;
-                break;
-            case 6:
-                StartMp += 15;
-                break;
-            case 7:
-                AP += 20f;
-                break;
-            case 8:
-                CritRatio += 20f;
-                break;
-        }
-    }
-    #endregion
-
-    #region Grade
-    public void GradeUp()
-    {
-        Grade += 1;
-        transform.localScale += Vector3.one * 20f;
-        float hp = Mathf.Round(InitHP * 0.8f);
-        MaxHp += hp;
-        InitHP += hp;
-        float ad = Mathf.Round(InitAD * 0.8f);
-        AD += ad;
-        InitAD += ad;
-        sfxPrinter.PrintGradeFX(transform, grade);
-    }
-    #endregion
-
-    #region Skill
-    [SerializeField] private GameObject defaultBody;
-    [SerializeField] private GameObject tranformationBody;
-    public bool isPassive;
-    private bool isManaBan;
-    private float skillRatio;
-    float adRatio = 0;
-    float apRatio = 0;
-    int attackCount = 1;
+    #region skill
     public void CheckSkillUsable()
     {
-        if (curMp == maxMp &&
-            maxMp != 0)
+        if (curMana == maxMana &&
+            maxMana != 0)
         {
             CurMp = 0;
             anim.Play("Skill");
             OnSkillUsed?.Invoke();
         }
     }
-    public event Action OnSkillUsed;
     public void HybridAttack()
     {
         if (!target.GetComponent<Unit>().IsDead)
         {
             float adFinalDamage;
             float apFinalDamage;
-            apFinalDamage = ((AP * apRatio / 100f) * (1f + increasedDamage / 100f)) / attackCount;
-            adFinalDamage = (ad * adRatio / 100f) * (1f + increasedDamage / 100f) / attackCount;
+            apFinalDamage = ((AP * apRatio / 100f) * (1f + increasedDeal / 100f)) / skillAttackCount;
+            adFinalDamage = (attackDamage * adRatio / 100f) * (1f + increasedDeal / 100f) / skillAttackCount;
             target.GetComponent<Unit>().TakeSkillDamage(this, apFinalDamage, true);
             target.GetComponent<Unit>().TakeSkillDamage(this, adFinalDamage, false);
         }
@@ -1495,11 +1467,11 @@ public class Unit : MonoBehaviour
             float finalDamage;
             if (ap)
             {
-                finalDamage = (AP * ratio / 100f) * (1f + increasedDamage / 100f);
+                finalDamage = (AP * ratio / 100f) * (1f + increasedDeal / 100f);
             }
             else
             {
-                finalDamage = (ad * ratio / 100f) * (1f + increasedDamage / 100f);
+                finalDamage = (attackDamage * ratio / 100f) * (1f + increasedDeal / 100f);
 
             }
 
@@ -1537,13 +1509,13 @@ public class Unit : MonoBehaviour
         attacker.RecordDealAmount(actualDamage);
         if (ap)
         {
-            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Skill);
+            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Skill);
         }
         else
         {
-            sfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
+            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
         }
-        sfxPrinter.PrintHitFX(transform.position);
+        vfxPrinter.PrintHitFX(transform.position);
         if (CurHp <= 0)
         {
             IsDead = true;
@@ -1571,11 +1543,11 @@ public class Unit : MonoBehaviour
         float finalDamage = 0;
         if (ap)
         {
-            finalDamage = (AP * ratio / 100f) * (1f + increasedDamage / 100f);
+            finalDamage = (AP * ratio / 100f) * (1f + increasedDeal / 100f);
         }
         else
         {
-            finalDamage = (ad * ratio / 100f) * (1f + increasedDamage / 100f);
+            finalDamage = (attackDamage * ratio / 100f) * (1f + increasedDeal / 100f);
 
         }
         foreach (var col in enemy)
@@ -1718,55 +1690,55 @@ public class Unit : MonoBehaviour
     }
     private void SkillEffect0() //하루카
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                GetShield(Mathf.Round(maxHp * 0.2f));
+                GetShield(Mathf.Round(maxHealth * 0.2f));
                 break;
             case 2:
-                GetShield(Mathf.Round(maxHp * 0.3f));
+                GetShield(Mathf.Round(maxHealth * 0.3f));
                 break;
             case 3:
-                GetShield(Mathf.Round(maxHp * 0.4f));
+                GetShield(Mathf.Round(maxHealth * 0.4f));
                 break;
         }
     }
     private void SkillEffect1() //히후미
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                skillRatio = 200f;
+                adRatio = 200f;
                 break;
             case 2:
-                skillRatio = 300f;
+                adRatio = 300f;
                 break;
             case 3:
-                skillRatio = 400f;
+                adRatio = 400f;
                 break;
         }
-        SplashAttack(target, 2f, skillRatio, false);
-        sfxPrinter.PrintExplosionFX(target.transform);
+        SplashAttack(target, 2f, adRatio, false);
+        vfxPrinter.PrintExplosionFX(target.transform);
     }
     private void SkillEffect2() //카즈사
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                CurHp += ap * 150f / 100f;
+                CurHp += abilityPower * 150f / 100f;
                 break;
             case 2:
-                CurHp += ap * 250f / 100f;
+                CurHp += abilityPower * 250f / 100f;
                 break;
             case 3:
-                CurHp += ap * 400f / 100f;
+                CurHp += abilityPower * 400f / 100f;
                 break;
         }
-        AD += ad * 0.15f;
+        AD += attackDamage * 0.15f;
     }
     private void SkillEffect3() //마리나
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
                 Armor += 20f;
@@ -1781,24 +1753,24 @@ public class Unit : MonoBehaviour
     }
     private void SkillEffect4() //미치루
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                skillRatio = 110f;
+                apRatio = 110f;
                 break;
             case 2:
-                skillRatio = 210f;
+                apRatio = 210f;
                 break;
             case 3:
-                skillRatio = 310f;
+                apRatio = 310f;
                 break;
         }
-        SkillAttack(skillRatio, true);
+        SkillAttack(apRatio, true);
     }
     private void SkillEffect5() //미도리
     {
-        attackCount = 5;
-        switch (grade)
+        skillAttackCount = 5;
+        switch (Grade)
         {
             case 1:
                 adRatio = 110f;
@@ -1816,75 +1788,75 @@ public class Unit : MonoBehaviour
     }
     private void SkillEffect6() //모모이
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                AD += ad * 0.2f;
+                AD += attackDamage * 0.2f;
                 break;
             case 2:
-                AD += ad * 0.3f;
+                AD += attackDamage * 0.3f;
                 break;
             case 3:
-                AD += ad * 0.4f;
+                AD += attackDamage * 0.4f;
                 break;
         }
     }
     private void SkillEffect7() //무츠키
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                skillRatio = 100f;
+                apRatio = 100f;
                 break;
             case 2:
-                skillRatio = 160f;
+                apRatio = 160f;
                 break;
             case 3:
-                skillRatio = 240f;
+                apRatio = 240f;
                 break;
         }
-        SplashAttack(target, 2f, skillRatio, true);
-        sfxPrinter.PrintExplosionFX(target.transform);
+        SplashAttack(target, 2f, apRatio, true);
+        vfxPrinter.PrintExplosionFX(target.transform);
     }
     private void SkillEffect8() //노도카
     {
         if (target == null) return; 
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                skillRatio = 100f;
+                apRatio = 100f;
                 target.GetComponent<Unit>().StartStun(2f);
                 break;
             case 2:
-                skillRatio = 160f;
+                apRatio = 160f;
                 target.GetComponent<Unit>().StartStun(3f);
                 break;
             case 3:
-                skillRatio = 240f;
+                apRatio = 240f;
                 target.GetComponent<Unit>().StartStun(4f);
                 break;
         }
-        SkillAttack(skillRatio, true);
+        SkillAttack(apRatio, true);
     }
     private void SkillEffect9() //사오리
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                skillRatio = 300f;
+                adRatio = 300f;
                 break;
             case 2:
-                skillRatio = 400f;
+                adRatio = 400f;
                 break;
             case 3:
-                skillRatio = 500f;
+                adRatio = 500f;
                 break;
         }
-        SkillAttack(skillRatio, false);
+        SkillAttack(adRatio, false);
     }
     private void SkillEffect10() //세리카
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
                 AS += Mathf.Round(AS * 0.2f * 100f) / 100f;
@@ -1899,24 +1871,24 @@ public class Unit : MonoBehaviour
     }
     private void SkillEffect11() //슈에린
     {
-        switch (grade)
+        switch (Grade)
         {
             case 1:
-                skillRatio = 110f;
+                apRatio = 110f;
                 break;
             case 2:
-                skillRatio = 210f;
+                apRatio = 210f;
                 break;
             case 3:
-                skillRatio = 310f;
+                apRatio = 310f;
                 break;
         }
-        SkillAttack(skillRatio, true);
+        SkillAttack(apRatio, true);
     }
     private void SkillEffect12() //츠쿠요
     {
         isManaBan = true;
-        switch (grade)
+        switch (Grade)
         {
             case 1:
                 Avoid += 10f;

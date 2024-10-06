@@ -7,23 +7,22 @@ public enum Type
     Bench,
     Field
 }
-
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private Renderer rend;
-    private Color basicColor;
-    public ArrangeControl unit;
     public Type type;
+    public Arrangement unit;
+    private Renderer rend;
+    private Color defaultColor;
 
 
     private void Start()
     {
         rend = GetComponent<Renderer>();
-        basicColor = rend.material.color;
+        defaultColor = rend.material.color;
     }
     private void OnDisable()
     {
-        rend.material.color = basicColor;
+        rend.material.color = defaultColor;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -32,7 +31,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        rend.material.color = basicColor;
+        rend.material.color = defaultColor;
     }
 
 }
