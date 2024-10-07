@@ -42,6 +42,7 @@ public class ShopItem : MonoBehaviour
     }
     public void InitInfo(int n)
     {
+        info.unitCount[n] -= 1;
         no = n;
         data = info.Units[n];
         border.color = colors[int.Parse(data["Cost"]) - 1];

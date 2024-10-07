@@ -56,17 +56,12 @@ public class UnitManager : MonoBehaviour
     {
         player.OnLevelChanged -= UpdateFieldText;
     }
-    public void ArrangeMap(Transform pivot, Tile[] bench, TMP_Text text)
-    {
-        Camera.main.transform.position = pivot.position;
-        benchTile = bench;
-        fieldText = text;
-    }
 
     #region Unit
     public void GetUnit(int no)
     {
         GameObject newUnit = Instantiate(info.prefabs[no]);
+        newUnit.transform.SetParent(transform);
         Unit unit = newUnit.GetComponent<Unit>();
 
         GameObject statusBar = Instantiate(statusBarUI, statusBarCanvas);
@@ -102,14 +97,17 @@ public class UnitManager : MonoBehaviour
         switch (unit.Grade)
         {
             case 1:
+                info.unitCount[unit.No] += 1;
                 price = unit.Cost;
-                UnitGrade1[unit.No]--;
+                UnitGrade1[unit.No] -= 1;
                 break;
             case 2:
+                info.unitCount[unit.No] += 3;
                 price = (unit.Cost * 3) - 1;
-                UnitGrade2[unit.No]--;
+                UnitGrade2[unit.No] -= 1;
                 break;
             case 3:
+                info.unitCount[unit.No] += 9;
                 price = (unit.Cost * 9) - 1;
                 break;
         }

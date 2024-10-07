@@ -135,6 +135,7 @@ public class RoundManager : MonoBehaviour
         {
             enemyList[i].IsBattle = true;
         }
+        unitManager.BattleStart();
         Step = StepType.Battle;
     }
     public void PrepareStart()
@@ -146,7 +147,6 @@ public class RoundManager : MonoBehaviour
         round += 1;
         roundText.text = $"ROUND {round}";
         player.GetExp(2);
-        shop.RoundReroll();
         EnemySpawn();
         for (int i = 0; i < unitManager.fieldList.Count; i++)
         {
@@ -158,6 +158,8 @@ public class RoundManager : MonoBehaviour
             OpenItemShop();
         }
         player.UpdateGold(benefit);
+        shop.RoundReroll();
+        unitManager.PrepareStart();
         Step = StepType.Prepare;
     }
 

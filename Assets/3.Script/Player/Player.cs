@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        Level = 1;
+        LevelUp();
         Gold = 0;
         curExp = 0;
         maxExp = maxExpList[0];
@@ -84,6 +84,6 @@ public class Player : MonoBehaviour
     public void UpdateGold(int gold)
     {
         Gold += gold;
-        goldText.text = $"{gold}";
+        goldText.text = $"{Gold}";
     }
 }

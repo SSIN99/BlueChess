@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 
 public class Arrangement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-
     private UnitManager unitManager;
     private MouseHandler mouse;
     private Unit unit;
@@ -79,7 +78,7 @@ public class Arrangement : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z));
-        worldPos.y = 0.5f;
+        worldPos.y = 1f;
         transform.position = worldPos;
 
         if (eventData.pointerEnter == null)

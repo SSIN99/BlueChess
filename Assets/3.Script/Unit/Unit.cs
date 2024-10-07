@@ -108,7 +108,6 @@ public class Unit : MonoBehaviour
             if (isBattle)
             {
                 RecordState();
-                transform.rotation = Quaternion.identity;
                 agent.enabled = true;
                 anim.Play("Search");
                 OnBattleStart?.Invoke();
@@ -360,11 +359,13 @@ public class Unit : MonoBehaviour
         if (isField)
         {
             isOnField = true;
+            transform.rotation = Quaternion.identity;
             gameObject.layer = LayerMask.NameToLayer("Field");
         }
         else
         {
             isOnField = false;
+            transform.rotation = Quaternion.Euler(0, 135f, 0f);
             gameObject.layer = LayerMask.NameToLayer("Bench");
         }
     }
@@ -458,7 +459,7 @@ public class Unit : MonoBehaviour
         dealAmount = 0;
         isManaBan = false;
         transform.position = tempPos;
-        transform.rotation = Quaternion.Euler(0f, 135f, 0f);
+        transform.rotation = isOnField ? Quaternion.identity : Quaternion.Euler(0f, 135f, 0f);
     }
 
     public void DetectTarget()
@@ -517,14 +518,16 @@ public class Unit : MonoBehaviour
 
         if (distance <= radius)
         {
-            agent.isStopped = true;
+            if(agent.enabled)
+                agent.isStopped = true;
             anim.SetFloat("AttackSpeed", attackSpeed);
             if (!stateInfo.IsName("Attack"))
                 anim.Play("Attack");
         }
         else
         {
-            agent.isStopped = false;
+            if (agent.enabled)
+                agent.isStopped = false;
             agent.SetDestination(target.transform.position);
             if (!stateInfo.IsName("Move"))
                 anim.Play("Move");

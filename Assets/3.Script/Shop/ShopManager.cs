@@ -107,7 +107,7 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
-                //item.ReturnItem(); 
+                info.unitCount[item.no] += 1;
             }
             int no = GetRandomUnit();
             item.InitInfo(no);
@@ -125,7 +125,7 @@ public class ShopManager : MonoBehaviour
             }
             else
             {
-                //item.ReturnItem(); 
+                info.unitCount[item.no] += 1; 
             }
             int no = GetRandomUnit();
             item.InitInfo(no);

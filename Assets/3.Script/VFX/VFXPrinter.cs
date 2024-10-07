@@ -13,28 +13,17 @@ public class VFXPrinter : MonoBehaviour
     [SerializeField] private GameObject textFX;
     [SerializeField] private Transform canvas;
 
-    private Queue<GameObject> hitFXQueue;
     private Vector3 hitOffset;
     private Vector3 textOffset;
 
-    private void Start()
-    {
-        hitFXQueue = new Queue<GameObject>();
-        for (int i = 0; i < 50; i++)
-        {
-            GameObject h = Instantiate(hitFX, transform);
-            h.SetActive(false);
-            hitFXQueue.Enqueue(h);
-        }
-    }
+   
     public void PrintHitFX(Vector3 target)
     {
-        GameObject temp = hitFXQueue.Dequeue();
-        hitFXQueue.Enqueue(temp);
+        GameObject temp = Instantiate(hitFX);
         temp.transform.forward = Camera.main.transform.forward;
         hitOffset = Random.insideUnitCircle * 0.5f;
         hitOffset.y += 1f;
-        hitOffset.z -= 1f;
+        //hitOffset.z -= 1f;
         temp.transform.position = target + hitOffset;
         temp.SetActive(true);
     }
@@ -82,8 +71,8 @@ public class VFXPrinter : MonoBehaviour
 
         textOffset = Random.insideUnitCircle * 15f;
         Vector2 pos = Camera.main.WorldToScreenPoint(target);
-        pos.x += textOffset.x * 15f;
-        pos.y += 50f + textOffset.y * 15f;
+        pos.x += textOffset.x;
+        pos.y += 50f + textOffset.y;
 
         temp.GetComponent<TextFX>().InitText(value, pos, type);
     }

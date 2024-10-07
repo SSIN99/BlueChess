@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8052037054976559856}
   - component: {fileID: 7811226522676098763}
   m_Layer: 5
-  m_Name: Sfx
+  m_Name: VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,13 +227,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3316777682407246613}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1a9231f49143cc44993a2525fb0fb1c, type: 3}
+  m_Script: {fileID: 11500000, guid: e701276e1fb3a3c42bc33ac276a32575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 2139982714913302472}
-  amout: {fileID: 2824932660914886833}
-  sfx: {fileID: 7811226522676098763}
-  sfxImage:
+  value: {fileID: 2824932660914886833}
+  vfx: {fileID: 7811226522676098763}
+  vfxSprite:
   - {fileID: 5286297366636288419, guid: ff15c288d55507a4cb411b9a908aa839, type: 3}
   - {fileID: 3156661835362825836, guid: ff15c288d55507a4cb411b9a908aa839, type: 3}
   - {fileID: -7030883468202739539, guid: ff15c288d55507a4cb411b9a908aa839, type: 3}

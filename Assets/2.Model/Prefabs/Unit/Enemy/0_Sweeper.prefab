@@ -303,24 +303,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   No: 0
   Name: 
+  Cost: 0
   Origin: 0
   Class: 0
-  Range: 0
+  Grade: 0
+  range: 0
   lifeSteel: 0
-  increasedDamage: 0
-  AllDealAmount: 0
-  info: {fileID: 0}
-  player: {fileID: 0}
-  textPrinter: {fileID: 0}
-  sfxPrinter: {fileID: 0}
-  agent: {fileID: 0}
+  increasedDeal: 0
+  dealAmount: 0
+  isPassive: 1
+  isEnemy: 1
+  target: {fileID: 0}
+  defaultBody: {fileID: 0}
+  tranformationBody: {fileID: 0}
+  unitManager: {fileID: 0}
+  vfxPrinter: {fileID: 0}
   anim: {fileID: 0}
   col: {fileID: 0}
-  target: {fileID: 0}
-  pos: {x: 0, y: 0, z: 0}
-  rot: {x: 0, y: 0, z: 0, w: 0}
-  rotSpeed: 0
-  isEnemy: 1
+  agent: {fileID: 0}
   itemList: 
 --- !u!114 &8185996572690438332
 MonoBehaviour:
