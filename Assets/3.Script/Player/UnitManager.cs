@@ -165,7 +165,7 @@ public class UnitManager : MonoBehaviour
     }
     public void AddBench(Unit unit)
     {
-        unit.gameObject.layer = LayerMask.NameToLayer("Bench");
+        unit.SetArrangeState(false);
         benchList.Add(unit);
         numOfBench += 1;
         OnBenchChanged?.Invoke();
@@ -178,7 +178,7 @@ public class UnitManager : MonoBehaviour
     }
     public void AddField(Unit unit)
     {
-        unit.gameObject.layer = LayerMask.NameToLayer("Field");
+        unit.SetArrangeState(true);
         if (!CheckDuplicateUnit(unit.No))
         {
             traitCount[unit.Origin]++;
@@ -190,8 +190,8 @@ public class UnitManager : MonoBehaviour
         }
         fieldList.Add(unit);
         numOfField += 1;
-        UpdateFieldText();
         SetNewUnitTrait(unit);
+        UpdateFieldText();
         UpdateTraitBar();
     }
     public void RemoveField(Unit unit)
@@ -339,10 +339,10 @@ public class UnitManager : MonoBehaviour
             if (fieldList[i].Origin == no ||
                 fieldList[i].Class == no)
             {
-                fieldList[i].PrintTraitEffect();
+                fieldList[i].PrintTraitVFX();
             }
         }
-        newUnit.PrintTraitEffect();
+        newUnit.PrintTraitVFX();
     }
     #endregion
 

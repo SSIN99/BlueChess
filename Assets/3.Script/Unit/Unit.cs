@@ -61,7 +61,7 @@ public class Unit : MonoBehaviour
     private float tempArmor;
     private float tempResist;
     private float tempAvoid;
-    private Vector3 tempPosition;
+    private Vector3 tempPos;
 
     private int trait2Rank;
     private int trait6Rank;
@@ -107,8 +107,7 @@ public class Unit : MonoBehaviour
             isBattle = value;
             if (isBattle)
             {
-                RecordStat();
-                tempPosition = transform.position;
+                RecordState();
                 transform.rotation = Quaternion.identity;
                 agent.enabled = true;
                 anim.Play("Search");
@@ -121,10 +120,9 @@ public class Unit : MonoBehaviour
             {
                 IsDead = false;
                 OnIdleReturn?.Invoke();
-                transform.position = tempPosition;
                 agent.enabled = false;
                 col.enabled = true;
-                ResetStat();
+                ResetState();
                 anim.Play("Idle");
 
                 CancelInvoke("IncreaseAsTrait2");
@@ -136,10 +134,10 @@ public class Unit : MonoBehaviour
         get { return maxHealth; }
         private set
         {
-            float differ = value - maxHealth;
+            float increase = value - maxHealth;
             maxHealth = value;
             OnMaxHpChanged?.Invoke();
-            CurHp += differ;
+            CurHp += increase;
         }
     }
     public float CurHp
@@ -170,10 +168,10 @@ public class Unit : MonoBehaviour
         get { return startMana; }
         private set
         {
-            int differ = value - startMana;
+            int increase = value - startMana;
             startMana = value;
             OnStartMpChanged?.Invoke();
-            CurMp = differ;
+            CurMp = increase;
         }
     }
     public int CurMp
@@ -218,7 +216,8 @@ public class Unit : MonoBehaviour
         get { return critRatio; }
         private set
         {
-            critRatio = value;
+            float cr = Mathf.Clamp(value, 0, 100f);
+            critRatio = cr;
             OnCRChanged?.Invoke();
         }
     }
@@ -258,15 +257,6 @@ public class Unit : MonoBehaviour
             OnAvoidChanged?.Invoke();
         }
     }
-    public float CurShield
-    {
-        get { return curShield; }
-        private set
-        {
-            curShield = value;
-            OnCurShieldChanged?.Invoke();
-        }
-    }
     public float MaxShield
     {
         get { return maxShield; }
@@ -277,10 +267,21 @@ public class Unit : MonoBehaviour
             OnMaxShieldChanged?.Invoke();
         }
     }
+    public float CurShield
+    {
+        get { return curShield; }
+        private set
+        {
+            curShield = value;
+            OnCurShieldChanged?.Invoke();
+        }
+    }
     #endregion
 
     #region event
-    public event Action OnGradeUp;
+    public event Action OnMaxHpChanged;
+    public event Action OnCurHpChanged;
+    public event Action OnMaxMpChanged;
     public event Action OnStartMpChanged;
     public event Action OnCurMpChanged;
     public event Action OnADChanged;
@@ -291,21 +292,22 @@ public class Unit : MonoBehaviour
     public event Action OnArmorChanged;
     public event Action OnResistChanged;
     public event Action OnAvoidChanged;
-    public event Action OnCurShieldChanged;
     public event Action OnMaxShieldChanged;
-    public event Action OnMaxHpChanged;
-    public event Action OnCurHpChanged;
-    public event Action OnMaxMpChanged;
+    public event Action OnCurShieldChanged;
+
+    public event Action OnGradeUp;
+    public event Action OnBeSold;
+    public event Action OnItemEquiped;
+
     public event Action OnDead;
     public event Action OnBattleStart;
     public event Action OnIdleReturn;
-    public event Action OnBeSold;
-    public event Action OnItemEquiped;
+
     public event Action OnSkillUsed;
-    public event Action OnAttackOccurred;
-    public event Action OnDealAmountChanged;
+    public event Action OnRunAutoAttack;
     public delegate void AttackSuccessHandler(Unit enemy);
-    AttackSuccessHandler OnAttackSuccess;
+    AttackSuccessHandler OnSuccessAutoAttack;
+    public event Action OnDealAmountChanged;
     #endregion
 
     private void Awake()
@@ -338,7 +340,7 @@ public class Unit : MonoBehaviour
         CritDamage = 150f;
         Armor = float.Parse(data["Armor"]);
         Resist = float.Parse(data["Resistance"]);
-        avoid = 0;
+        Avoid = 0f;
         range = float.Parse(data["Range"]);
         MaxShield = 0;
         CurShield = maxShield;
@@ -346,12 +348,25 @@ public class Unit : MonoBehaviour
         increasedDeal = 0;
         manaRegeneration = 10;
 
-        InitAD = attackDamage;
         InitHP = maxHealth;
+        InitAD = attackDamage;
         InitAS = attackSpeed;
 
         if (isPassive)
             ActiveSkill();
+    }
+    public void SetArrangeState(bool isField)
+    {
+        if (isField)
+        {
+            isOnField = true;
+            gameObject.layer = LayerMask.NameToLayer("Field");
+        }
+        else
+        {
+            isOnField = false;
+            gameObject.layer = LayerMask.NameToLayer("Bench");
+        }
     }
     public void GradeUp()
     {
@@ -379,236 +394,9 @@ public class Unit : MonoBehaviour
         GetComponent<Arrangement>().LeaveTile();
         OnBeSold?.Invoke();
     }
-    public void RecordStat()
-    {
-        tempHP = maxHealth;
-        tempAD = attackDamage;
-        tempAP = abilityPower;
-        tempCR = critRatio;
-        tempCD = critDamage;
-        tempArmor = armor;
-        tempResist = resist;
-        tempAS = attackSpeed;
-        tempAvoid = avoid;
-        dealAmount = 0;
-    }
-    public void ResetStat()
-    {
-        CurHp = tempHP;
-        CurMp = StartMp;
-        CurShield = 0;
-        AD = tempAD;
-        AP = tempAP;
-        CritRatio = tempCR;
-        CritDamage = tempCD;
-        Armor = tempArmor;
-        Resist = tempResist;
-        AS = tempAS;
-        Avoid = tempAvoid;
-        isManaBan = false;
-    }
-    public void DetectTarget()
-    {
-        agent.isStopped = true;
-        LayerMask layer;
-        if (transform.CompareTag("Unit"))
-        {
-            layer = LayerMask.GetMask("Enemy");
-        }
-        else
-        {
-            layer = LayerMask.GetMask("Field");
-        }
-
-        Collider[] objs = Physics.OverlapSphere(transform.position, 15f, layer);
-
-        if (objs.Length == 0)
-        {
-            transform.rotation = Quaternion.Euler(0f, 125f, 0f);
-            anim.Play("Win");
-            return;
-        }
-
-        Array.Sort(objs, (a, b)
-            => Vector3.Distance(transform.position, a.transform.position)
-            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
-
-        target = objs[0].gameObject;
-        anim.Play("Move");
-    }
-    public void CheckTargetDead()
-    {
-        if (target == null || target.activeSelf == false || target.GetComponent<Unit>().IsDead)
-        {
-            anim.Play("Search");
-        }
-    }
-    public void CheckAttackRange()
-    {
-        CheckTargetDead();
-        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        float radius = 2 * range + 0.5f;
-        float distance = Vector3.Distance(transform.position, target.transform.position);
-        if (distance <= radius)
-        {
-            if (agent.enabled)
-                agent.isStopped = true;
-            anim.SetFloat("AttackSpeed", AS);
-            if (!stateInfo.IsName("Attack"))
-                anim.Play("Attack");
-        }
-        else
-        {
-            if (agent.enabled)
-                agent.isStopped = false;
-            agent.SetDestination(target.transform.position);
-            if (!stateInfo.IsName("Move"))
-                anim.Play("Move");
-        }
-    }
-    public void LookAtTarget()
-    {
-        if (target != null)
-        {
-            Vector3 direction = target.transform.position - transform.position;
-            direction.y = 0;
-
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
-        }
-    }
-    public void AutoAttack()
-    {
-        if (!target.GetComponent<Unit>().IsDead)
-        {
-            float finalDamage;
-            bool isCritical;
-            float rand = Random.Range(0f, 100f);
-            if (rand < critRatio)
-            {
-                finalDamage = (attackDamage * (critDamage / 100f)) * (1f + increasedDeal / 100f);
-                isCritical = true;
-            }
-            else
-            {
-                finalDamage = attackDamage * (1f + increasedDeal / 100f);
-                isCritical = false;
-            }
-            target.GetComponent<Unit>().TakeDamage(this, finalDamage, isCritical);
-            IncreaseMana(manaRegeneration);
-
-            OnAttackOccurred?.Invoke();
-        }
-    }
-    public void StartStun(float duration)
-    {
-        if (duration == 0 || 
-            IsDead) return;
-        stunDuration = duration;
-        curStunTime = 0f;
-        agent.isStopped = true;
-        anim.Play("Panic");
-        StartCoroutine(Stun_Co());
-    }
-    private IEnumerator Stun_Co()
-    {
-        while (curStunTime < stunDuration)
-        {
-            curStunTime += Time.deltaTime;
-            yield return null;
-        }
-        anim.Play("Search");
-    }
-    public void RecordDealAmount(float deal)
-    {
-        dealAmount += deal;
-        OnDealAmountChanged?.Invoke();
-    }
-    public void TakeDamage(Unit attacker, float damage, bool crit)
-    {
-        if (IsDead) return;
-
-        float rand = Random.Range(0f, 100f);
-        if (rand < avoid)
-        {
-            vfxPrinter.PrintTextFX(string.Empty, transform.position, TextType.Avoid);
-            return;
-        }
-        float actualDamage = damage * (1f - (armor / (armor + 100f)));
-        actualDamage = Mathf.Round(actualDamage);
-        if (curShield > 0)
-        {
-            CurShield -= actualDamage;
-            if (curShield < 0)
-            {
-                CurHp += curShield;
-            }
-        }
-        else
-        {
-            CurHp -= actualDamage;
-        }
-        attacker.LifeSteel(actualDamage);
-        attacker.RecordDealAmount(actualDamage);
-        IncreaseMana(5);
-        if (crit)
-        {
-            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Crit);
-        }
-        else
-        {
-            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
-        }
-        vfxPrinter.PrintHitFX(transform.position);
-        if (CurHp <= 0)
-        {
-            IsDead = true;
-            return;
-        }
-        attacker.OnAttackSuccess?.Invoke(this);
-    }
-    public void GetShield(float amount)
-    {
-        MaxShield = amount;
-    }
-    public void LifeSteel(float damage)
-    {
-        if (lifeSteel <= 0 ||
-            curHealth == maxHealth) return;
-        float steelAmount = Mathf.Round(damage * (lifeSteel / 100f));
-        curHealth += steelAmount;
-        CurHp = Mathf.Clamp(curHealth, 0, maxHealth);
-        vfxPrinter.PrintTextFX(steelAmount.ToString(), transform.position, TextType.Heal);
-    }
-    public void Dead()
-    {
-        if (isEnemy)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
-    }
-    public void IncreaseMana(int amout)
-    {
-        if (isManaBan) return;
-        CurMp += amout;
-    }
-    public void DecreaseMana(int amout)
-    {
-        CurMp -= amout;
-    }
     public void EquipItem(int item)
     {
         itemList.Add(item);
-        SetItemEffect(item);
-        OnItemEquiped?.Invoke();
-    }
-    private void SetItemEffect(int item)
-    {
         switch (item)
         {
             case 0:
@@ -639,813 +427,158 @@ public class Unit : MonoBehaviour
                 CritRatio += 20f;
                 break;
         }
+        OnItemEquiped?.Invoke();
+    }
+    public void RecordState()
+    {
+        tempHP = maxHealth;
+        tempAD = attackDamage;
+        tempAP = abilityPower;
+        tempCR = critRatio;
+        tempCD = critDamage;
+        tempArmor = armor;
+        tempResist = resist;
+        tempAS = attackSpeed;
+        tempAvoid = avoid;
+        tempPos = transform.position;
+    }
+    public void ResetState()
+    {
+        CurHp = tempHP;
+        CurMp = startMana;
+        CurShield = 0;
+        AD = tempAD;
+        AP = tempAP;
+        CritRatio = tempCR;
+        CritDamage = tempCD;
+        Armor = tempArmor;
+        Resist = tempResist;
+        AS = tempAS;
+        Avoid = tempAvoid;
+        dealAmount = 0;
+        isManaBan = false;
+        transform.position = tempPos;
+        transform.rotation = Quaternion.Euler(0f, 135f, 0f);
     }
 
-    #region trait
-    public void PrintTraitEffect()
+    public void DetectTarget()
     {
-        vfxPrinter.PrintTraitFX(transform);
-    }
-    public void UpdateTrait(int no, int old, int rank)
-    {
-        switch (no)
-        {
-            case 0:
-                SetTrait_0(old, rank);
-                break;
-            case 1:
-                if (Origin != 1) return;
-                SetTrait_1(old, rank);
-                break;
-            case 2:
-                SetTrait_2(old, rank);
-                break;
-            case 3:
-                if (Origin != 3) return;
-                SetTrait_3(old, rank);
-                break;
-            case 4:
-                if (Origin != 4) return;
-                SetTrait_4(old, rank);
-                break;
-            case 5:
-                if (Origin != 5) return;
-                SetTrait_5(old, rank);
-                break;
-            case 6:
-                SetTrait_6(old, rank);
-                break;
-            case 7:
-                if (Origin != 7) return;
-                SetTrait_7(old, rank);
-                break;
-            case 8:
-                if (Origin != 8) return;
-                SetTrait_8(old, rank);
-                break;
-            case 9:
-                if (Origin != 9) return;
-                SetTrait_9(old, rank);
-                break;
-            case 10:
-                if (Class != 10) return;
-                SetTrait_10(old, rank);
-                break;
-            case 11:
-                if (Class != 11) return;
-                SetTrait_11(old, rank);
-                break;
-            case 12:
-                SetTrait_12(old, rank);
-                break;
-            case 13:
-                if (Class != 13) return;
-                SetTrait_13(old, rank);
-                break;
-            case 14:
-                if (Class != 14) return;
-                SetTrait_14(old, rank);
-                break;
-            case 15:
-                SetTrait_15(old, rank);
-                break;
-            case 16:
-                if (Class != 16) return;
-                SetTrait_16(old, rank);
-                break;
-            case 17:
-                if (Class != 17) return;
-                SetTrait_17(old, rank);
-                break;
-            case 18:
-                if (Class != 18) return;
-                SetTrait_18(old, rank);
-                break;
-            case 19:
-                if (Class != 19) return;
-                SetTrait_19(old, rank);
-                break;
-            case 20:
-                if (Class != 20) return;
-                SetTrait_20(old, rank);
-                break;
-            case 21:
-                if (Class != 21) return;
-                SetTrait_21(old, rank);
-                break;
-            case 22:
-                SetTrait_22(old, rank);
-                break;
-        }
-    }
-    public void SetTrait_0(int old, int rank) //아비도스
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                lifeSteel -= 30f;
-                break;
-            case 2:
-                lifeSteel -= 60f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                lifeSteel += 30f;
-                break;
-            case 2:
-                lifeSteel += 60f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_1(int old, int rank) //게헨나
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                AD -= 20f;
-                AP -= 20f;
-                break;
-            case 2:
-                AD -= 35f;
-                AP -= 35f;
-                break;
-            case 3:
-                AD -= 60f;
-                AP -= 60f;
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                AD += 20f;
-                AP += 20f;
-                break;
-            case 2:
-                AD += 35f;
-                AP += 35f;
-                break;
-            case 3:
-                AD += 60f;
-                AP += 60f;
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_2(int old, int rank) //밀레니엄
-    {
-        trait2Rank = rank;
-    }
-    public void IncreaseAsTrait2()
-    {
-        switch (trait2Rank)
-        {
-            case 1:
-                AS += Mathf.Round(attackSpeed * 0.15f * 100f) / 100f;
-                break;
-            case 2:
-                AS += Mathf.Round(attackSpeed * 0.35f * 100f) / 100f;
-                break;
-            case 3:
-                AS += Mathf.Round(attackSpeed * 0.65f * 100f) / 100f;
-                break;
-            case 4:
-                AS += Mathf.Round(attackSpeed * 0.90f * 100f) / 100f;
-                break;
-        }
-    }
-    public void SetTrait_3(int old, int rank) //트리니티
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                Armor -= 20f;
-                Resist -= 20f;
-                break;
-            case 2:
-                Armor -= 50f;
-                Resist -= 50f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                Armor += 20f;
-                Resist += 20f;
-                break;
-            case 2:
-                Armor += 50f;
-                Resist += 50f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_4(int old, int rank) //백귀야행
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                manaRegeneration -= 4;
-                break;
-            case 2:
-                manaRegeneration -= 7;
-                break;
-            case 3:
-                manaRegeneration -= 10;
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                manaRegeneration += 4;
-                break;
-            case 2:
-                manaRegeneration += 7;
-                break;
-            case 3:
-                manaRegeneration += 10;
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_5(int old, int rank) //산해경
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                MaxHp -= 200f;
-                AP -= 20f;
-                break;
-            case 2:
-                MaxHp -= 200f;
-                AP -= 20f;
-                break;
-            case 3:
-                MaxHp -= 200f;
-                AP -= 20f;
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                MaxHp += 200f;
-                AP += 20f;
-                break;
-            case 2:
-                MaxHp += 300f;
-                AP += 30f;
-                break;
-            case 3:
-                MaxHp += 400f;
-                AP += 40f;
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_6(int old, int rank) //레드윈터
-    {
-        OnDead -= deadEventTrait6;
-        trait6Rank = rank;
-        if(rank != 0)
-        {
-            OnDead += deadEventTrait6;
-        }
-    }
-    public void deadEventTrait6()
-    {
-        for (int i = 0; i < unitManager.fieldList.Count; i++)
-        {
-            if (!unitManager.fieldList[i].IsDead &&
-                unitManager.fieldList[i].Origin == 6)
-            {
-                unitManager.fieldList[i].IncreaseAdApTrait6();
-            }
-        }
-    }
-    public void IncreaseAdApTrait6()
-    {
-        switch (trait6Rank)
-        {
-            case 1:
-                AD += 8;
-                AP += 8;
-                break;
-            case 2:
-                AD += 18;
-                AP += 18;
-                break;
-            case 3:
-                AD += 28;
-                AP += 28;
-                break;
-        }
-    }
-    public void SetTrait_7(int old, int rank) //발키리
-    {
-        if(rank == 1)
-        {
-            OnAttackSuccess += StunAttackTrait7;
-        }
-        else
-        {
-            OnAttackSuccess -= StunAttackTrait7;
-        }
-    }
-    public void StunAttackTrait7(Unit enemy)
-    {
-        float rand = Random.Range(0, 100);
-        if(rand < 30)
-        {
-            enemy.StartStun(1.5f);
-        }
-    }
-    public void SetTrait_8(int old, int rank) //SRT
-    {
-        if (rank == 1)
-        {
-            MaxMp -= 30;
-        }
-        else
-        {
-            MaxMp += 30;
-        }
-    }
-    public void SetTrait_9(int old, int rank) //아리우스
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                increasedDeal -= 20f;
-                break;
-            case 2:
-                increasedDeal -= 35f;
-                break;
-            case 3:
-       
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                increasedDeal += 20f;
-                break;
-            case 2:
-                increasedDeal += 35f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_10(int old, int rank) //정찰대
-    {
-        OnAttackOccurred -= ExtraAttackTrait10;
-        trait10Rank = rank;
-        if(rank != 0)
-        {
-            OnAttackOccurred += ExtraAttackTrait10;
-        }
-    }
-    public void ExtraAttackTrait10()
-    {
-        float rand = Random.Range(0, 100);
-        float ratio = 0;
-        switch (trait10Rank)
-        {
-            case 1:
-                ratio = 30;
-                break;
-            case 2:
-                ratio = 45;
-                break;
-            case 3:
-                ratio = 65;
-                break;
-        }
-        if(rand < ratio)
-        {
-            if (!target.GetComponent<Unit>().IsDead)
-            {
-                float finalDamage;
-                bool isCritical;
-                rand = Random.Range(0f, 100f);
-                if (rand < critRatio)
-                {
-                    finalDamage = (attackDamage * (critDamage / 100f)) * (1f + increasedDeal / 100f);
-                    isCritical = true;
-                }
-                else
-                {
-                    finalDamage = attackDamage * (1f + increasedDeal / 100f);
-                    isCritical = false;
-                }
-                target.GetComponent<Unit>().TakeDamage(this, finalDamage, isCritical);
-            }
-        }
-    }
-    public void SetTrait_11(int old, int rank) //수집가
-    {
-        OnAttackSuccess -= BurnOutManaTrait11;
-        if(rank != 0)
-        {
-            OnAttackSuccess += BurnOutManaTrait11;
-        }
-    }
-    public void BurnOutManaTrait11(Unit enemy) 
-    {
-        enemy.DecreaseMana(5);
-    }
-    public void SetTrait_12(int old, int rank) //마법사
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                AP -= 20f;
-                break;
-            case 2:
-                AP -= 40f;
-                break;
-            case 3:
-                AP -= 60f;
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                AP += 20f;
-                break;
-            case 2:
-                AP += 40f;
-                break;
-            case 3:
-                AP += 60f;
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_13(int old, int rank) //선봉대
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                Armor -= 70f;
-                break;
-            case 2:
-                Armor -= 150f;
-                break;
-            case 3:
-                Armor -= 350f;
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                Armor += 70f;
-                break;
-            case 2:
-                Armor += 150f;
-                break;
-            case 3:
-                Armor += 350f;
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_14(int old, int rank) //수호자
-    {
-        OnBattleStart -= GetShieldTratit14;
-        trait14Rank = rank;
-        if(rank != 0)
-        {
-            OnBattleStart += GetShieldTratit14;
-        }
-    }
-    public void GetShieldTratit14()
-    {
-        switch (trait14Rank)
-        {
-            case 1:
-                GetShield(Mathf.Round(maxHealth * 0.3f));
-                break;
-            case 2:
-                GetShield(Mathf.Round(maxHealth * 0.5f));
-                break;
-        }
-    }
-    public void SetTrait_15(int old, int rank) //마법사
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                Resist -= 50f;
-                break;
-            case 2:
-                Resist -= 120f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                Resist += 50f;
-                break;
-            case 2:
-                Resist += 120f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_16(int old, int rank) //싸움꾼
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                MaxHp -= 350f;
-                break;
-            case 2:
-                MaxHp -= 600f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                MaxHp += 350f;
-                break;
-            case 2:
-                MaxHp += 600f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_17(int old, int rank) //잠입자
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                CritRatio -= 20f;
-                CritDamage -= 75f;
-                break;
-            case 2:
-                CritRatio -= 40f;
-                CritDamage -= 150f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                CritRatio += 20f;
-                CritDamage += 75f;
-                break;
-            case 2:
-                CritRatio += 40f;
-                CritDamage += 150f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_18(int old, int rank) //저격수
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                CritRatio -= 15f;
-                range -= 1;
-                break;
-            case 2:
-                CritRatio -= 30f;
-                range -= 2;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                CritRatio += 15f;
-                range += 1;
-                break;
-            case 2:
-                CritRatio += 30f;
-                range += 2;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_19(int old, int rank) //총잡이
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                AS -= Mathf.Round(InitAS * 0.2f * 100f) / 100f;
-                break;
-            case 2:
-                AS -= Mathf.Round(InitAS * 0.5f * 100f) / 100f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                AS += Mathf.Round(InitAS * 0.2f * 100f) / 100f;
-                break;
-            case 2:
-                AS += Mathf.Round(InitAS * 0.5f * 100f) / 100f;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_20(int old, int rank) //폭파광
-    {
-        switch (old)
-        {
-            case 0:
-                break;
-            case 1:
-                increasedDeal -= 15;
-                CritDamage -= 50;
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-        switch (rank)
-        {
-            case 0:
-                break;
-            case 1:
-                increasedDeal += 15;
-                CritDamage += 50;
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
-    }
-    public void SetTrait_21(int old, int rank) //파괴자
-    {
-        OnAttackSuccess -= DestroyEnemy;
-        if(rank != 0)
-        {
-            OnAttackSuccess += DestroyEnemy;
-        }
-    }
-    public void DestroyEnemy(Unit enemy)
-    {
-        if(enemy.CurHp < Mathf.Round(enemy.CurHp * 0.15f))
-        {
-            enemy.Excution();
-        }
-    }
-    public void Excution()
-    {
-        CurHp = 0;
-        IsDead = true;
-    }
-    public void SetTrait_22(int old, int rank) //책사
-    {
-        if(rank == 1)
-        {
-            Avoid += 20f;
-        }
-        else
-        {
-            Avoid -= 20f;
-        }
-    }
-    #endregion
+        agent.isStopped = true;
 
-    #region skill
+        LayerMask layer = transform.CompareTag("Unit") ? LayerMask.GetMask("Enemy") : LayerMask.GetMask("Field");
+        Collider[] units = Physics.OverlapSphere(transform.position, 15f, layer);
+
+        if (units.Length == 0)
+        {
+            transform.rotation = Quaternion.Euler(0f, 135f, 0f);
+            anim.Play("Win");
+            return;
+        }
+
+        Array.Sort(units, (u1, u2)
+            => Vector3.Distance(transform.position, u1.transform.position)
+            .CompareTo(Vector3.Distance(transform.position, u2.transform.position)));
+
+        target = units[0].gameObject;
+
+        agent.isStopped = false;
+        agent.SetDestination(target.transform.position);
+
+        anim.Play("Move");
+    }
+    public void LookAtTarget()
+    {
+        if (target != null)
+        {
+            Vector3 direction = target.transform.position - transform.position;
+            direction.y = 0;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
+        }
+    }
+    public void CheckTargetDead()
+    {
+        if (target == null || 
+            target.GetComponent<Unit>().IsDead)
+        {
+            anim.Play("Search");
+        }
+    }
+    public void CheckAttackRange()
+    {
+        CheckTargetDead();
+
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+
+        float radius = 2f * range + 0.5f;
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+
+        if (distance <= radius)
+        {
+            agent.isStopped = true;
+            anim.SetFloat("AttackSpeed", attackSpeed);
+            if (!stateInfo.IsName("Attack"))
+                anim.Play("Attack");
+        }
+        else
+        {
+            agent.isStopped = false;
+            agent.SetDestination(target.transform.position);
+            if (!stateInfo.IsName("Move"))
+                anim.Play("Move");
+        }
+    }
     public void CheckSkillUsable()
     {
         if (curMana == maxMana &&
-            maxMana != 0)
+            !isPassive)
         {
             CurMp = 0;
             anim.Play("Skill");
             OnSkillUsed?.Invoke();
+        }
+    }
+
+    public void AutoAttack()
+    {
+        if (!target.GetComponent<Unit>().IsDead)
+        {
+            float finalDamage;
+            bool isCrit;
+            float rand = Random.Range(0f, 100f);
+            if (rand < critRatio)
+            {
+                finalDamage = (attackDamage * (critDamage / 100f)) * (1f + increasedDeal / 100f);
+                isCrit = true;
+            }
+            else
+            {
+                finalDamage = attackDamage * (1f + increasedDeal / 100f);
+                isCrit = false;
+            }
+            target.GetComponent<Unit>().TakeAutoAttack(this, finalDamage, isCrit);
+
+            UpdateMana(manaRegeneration);
+            OnRunAutoAttack?.Invoke();
+        }
+    }
+    public void SkillAttack(float ratio, bool isAP)
+    {
+        if (!target.GetComponent<Unit>().IsDead)
+        {
+            float finalDamage;
+            if (isAP)
+            {
+                finalDamage = (AP * ratio / 100f) * (1f + increasedDeal / 100f);
+            }
+            else
+            {
+                finalDamage = (attackDamage * ratio / 100f) * (1f + increasedDeal / 100f);
+
+            }
+            target.GetComponent<Unit>().TakeSkillAttack(this, finalDamage, isAP);
         }
     }
     public void HybridAttack()
@@ -1456,34 +589,91 @@ public class Unit : MonoBehaviour
             float apFinalDamage;
             apFinalDamage = ((AP * apRatio / 100f) * (1f + increasedDeal / 100f)) / skillAttackCount;
             adFinalDamage = (attackDamage * adRatio / 100f) * (1f + increasedDeal / 100f) / skillAttackCount;
-            target.GetComponent<Unit>().TakeSkillDamage(this, apFinalDamage, true);
-            target.GetComponent<Unit>().TakeSkillDamage(this, adFinalDamage, false);
+            target.GetComponent<Unit>().TakeSkillAttack(this, apFinalDamage, true);
+            target.GetComponent<Unit>().TakeSkillAttack(this, adFinalDamage, false);
         }
     }
-    public void SkillAttack(float ratio, bool ap)
+    public void SplashAttack(GameObject target, float radius, float ratio, bool isAP)
     {
-        if (!target.GetComponent<Unit>().IsDead)
+        LayerMask layer = transform.CompareTag("Unit") ? LayerMask.GetMask("Enemy") : LayerMask.GetMask("Field");
+        Collider[] enemy = Physics.OverlapSphere(target.transform.position, radius, layer);
+
+        if (enemy.Length == 0)
         {
-            float finalDamage;
-            if (ap)
-            {
-                finalDamage = (AP * ratio / 100f) * (1f + increasedDeal / 100f);
-            }
-            else
-            {
-                finalDamage = (attackDamage * ratio / 100f) * (1f + increasedDeal / 100f);
+            return;
+        }
+        float finalDamage = 0;
+        if (isAP)
+        {
+            finalDamage = (AP * ratio / 100f) * (1f + increasedDeal / 100f);
+        }
+        else
+        {
+            finalDamage = (attackDamage * ratio / 100f) * (1f + increasedDeal / 100f);
 
-            }
-
-            target.GetComponent<Unit>().TakeSkillDamage(this, finalDamage, ap);
+        }
+        foreach (var col in enemy)
+        {
+            col.GetComponent<Unit>().TakeSkillAttack(this, finalDamage, isAP);
         }
     }
-    public void TakeSkillDamage(Unit attacker, float damage, bool ap)
+    public void UpdateMana(int amout)
+    {
+        if (isManaBan) return;
+
+        CurMp += amout;
+    }
+    public void TakeAutoAttack(Unit attacker, float damage, bool crit)
+    {
+        if (IsDead) return;
+
+        float rand = Random.Range(0f, 100f);
+        if (rand < avoid)
+        {
+            vfxPrinter.PrintTextFX(string.Empty, transform.position, TextType.Avoid);
+            return;
+        }
+
+        float actualDamage = Mathf.Round(damage * (1f - (armor / (armor + 100f))));
+        if (curShield > 0)
+        {
+            CurShield -= actualDamage;
+            if (curShield < 0)
+            {
+                CurHp += curShield;
+            }
+        }
+        else
+        {
+            CurHp -= actualDamage;
+        }
+        attacker.GetLifeSteel(damage);
+        attacker.RecordDealAmount(damage);
+
+        vfxPrinter.PrintHitFX(transform.position);
+        if (crit)
+        {
+            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Crit);
+        }
+        else
+        {
+            vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
+        }
+
+        if (curHealth <= 0)
+        {
+            IsDead = true;
+            return;
+        }
+        UpdateMana(5);
+        attacker.OnSuccessAutoAttack?.Invoke(this);
+    }
+    public void TakeSkillAttack(Unit attacker, float damage, bool isAP)
     {
         if (IsDead) return;
 
         float actualDamage;
-        if (ap)
+        if (isAP)
         {
             actualDamage = damage * (1f - (resist / (resist + 100f)));
         }
@@ -1505,9 +695,11 @@ public class Unit : MonoBehaviour
         {
             CurHp -= actualDamage;
         }
-        attacker.LifeSteel(actualDamage);
+        attacker.GetLifeSteel(actualDamage);
         attacker.RecordDealAmount(actualDamage);
-        if (ap)
+
+        vfxPrinter.PrintHitFX(transform.position);
+        if (isAP)
         {
             vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Skill);
         }
@@ -1515,46 +707,73 @@ public class Unit : MonoBehaviour
         {
             vfxPrinter.PrintTextFX(actualDamage.ToString(), transform.position, TextType.Attack);
         }
-        vfxPrinter.PrintHitFX(transform.position);
         if (CurHp <= 0)
         {
             IsDead = true;
             return;
         }
     }
-    public void SplashAttack(GameObject target, float radius, float ratio, bool ap)
+    public void GetLifeSteel(float damage)
     {
-        LayerMask layer;
-        if (transform.CompareTag("Unit"))
-        {
-            layer = LayerMask.GetMask("Enemy");
-        }
-        else
-        {
-            layer = LayerMask.GetMask("Field");
-        }
-
-        Collider[] enemy = Physics.OverlapSphere(target.transform.position, radius, layer);
-
-        if (enemy.Length == 0)
-        {
+        if (lifeSteel <= 0 ||
+            curHealth == maxHealth) 
             return;
-        }
-        float finalDamage = 0;
-        if (ap)
+
+        float steelAmount = Mathf.Round(damage * (lifeSteel / 100f));
+        CurHp += steelAmount;
+        vfxPrinter.PrintTextFX(steelAmount.ToString(), transform.position, TextType.Heal);
+    }
+    public void RecordDealAmount(float damage)
+    {
+        dealAmount += damage;
+        OnDealAmountChanged?.Invoke();
+    }
+    public void StartStun(float duration)
+    {
+        if (duration == 0 || 
+            IsDead) return;
+        stunDuration = duration;
+        curStunTime = 0f;
+        anim.Play("Panic");
+        agent.isStopped = true;
+        StartCoroutine(Stun_Co());
+    }
+    private IEnumerator Stun_Co()
+    {
+        while (curStunTime < stunDuration)
         {
-            finalDamage = (AP * ratio / 100f) * (1f + increasedDeal / 100f);
+            curStunTime += Time.deltaTime;
+            yield return null;
+        }
+        anim.Play("Search");
+    }
+    public void GetShield(float amount)
+    {
+        MaxShield = amount;
+    }
+    public void Transformation()
+    {
+        defaultBody.SetActive(false);
+        tranformationBody.SetActive(true);
+    }
+    public void ReturnDefaultBody()
+    {
+        tranformationBody.SetActive(false);
+        defaultBody.SetActive(true);
+    }
+    public void Dead()
+    {
+        if (isEnemy)
+        {
+            Destroy(gameObject);
         }
         else
         {
-            finalDamage = (attackDamage * ratio / 100f) * (1f + increasedDeal / 100f);
-
-        }
-        foreach (var col in enemy)
-        {
-            col.GetComponent<Unit>().TakeSkillDamage(this, finalDamage, ap);
+            gameObject.SetActive(false);
         }
     }
+
+    #region skill
     public void ActiveSkill()
     {
         switch (No)
@@ -1901,15 +1120,802 @@ public class Unit : MonoBehaviour
                 break;
         }
     }
-    public void Transformation()
+    #endregion
+
+    #region trait
+    public void PrintTraitVFX()
     {
-        defaultBody.SetActive(false);
-        tranformationBody.SetActive(true);
+        vfxPrinter.PrintTraitFX(transform);
     }
-    public void ReturnDefaultBody()
+    public void UpdateTrait(int no, int old, int rank)
     {
-        tranformationBody.SetActive(false);
-        defaultBody.SetActive(true);
+        switch (no)
+        {
+            case 0:
+                SetTrait_0(old, rank);
+                break;
+            case 1:
+                if (Origin != 1) return;
+                SetTrait_1(old, rank);
+                break;
+            case 2:
+                SetTrait_2(old, rank);
+                break;
+            case 3:
+                if (Origin != 3) return;
+                SetTrait_3(old, rank);
+                break;
+            case 4:
+                if (Origin != 4) return;
+                SetTrait_4(old, rank);
+                break;
+            case 5:
+                if (Origin != 5) return;
+                SetTrait_5(old, rank);
+                break;
+            case 6:
+                SetTrait_6(old, rank);
+                break;
+            case 7:
+                if (Origin != 7) return;
+                SetTrait_7(old, rank);
+                break;
+            case 8:
+                if (Origin != 8) return;
+                SetTrait_8(old, rank);
+                break;
+            case 9:
+                if (Origin != 9) return;
+                SetTrait_9(old, rank);
+                break;
+            case 10:
+                if (Class != 10) return;
+                SetTrait_10(old, rank);
+                break;
+            case 11:
+                if (Class != 11) return;
+                SetTrait_11(old, rank);
+                break;
+            case 12:
+                SetTrait_12(old, rank);
+                break;
+            case 13:
+                if (Class != 13) return;
+                SetTrait_13(old, rank);
+                break;
+            case 14:
+                if (Class != 14) return;
+                SetTrait_14(old, rank);
+                break;
+            case 15:
+                SetTrait_15(old, rank);
+                break;
+            case 16:
+                if (Class != 16) return;
+                SetTrait_16(old, rank);
+                break;
+            case 17:
+                if (Class != 17) return;
+                SetTrait_17(old, rank);
+                break;
+            case 18:
+                if (Class != 18) return;
+                SetTrait_18(old, rank);
+                break;
+            case 19:
+                if (Class != 19) return;
+                SetTrait_19(old, rank);
+                break;
+            case 20:
+                if (Class != 20) return;
+                SetTrait_20(old, rank);
+                break;
+            case 21:
+                if (Class != 21) return;
+                SetTrait_21(old, rank);
+                break;
+            case 22:
+                SetTrait_22(old, rank);
+                break;
+        }
+    }
+    public void SetTrait_0(int old, int rank) //아비도스
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                lifeSteel -= 30f;
+                break;
+            case 2:
+                lifeSteel -= 60f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                lifeSteel += 30f;
+                break;
+            case 2:
+                lifeSteel += 60f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_1(int old, int rank) //게헨나
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                AD -= 20f;
+                AP -= 20f;
+                break;
+            case 2:
+                AD -= 35f;
+                AP -= 35f;
+                break;
+            case 3:
+                AD -= 60f;
+                AP -= 60f;
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                AD += 20f;
+                AP += 20f;
+                break;
+            case 2:
+                AD += 35f;
+                AP += 35f;
+                break;
+            case 3:
+                AD += 60f;
+                AP += 60f;
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_2(int old, int rank) //밀레니엄
+    {
+        trait2Rank = rank;
+    }
+    public void IncreaseAsTrait2()
+    {
+        switch (trait2Rank)
+        {
+            case 1:
+                AS += Mathf.Round(attackSpeed * 0.15f * 100f) / 100f;
+                break;
+            case 2:
+                AS += Mathf.Round(attackSpeed * 0.35f * 100f) / 100f;
+                break;
+            case 3:
+                AS += Mathf.Round(attackSpeed * 0.65f * 100f) / 100f;
+                break;
+            case 4:
+                AS += Mathf.Round(attackSpeed * 0.90f * 100f) / 100f;
+                break;
+        }
+    }
+    public void SetTrait_3(int old, int rank) //트리니티
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                Armor -= 20f;
+                Resist -= 20f;
+                break;
+            case 2:
+                Armor -= 50f;
+                Resist -= 50f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                Armor += 20f;
+                Resist += 20f;
+                break;
+            case 2:
+                Armor += 50f;
+                Resist += 50f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_4(int old, int rank) //백귀야행
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                manaRegeneration -= 4;
+                break;
+            case 2:
+                manaRegeneration -= 7;
+                break;
+            case 3:
+                manaRegeneration -= 10;
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                manaRegeneration += 4;
+                break;
+            case 2:
+                manaRegeneration += 7;
+                break;
+            case 3:
+                manaRegeneration += 10;
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_5(int old, int rank) //산해경
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                MaxHp -= 200f;
+                AP -= 20f;
+                break;
+            case 2:
+                MaxHp -= 200f;
+                AP -= 20f;
+                break;
+            case 3:
+                MaxHp -= 200f;
+                AP -= 20f;
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                MaxHp += 200f;
+                AP += 20f;
+                break;
+            case 2:
+                MaxHp += 300f;
+                AP += 30f;
+                break;
+            case 3:
+                MaxHp += 400f;
+                AP += 40f;
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_6(int old, int rank) //레드윈터
+    {
+        OnDead -= deadEventTrait6;
+        trait6Rank = rank;
+        if(rank != 0)
+        {
+            OnDead += deadEventTrait6;
+        }
+    }
+    public void deadEventTrait6()
+    {
+        for (int i = 0; i < unitManager.fieldList.Count; i++)
+        {
+            if (!unitManager.fieldList[i].IsDead &&
+                unitManager.fieldList[i].Origin == 6)
+            {
+                unitManager.fieldList[i].IncreaseAdApTrait6();
+            }
+        }
+    }
+    public void IncreaseAdApTrait6()
+    {
+        switch (trait6Rank)
+        {
+            case 1:
+                AD += 8;
+                AP += 8;
+                break;
+            case 2:
+                AD += 18;
+                AP += 18;
+                break;
+            case 3:
+                AD += 28;
+                AP += 28;
+                break;
+        }
+    }
+    public void SetTrait_7(int old, int rank) //발키리
+    {
+        if(rank == 1)
+        {
+            OnSuccessAutoAttack += StunAttackTrait7;
+        }
+        else
+        {
+            OnSuccessAutoAttack -= StunAttackTrait7;
+        }
+    }
+    public void StunAttackTrait7(Unit enemy)
+    {
+        float rand = Random.Range(0, 100);
+        if(rand < 30)
+        {
+            enemy.StartStun(1.5f);
+        }
+    }
+    public void SetTrait_8(int old, int rank) //SRT
+    {
+        if (rank == 1)
+        {
+            MaxMp -= 30;
+        }
+        else
+        {
+            MaxMp += 30;
+        }
+    }
+    public void SetTrait_9(int old, int rank) //아리우스
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                increasedDeal -= 20f;
+                break;
+            case 2:
+                increasedDeal -= 35f;
+                break;
+            case 3:
+       
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                increasedDeal += 20f;
+                break;
+            case 2:
+                increasedDeal += 35f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_10(int old, int rank) //정찰대
+    {
+        OnRunAutoAttack -= ExtraAttackTrait10;
+        trait10Rank = rank;
+        if(rank != 0)
+        {
+            OnRunAutoAttack += ExtraAttackTrait10;
+        }
+    }
+    public void ExtraAttackTrait10()
+    {
+        float rand = Random.Range(0, 100);
+        float ratio = 0;
+        switch (trait10Rank)
+        {
+            case 1:
+                ratio = 30;
+                break;
+            case 2:
+                ratio = 45;
+                break;
+            case 3:
+                ratio = 65;
+                break;
+        }
+        if(rand < ratio)
+        {
+            if (!target.GetComponent<Unit>().IsDead)
+            {
+                float finalDamage;
+                bool isCritical;
+                rand = Random.Range(0f, 100f);
+                if (rand < critRatio)
+                {
+                    finalDamage = (attackDamage * (critDamage / 100f)) * (1f + increasedDeal / 100f);
+                    isCritical = true;
+                }
+                else
+                {
+                    finalDamage = attackDamage * (1f + increasedDeal / 100f);
+                    isCritical = false;
+                }
+                target.GetComponent<Unit>().TakeAutoAttack(this, finalDamage, isCritical);
+            }
+        }
+    }
+    public void SetTrait_11(int old, int rank) //수집가
+    {
+        OnSuccessAutoAttack -= BurnOutManaTrait11;
+        if(rank != 0)
+        {
+            OnSuccessAutoAttack += BurnOutManaTrait11;
+        }
+    }
+    public void BurnOutManaTrait11(Unit enemy) 
+    {
+        enemy.UpdateMana(-5);
+    }
+    public void SetTrait_12(int old, int rank) //마법사
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                AP -= 20f;
+                break;
+            case 2:
+                AP -= 40f;
+                break;
+            case 3:
+                AP -= 60f;
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                AP += 20f;
+                break;
+            case 2:
+                AP += 40f;
+                break;
+            case 3:
+                AP += 60f;
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_13(int old, int rank) //선봉대
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                Armor -= 70f;
+                break;
+            case 2:
+                Armor -= 150f;
+                break;
+            case 3:
+                Armor -= 350f;
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                Armor += 70f;
+                break;
+            case 2:
+                Armor += 150f;
+                break;
+            case 3:
+                Armor += 350f;
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_14(int old, int rank) //수호자
+    {
+        OnBattleStart -= GetShieldTratit14;
+        trait14Rank = rank;
+        if(rank != 0)
+        {
+            OnBattleStart += GetShieldTratit14;
+        }
+    }
+    public void GetShieldTratit14()
+    {
+        switch (trait14Rank)
+        {
+            case 1:
+                GetShield(Mathf.Round(maxHealth * 0.3f));
+                break;
+            case 2:
+                GetShield(Mathf.Round(maxHealth * 0.5f));
+                break;
+        }
+    }
+    public void SetTrait_15(int old, int rank) //마법사
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                Resist -= 50f;
+                break;
+            case 2:
+                Resist -= 120f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                Resist += 50f;
+                break;
+            case 2:
+                Resist += 120f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_16(int old, int rank) //싸움꾼
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                MaxHp -= 350f;
+                break;
+            case 2:
+                MaxHp -= 600f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                MaxHp += 350f;
+                break;
+            case 2:
+                MaxHp += 600f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_17(int old, int rank) //잠입자
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                CritRatio -= 20f;
+                CritDamage -= 75f;
+                break;
+            case 2:
+                CritRatio -= 40f;
+                CritDamage -= 150f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                CritRatio += 20f;
+                CritDamage += 75f;
+                break;
+            case 2:
+                CritRatio += 40f;
+                CritDamage += 150f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_18(int old, int rank) //저격수
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                CritRatio -= 15f;
+                range -= 1;
+                break;
+            case 2:
+                CritRatio -= 30f;
+                range -= 2;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                CritRatio += 15f;
+                range += 1;
+                break;
+            case 2:
+                CritRatio += 30f;
+                range += 2;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_19(int old, int rank) //총잡이
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                AS -= Mathf.Round(InitAS * 0.2f * 100f) / 100f;
+                break;
+            case 2:
+                AS -= Mathf.Round(InitAS * 0.5f * 100f) / 100f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                AS += Mathf.Round(InitAS * 0.2f * 100f) / 100f;
+                break;
+            case 2:
+                AS += Mathf.Round(InitAS * 0.5f * 100f) / 100f;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_20(int old, int rank) //폭파광
+    {
+        switch (old)
+        {
+            case 0:
+                break;
+            case 1:
+                increasedDeal -= 15;
+                CritDamage -= 50;
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+        switch (rank)
+        {
+            case 0:
+                break;
+            case 1:
+                increasedDeal += 15;
+                CritDamage += 50;
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
+    public void SetTrait_21(int old, int rank) //파괴자
+    {
+        OnSuccessAutoAttack -= DestroyEnemy;
+        if(rank != 0)
+        {
+            OnSuccessAutoAttack += DestroyEnemy;
+        }
+    }
+    public void DestroyEnemy(Unit enemy)
+    {
+        if(enemy.CurHp < Mathf.Round(enemy.CurHp * 0.15f))
+        {
+            enemy.Excution();
+        }
+    }
+    public void Excution()
+    {
+        CurHp = 0;
+        IsDead = true;
+    }
+    public void SetTrait_22(int old, int rank) //책사
+    {
+        if(rank == 1)
+        {
+            Avoid += 20f;
+        }
+        else
+        {
+            Avoid -= 20f;
+        }
     }
     #endregion
+
 }
