@@ -60,8 +60,7 @@ public class UnitManager : MonoBehaviour
     #region Unit
     public void GetUnit(int no)
     {
-        GameObject newUnit = Instantiate(info.prefabs[no]);
-        newUnit.transform.SetParent(transform);
+        GameObject newUnit = Instantiate(info.prefabs[no], transform);
         Unit unit = newUnit.GetComponent<Unit>();
 
         GameObject statusBar = Instantiate(statusBarUI, statusBarCanvas);
@@ -139,6 +138,7 @@ public class UnitManager : MonoBehaviour
     }
     public void BattleStart()
     {
+        fieldText.gameObject.SetActive(false);
         for (int i = 0; i < fieldList.Count; i++)
         {
             fieldList[i].IsBattle = true;
@@ -146,6 +146,7 @@ public class UnitManager : MonoBehaviour
     }
     public void PrepareStart()
     {
+        fieldText.gameObject.SetActive(true);
         for (int i = 0; i < fieldList.Count; i++)
         {
             if (!fieldList[i].gameObject.activeSelf)

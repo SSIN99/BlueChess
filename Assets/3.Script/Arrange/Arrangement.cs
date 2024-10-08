@@ -69,6 +69,7 @@ public class Arrangement : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         if (unit.IsBattle || unit.isEnemy) return;
 
+        transform.rotation = Quaternion.Euler(0, 135f, 0f);
         anim.Play("PickUp");
         mouse.SetHand(eventData.pointerDrag);
     }
@@ -112,6 +113,7 @@ public class Arrangement : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 ChangeTile(targetTile);
             }
         }
+        transform.rotation = unit.isOnField ? Quaternion.identity : Quaternion.Euler(0, 135, 0);
         anim.Play("Idle");
         mouse.SetHand(null);
     }

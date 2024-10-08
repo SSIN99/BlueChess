@@ -42,7 +42,7 @@ public class Unit : MonoBehaviour
     private int skillAttackCount = 1; //스킬 공격 횟수
     private float stunDuration; //스턴 지속시간
     private float curStunTime; //현재 스턴시간
-    private bool isOnField; //필드배치?
+    public bool isOnField; //필드배치?
     private bool isBattle; //전투중?
     private bool isDead; //죽음?
     public bool isEnemy; //적?

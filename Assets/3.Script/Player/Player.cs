@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     }
     public void GetExp(int exp)
     {
+        if (level == 9) return;
         curExp += exp;
         if (curExp >= maxExp)
         {
@@ -86,4 +87,5 @@ public class Player : MonoBehaviour
         Gold += gold;
         goldText.text = $"{Gold}";
     }
+
 }

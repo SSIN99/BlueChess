@@ -45,14 +45,7 @@ public class UnitInfoUI : MonoBehaviour
         unit = target;
 
         int no = unit.No;
-        if (unit.isEnemy)
-        {
-            portrait.sprite = info.enemyPortraits[no];
-        }
-        else
-        {
-            portrait.sprite = info.portraits[no];
-        }
+        portrait.sprite = info.portraits[no];
         grade.sprite = info.gradeIcon[unit.Grade - 1];
         costColor.color = colors[unit.Cost - 1];
         if(unit.Origin == -1)

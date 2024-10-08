@@ -9,6 +9,7 @@ public class StatusBarUI : MonoBehaviour
     [SerializeField] private Image grade;
     [SerializeField] private Sprite[] gradeSprite;
     [SerializeField] private Slider hpBar;
+    [SerializeField] private Image hpBarColor;
     [SerializeField] private Slider mpBar;
     [SerializeField] private Slider shieldBar;
     [SerializeField] private GameObject[] items;
@@ -31,7 +32,9 @@ public class StatusBarUI : MonoBehaviour
             unit.OnIdleReturn += SetActiveStatus;
             unit.OnItemEquiped += UpdateItem;
             unit.OnBeSold += Delete;
+            return;
         }
+        hpBarColor.color = Color.red;
     }
     private void Delete()
     {

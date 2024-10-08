@@ -198,7 +198,6 @@ GameObject:
   - component: {fileID: 831567964388563288}
   - component: {fileID: -8824371518258458912}
   - component: {fileID: -6946503621521748356}
-  - component: {fileID: 8185996572690438332}
   m_Layer: 9
   m_Name: 0_Sweeper
   m_TagString: Enemy
@@ -213,7 +212,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2719198060857728312}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 220, y: 220, z: 220}
   m_Children:
@@ -222,7 +221,7 @@ Transform:
   - {fileID: 704964370836967204}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!95 &2358057316315951120
 Animator:
   serializedVersion: 3
@@ -312,6 +311,7 @@ MonoBehaviour:
   increasedDeal: 0
   dealAmount: 0
   isPassive: 1
+  isOnField: 0
   isEnemy: 1
   target: {fileID: 0}
   defaultBody: {fileID: 0}
@@ -322,18 +322,6 @@ MonoBehaviour:
   col: {fileID: 0}
   agent: {fileID: 0}
   itemList: 
---- !u!114 &8185996572690438332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2719198060857728312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23707a6e28c37564cb7ef7ff8562cc27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3542085113810802847
 GameObject:
   m_ObjectHideFlags: 0
