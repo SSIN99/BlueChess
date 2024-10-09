@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ResultManager : MonoBehaviour
@@ -22,5 +23,13 @@ public class ResultManager : MonoBehaviour
             usedUnitList[i].gameObject.SetActive(true);
             usedUnitList[i].InitInfo(unitManager.fieldList[i]);
         }
+    }
+    public void BackToLobby()
+    {
+        if (FirebaseManager.userData.record < roundManager.curRound - 1)
+        {
+            FirebaseManager.UpdateUserRecord(FirebaseManager.user.UserId, roundManager.curRound - 1);
+        }
+        SceneManager.LoadScene("Lobby");
     }
 }

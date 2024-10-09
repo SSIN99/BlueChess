@@ -123,10 +123,4 @@ public class RoundManager : MonoBehaviour
             result.ShowResult();
         }
     }
-
-    public void BackToLobby()
-    {
-        FirebaseManager.UpdateUserRecord(FirebaseManager.user.UserId, curRound - 1);
-        SceneManager.LoadScene("Lobby");
-    }
 }
