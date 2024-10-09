@@ -29,8 +29,8 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private GameObject confetti;
     [SerializeField] private GameObject battleStartBtn;
 
-    private int unitCount;
-    private int enemyCount;
+    public int unitCount;
+    public int enemyCount;
     public int curRound;
     private int benefit;
     private StepType step;
@@ -51,6 +51,7 @@ public class RoundManager : MonoBehaviour
         curRound = 1;
         benefit = 5;
         step = StepType.Prepare;
+        enemySpawner.EnemySpawn();
     }
     public void BattleStart()
     {
@@ -61,12 +62,15 @@ public class RoundManager : MonoBehaviour
         {
             unitManager.fieldList[i].OnDead += UnitDead;
         }
+        unitCount = unitManager.fieldList.Count;
         unitManager.BattleStart();
 
+        Debug.Log(enemySpawner.enemyList.Count);
         for (int i = 0; i < enemySpawner.enemyList.Count; i++)
         {
             enemySpawner.enemyList[i].OnDead += EnemyDead;
         }
+        enemyCount = enemySpawner.enemyList.Count;
         enemySpawner.BattleStart();
 
         Step = StepType.Battle;
@@ -103,6 +107,7 @@ public class RoundManager : MonoBehaviour
         enemyCount -= 1;
         if (enemyCount <= 0)
         {
+            Debug.Log("Victory");
             confetti.SetActive(true);
             if (curRound == 25)
             {

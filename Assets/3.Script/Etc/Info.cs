@@ -26,6 +26,8 @@ public class Info : MonoBehaviour
     public Dictionary<int, int> unitCount;
     //유닛 프리펩 리스트
     public GameObject[] prefabs;
+    //에너미 프리펩 리스트
+    public GameObject[] enemyPrefabs;
     //유닛 메모리얼 리스트
     public Sprite[] memorials;
     //유닛 아이콘 리스트

@@ -45,7 +45,7 @@ public class UnitInfoUI : MonoBehaviour
         unit = target;
 
         int no = unit.No;
-        portrait.sprite = info.portraits[no];
+        portrait.sprite = unit.isEnemy ? info.enemyPortraits[no] : info.portraits[no];
         grade.sprite = info.gradeIcon[unit.Grade - 1];
         costColor.color = colors[unit.Cost - 1];
         if(unit.Origin == -1)
@@ -79,9 +79,10 @@ public class UnitInfoUI : MonoBehaviour
         mpBar.value = unit.CurMp;
         mpText.text = $"{mpBar.value}/{mpBar.maxValue}";
 
-        skillIcon.sprite = info.skillIcon[unit.No];
-        skillName.text = info.Skills[no]["Name"];
-        skillEffect.text = info.Skills[no]["Effect"];
+
+        skillIcon.sprite = unit.isEnemy ? null : info.skillIcon[unit.No];
+        skillName.text = unit.isEnemy ? string.Empty : info.Skills[no]["Name"];
+        skillEffect.text = unit.isEnemy ? string.Empty : info.Skills[no]["Effect"];
 
         ad.text = $"{unit.AD}";
         ap.text = $"{unit.AP}";

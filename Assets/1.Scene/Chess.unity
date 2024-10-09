@@ -4489,6 +4489,8 @@ MonoBehaviour:
   postprocessing: {fileID: 1091787973}
   confetti: {fileID: 8241205248758897005}
   battleStartBtn: {fileID: 895581818}
+  unitCount: 0
+  enemyCount: 0
   curRound: 0
 --- !u!4 &204414042
 Transform:
@@ -5925,6 +5927,9 @@ MonoBehaviour:
   - {fileID: 2006879615732194424, guid: b1fc855589ff24c4da0024d542b82b15, type: 3}
   - {fileID: 6886770222830487118, guid: aa769cd092a2e3a49861e5e80c7b006d, type: 3}
   - {fileID: 1821140126169646256, guid: fd49c12f007c9e741bebc5bc00886c35, type: 3}
+  enemyPrefabs:
+  - {fileID: 2719198060857728312, guid: a400f76b2f18b18478e444d5a3bf59f2, type: 3}
+  - {fileID: 832790621816931042, guid: 723c37b5eb48bbb4d82fd36abcf8b1ac, type: 3}
   memorials:
   - {fileID: 21300000, guid: a88a40d46955a25468a88bf57665ecda, type: 3}
   - {fileID: 21300000, guid: 668bd7de5b025954180a26f20aa30f25, type: 3}
@@ -6043,6 +6048,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0ff0ab1e31e6ce045b8c308266cf7b7e, type: 3}
   enemyPortraits:
   - {fileID: 21300000, guid: d2c4cb7975e30fe48ad04eb384b1f1fe, type: 3}
+  - {fileID: 21300000, guid: 5a42e9162fcbf684daf7c991204f1187, type: 3}
+  - {fileID: 21300000, guid: eb0607ee12383614eb49c14ed94122fb, type: 3}
+  - {fileID: 21300000, guid: f59f246a35551884289d572b93882002, type: 3}
   skillIcon:
   - {fileID: 21300000, guid: 19089b6faf239f14d98cfa19752a1618, type: 3}
   - {fileID: 21300000, guid: 4bd01de2002394f478999b8f8cfb67af, type: 3}
@@ -17132,7 +17140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1009663428
 RectTransform:
   m_ObjectHideFlags: 0

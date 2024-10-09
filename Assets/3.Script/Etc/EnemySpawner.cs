@@ -11,13 +11,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform[] tile;
     public List<Unit> enemyList;
 
-    private void Start()
+    private void Awake()
     {
         enemyList = new List<Unit>();
     }
     public void EnemySpawn()
     {
-        int enemyCount = int.Parse(info.Rounds[roundManager.curRound]["Count"]);
+        int enemyCount = int.Parse(info.Rounds[roundManager.curRound - 1]["Count"]);
 
         GameObject temp = null;
         int spawnTile = 0;
@@ -28,24 +28,28 @@ public class EnemySpawner : MonoBehaviour
 
         for(int i = 0; i < enemyCount; i++)
         {
-            enemyNo = int.Parse(info.Rounds[roundManager.curRound][$"Enemy{i}"]);
-            spawnTile = int.Parse(info.Rounds[roundManager.curRound][$"Tile{i}"]);
+            enemyNo = int.Parse(info.Rounds[roundManager.curRound - 1][$"Enemy{i}"]);
+            spawnTile = int.Parse(info.Rounds[roundManager.curRound - 1][$"Tile{i}"]);
 
-            temp = Instantiate(info.prefabs[enemyNo], tile[spawnTile].position , viewDirection, transform);
+            temp = Instantiate(info.enemyPrefabs[enemyNo], tile[spawnTile].position , viewDirection, transform);
             temp.transform.tag = "Enemy";
-            temp.layer = LayerMask.GetMask("Enemy");
+            //temp.layer = LayerMask.GetMask("Enemy");
 
             newEnemy = temp.GetComponent<Unit>();
             newEnemy.isEnemy = true;
-            enemyList.Add(newEnemy);
 
             temp = Instantiate(statusBar, statusBarCanvas);
             newStatusBar = temp.GetComponent<StatusBarUI>();
             newStatusBar.InitInfo(newEnemy);
+            newEnemy.InitInfo(info.Enemies[enemyNo]);
+            
+            enemyList.Add(newEnemy);
+            Debug.Log(enemyList.Count);
         }
     }
     public void BattleStart()
     {
+        Debug.Log(enemyList.Count);
         for (int i = 0; i < enemyList.Count; i++)
         {
             enemyList[i].IsBattle = true;
