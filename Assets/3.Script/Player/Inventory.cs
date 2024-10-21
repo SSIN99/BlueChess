@@ -16,6 +16,11 @@ public class Inventory : MonoBehaviour
     private bool isOpend = false;
     private List<Item> itemList;
 
+    public void Start()
+    {
+        itemList = new List<Item>();
+    }
+
     public void OpenInventory()
     {
         if (isOpend)

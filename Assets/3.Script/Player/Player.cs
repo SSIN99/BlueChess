@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         LevelUp();
-        Gold = 0;
+        Gold = 99;
         curExp = 0;
         maxExp = maxExpList[0];
     }

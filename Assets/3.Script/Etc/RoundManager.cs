@@ -87,6 +87,10 @@ public class RoundManager : MonoBehaviour
         {
             benefit += 5;
         }
+        if ((curRound % 3) == 1)
+        {
+            itemShop.OpenItemShop();
+        }
         player.GetExp(2);
         player.UpdateGold(benefit);
         shop.RoundReroll();

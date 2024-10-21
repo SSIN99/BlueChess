@@ -1921,4 +1921,9 @@ public class Unit : MonoBehaviour
     }
     #endregion
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 15f);
+    }
 }

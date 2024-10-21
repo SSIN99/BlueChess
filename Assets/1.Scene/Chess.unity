@@ -36641,7 +36641,6 @@ GameObject:
   - component: {fileID: 2023928871}
   - component: {fileID: 2023928869}
   - component: {fileID: 2023928872}
-  - component: {fileID: 2023928873}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -36738,7 +36737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 270923506}
-  inventory: {fileID: 1315198013}
+  inventory: {fileID: 798952702}
   cells:
   - {fileID: 2014479682}
   - {fileID: 778419285}
@@ -36758,28 +36757,6 @@ MonoBehaviour:
   btnImage:
   - {fileID: -1624322601752424605, guid: 33285dc74ec6ae34da2cf7135d95cb83, type: 3}
   - {fileID: 7748564835882794724, guid: 2c230476015f45649894dcce2c1b387e, type: 3}
---- !u!114 &2023928873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023928868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &2027193401
 GameObject:
   m_ObjectHideFlags: 0
